@@ -141,7 +141,32 @@ paths:
               schema:
                 $ref: '#/components/schemas/command-result'
 
-
+  /private:
+    post:
+      description: |
+        Asynchronous submission of a single addressed command which
+        will be transmitted with end-to-end encryption only between addressed entity nodes.
+        Private payload metadata required.
+      tags: [endpoint-private]
+      summary: private
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/command'
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                properties:
+                  requestKeys:
+                    description: Request keys for use with `poll` or `listen` to retrieve results.
+                    type: array
+                    minItems: 1
+                    maxItems: 1
+                    items:
+                      $ref: '#/components/schemas/request-key'
 
 
 # ############################################################################ #
@@ -166,41 +191,32 @@ components:
         $ref: '#/components/examples/command'
       properties:
         cmd:
-          $ref: '#/components/schemas/cmd-field'
+          description: |
+            Stringified JSON `payload` object. Canonic non-malleable signed transaction data.
+          type: string
         hash:
-          $ref: '#/components/schemas/cmd-hash'
+          description: |
+            Unpadded Base64URL of Blake2s-256 hash of the `cmd` field value. Serves as a command
+            `requestKey` since each transaction must be unique.
+          type: string
+          contentEncoding: base64url
+          example: "H6XjdPHzMai2HLa3_yVkXfkFYMgA0bGfsB0kOsHAMuI"
         sigs:
-          $ref: '#/components/schemas/cmd-sigs'
+          description: |
+            List of signatures corresponding one-to-one with `signers` array in the payload.
+          type: array
+          minItems: 0
+          items:
+            properties:
+              sig:
+                type: string
+                contentEncoding: base16
+                description: |
+                  Base16-encoded cryptograhic signature of `cmd` field data
+                  for corresponding signer in payload.
+                example:
+                  "8d452109cc0439234c093b5e204a7428bc0a54f22704402492e027aaa9375a34c910d8a468a12746d0d29e9353f4a3fbebe920d63bcc7963853995db015d060f"
 
-    cmd-field:
-      description: |
-        Stringified JSON payload object, containing execution payload,
-        signatories and metadata. Represents non-malleable signed transaction data.
-      type: string
-
-    cmd-hash:
-      description: |
-        Unpadded Base64URL of Blake2s-256 hash of the `cmd` field value. Serves as a command
-        `requestKey` since each transaction must be unique.
-      type: string
-      contentEncoding: base64url
-      example: "H6XjdPHzMai2HLa3_yVkXfkFYMgA0bGfsB0kOsHAMuI"
-
-    cmd-sigs:
-      description: |
-        List of signatures corresponding one-to-one with `signers` array in the payload.
-      type: array
-      minItems: 0
-      items:
-        properties:
-          sig:
-            type: string
-            contentEncoding: base16
-            description: |
-              Base16-encoded cryptograhic signature of `cmd` field data
-              for corresponding signer in payload.
-            example:
-              "8d452109cc0439234c093b5e204a7428bc0a54f22704402492e027aaa9375a34c910d8a468a12746d0d29e9353f4a3fbebe920d63bcc7963853995db015d060f"
 
     payload:
       description: |
@@ -242,30 +258,49 @@ components:
                 contentEncoding: base64url
                 description: Backend-specific data for continuing a cross-chain proof.
         meta:
-          description: "Platform-specific metadata. Public/Chainweb described here."
-          required: [chainId,sender,gasLimit,gasPrice,ttl,creationTime]
-          properties:
-            chainId:
-              type: string
-              description: Platform-specific chain identifier. For chainweb this is the stringified chain number.
-            sender:
-              type: string
-              description: Indicates gas-paying account.
-            gasLimit:
-              type: number
-              minimum: 1
-              description: Limits total amount of gas to be consumed.
-            gasPrice:
-              type: number
-              description: Specifies price per gas unit to be charged.
-            ttl:
-              type: number
-              minimum: 1
-              maximum: 180000
-              description: Time in seconds after creation time that transaction can be executed.
-            creationTime:
-              type: number
-              description: POSIX epoch sending time for transaction.
+          oneOf:
+          - title: "Public metadata (Chainweb)"
+            description: "Chainweb/public command metadata."
+            required: [chainId,sender,gasLimit,gasPrice,ttl,creationTime]
+            properties:
+              chainId:
+                type: string
+                description: Platform-specific chain identifier. For chainweb this is the stringified chain number.
+              sender:
+                type: string
+                description: Indicates gas-paying account.
+              gasLimit:
+                type: number
+                minimum: 1
+                description: Limits total amount of gas to be consumed.
+              gasPrice:
+                type: number
+                description: Specifies price per gas unit to be charged.
+              ttl:
+                type: number
+                minimum: 1
+                maximum: 180000
+                description: Time in seconds after creation time that transaction can be executed.
+              creationTime:
+                type: number
+                description: POSIX epoch sending time for transaction.
+          - title: "Private metadata (Kuro)"
+            description: "Metadata for Kuro endpoints, including `private`."
+            properties:
+              address:
+                description: Private message envelope address. Required only for private messages, otherwise null.
+                required: [from,to]
+                properties:
+                  from:
+                    type: string
+                    description: "Sender entity name"
+                  to:
+                    description: "Recipient entity names"
+                    type: array
+                    minItems: 1
+                    items:
+                      type: string
+                      description: "Recipient entity name"
         signers:
           description: List of signers, corresponding with list of signatures in outer command.
           type: array
@@ -300,7 +335,6 @@ components:
         nonce:
           description: Arbitrary user-supplied value.
           type: string
-
 
 
     # ######################################################################## #
@@ -640,6 +674,11 @@ x-tagGroups:
   - endpoint-poll
   - endpoint-listen
 
+- name: private-api
+  x-displayName: Private Pact API
+  tags:
+  - endpoint-private
+
 - name: models
   x-displayName: Pact API models
   tags:
@@ -661,6 +700,9 @@ tags:
   x-displayName: Batch polling for results
 - name: endpoint-listen
   x-displayName: Blocking listen for single transaction result
+
+- name: endpoint-private
+  x-displayName: Private transaction execution
 
 - name: model-command
   x-displayName: Pact Commands
