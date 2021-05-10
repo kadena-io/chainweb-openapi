@@ -7,7 +7,7 @@ openapi: '3.0'
 info:
   title: Kadena Chainweb Node API
   description: |
-    API of [chainweb-node](https://github.com/kandena-io/chainweb-node)
+    API of [chainweb-node](https://github.com/kadena-io/chainweb-node)
 
     Chainweb is a scalable Proof-Of-Work (PoW) consensus algorithm. It is an
     conservative extension of Bitcoin's Nakamoto consensus that extends
