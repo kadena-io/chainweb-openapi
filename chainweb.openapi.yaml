@@ -7,12 +7,12 @@ openapi: '3.0'
 info:
   title: Kadena Chainweb Node API
   description: |
-    API of [chainweb-node](https://github.com/kandena-io/chainweb-node)
+    API of [chainweb-node](https://github.com/kadena-io/chainweb-node)
 
     Chainweb is a scalable Proof-Of-Work (PoW) consensus algorithm. It is an
     conservative extension of Bitcoin's Nakamoto consensus that extends
-    Bitcoin's single chain algorithm to multible chains. This allows for
-    unlimited transaction throuput by horizontally the number of chains.
+    Bitcoin's single chain algorithm to multiple chains. This allows for
+    unlimited transaction throughput by horizontally scaling the number of chains.
 
     Feedback and bug reports for the content of this site are welcome. Please
     open an issue at [this github repository](https://github.com/kadena-io/chainweb-openapi/issues).
@@ -108,7 +108,7 @@ tags:
     The endpoints of the service API are optional and can be enabled via
     respective configuration settings. They are served on a separate port via
     plain HTTP. Node operators are free to expose those endpoints only locally,
-    or via reverse proxies, load balancers, authentciation frameworks, and
+    or via reverse proxies, load balancers, authentication frameworks, and
     similar web technologies.
 
     Some of the endpoints of the service API can require considerable resources
@@ -160,7 +160,7 @@ tags:
     from orphaned blocks.
 
     For only querying blocks that are included in the winning branch of the
-    chain the `branch` endpoint can be used, which returns blocks in decending
+    chain the `branch` endpoint can be used, which returns blocks in descending
     order starting from the leafs of branches of the block chain.
 
 - name: header
@@ -172,10 +172,10 @@ tags:
     of orphaned blocks.
 
     For only querying blocks that are included in the winning branch of the
-    chain the `branch` endpoints can be used, which return blocks in decending
+    chain the `branch` endpoints can be used, which return blocks in descending
     order starting from the leafs of branches of the block chain.
 
-    *   `application/json`, returns block headers in base64Url (without padding) 
+    *   `application/json`, returns block headers in base64Url (without padding)
         encoded binary.
     *   `application/json;blockheader-encoding=object`, returns block headers in
         JSON encoding.
@@ -191,13 +191,13 @@ tags:
     [Pact](https://pactlang.org) endpoints use the route prefix `/chain/0/pact/` in addition to the base
     URL.
 
-    The Pact Endpoints are documented in 
+    The Pact Endpoints are documented in
     [this section of the Pact Language Reference](https://pact-language.readthedocs.io/en/stable/pact-reference.html#endpoints)
 
 - name: rosetta
   x-displayName: Rosetta Endpoints
   description: |
-    Chainweb node includes an implementation of the 
+    Chainweb node includes an implementation of the
     [Rosetta API](https://www.rosetta-api.org). The API is disabled by default
     and can be enabled in the configuration file of a node.
 
@@ -223,7 +223,7 @@ tags:
 
 
     The mining API consists of the following endpoints that
-    are described in detail on the 
+    are described in detail on the
     [Chainweb mining wiki page](https://github.com/kadena-io/chainweb-node/wiki/Mining-API)
 
     *   `GET mining/work`
@@ -280,10 +280,10 @@ tags:
 
     **POW related values**:
 
-    Arithmetic operations and comparisons on `parent`, `target`, `weight`, and `hash` 
-    interpret the value as unsigned 256 bit integral numbers in little endian encoding. 
+    Arithmetic operations and comparisons on `parent`, `target`, `weight`, and `hash`
+    interpret the value as unsigned 256 bit integral numbers in little endian encoding.
     All operations are performed using rational arithmetic of unlimited precision and the final result is rounded.
-    Please consult the code for details of how the result is rounded. 
+    Please consult the code for details of how the result is rounded.
 
     **Time Stamps**:
 
@@ -297,20 +297,20 @@ tags:
     **Version**:
 
     `version` identifies the chainweb version. It is a 32 bit value in little endian encoding.
-    Values up to 0x0000FFFF are reserved for production versions (which includes `Development` and testnets).
+    Values up to 0x0000FFFF are reserved for production versions (which includes `development` and testnets).
 
     | value      | version     |
     | ---------- | ----------- |
-    | 0x00000005 | Mainnet01   |
-    | 0x00000001 | Development |
-    | 0x00000007 | Testnet04   |
+    | 0x00000005 | mainnet01   |
+    | 0x00000001 | development |
+    | 0x00000007 | testnet04   |
 
     **Other**:
 
     * `nonce` is any sequence of 8 bytes that is only compared for equality.
     * `chain` is any sequence of 4 bytes that identifies a chain and can be compared for equality.
     * `payload` is any sequence of 32 bytes that is a cryptographic hash of the payload associated with the block and can be compared for equality.
-    * `flags` are eight bytes of value 0x0 that are reserved for future use. 
+    * `flags` are eight bytes of value 0x0 that are reserved for future use.
 
 - name: binaryWorkHeader
   x-displayName: Work Header Binary Encoding
@@ -320,7 +320,7 @@ tags:
     The first 36 bytes are informational. Only the bytes from position 36 to the end are subject of the POW hash computation.
 
     The final 8 bytes are the nonce. The creation time is encoded in bytes 44-52 (see above for details of the encoding). Miners are allowed,  but not required, to update the time to reflect the solve time for the block more closely.
-    A larger value for the creation time increases the accuracy of difficulty adjustment which is in the interest of miners -- the high difficulty guarantees that the outcome of the race of winning blocks is determined by actual hash power. However, blocks that are predated (i.e. have a a creation time that is in the future) are rejected during block header validation. Leaving the time unchanged is a valid choice.
+    A larger value for the creation time increases the accuracy of difficulty adjustment which is in the interest of miners -- the high difficulty guarantees that the outcome of the race of winning blocks is determined by actual hash power. However, blocks that are predated (i.e. have a creation time that is in the future) are rejected during block header validation. Leaving the time unchanged is a valid choice.
 
     Miners must not change or make any assumptions about the content of the "reserved" bytes.
 
@@ -379,7 +379,7 @@ tags:
 
     For peers that use domain names with valid CA signed SSL certificates the peer id is `null`.
 
-    For peers with self-signed certificates the peer id is the base64Url (without padding) encoded 
+    For peers with self-signed certificates the peer id is the base64Url (without padding) encoded
     SHA256 fingerprint of the certificate. For a chainweb-node `NODE` it can be computed as follows:
 
     ```sh
@@ -412,11 +412,11 @@ tags:
 - name: miningUpdateEventStream_model
   x-displayName: Mining Update Event Stream Model
   description: |
-    An server-sent event sources that notifies miners when new mining work
+    A server-sent event sources that notifies miners when new mining work
     becomes available. The stream is terminated by the server in regular
     intervals and it is up to the client to request a new stream.
 
-    Each events consists of a single line: `event:New Cut`.
+    Each event consists of a single line: `event:New Cut`.
     Events are separated by empty lines.
 
     <SchemaDefinition schemaRef="#/components/schemas/miningUpdateEventStream" showReadOnly={true} showWriteOnly={true} />
@@ -425,7 +425,7 @@ tags:
   x-displayName: Response Headers
   description: |
 
-    ## Server Timesstamp 
+    ## Server Timestamp
 
     `x-server-timestamp`: The time of the clock of the remote node
 
@@ -755,7 +755,7 @@ components:
                 description: Base64Url (without padding) encoded JSON text of a signed Pact transaction
               - type: string
                 contentEncoding: base64url
-                description: Base64Url (without padding) encoded JSON text of a a transaction output
+                description: Base64Url (without padding) encoded JSON text of a transaction output
         minerData:
           type: string
           contentEncoding: base64url
@@ -858,7 +858,7 @@ components:
           type: integer
           minimum: 10
           example: 20
-        nodeApiVersion: 
+        nodeApiVersion:
           type: string
           example: "0.0"
         nodeChains:
@@ -1304,8 +1304,8 @@ components:
               [9,[8,4,5]]
             ]
           ],
-          [ 
-            852054, 
+          [
+            852054,
             [
               [0,[15,10,5]],
               [1,[11,6,16]],
@@ -1693,7 +1693,7 @@ paths:
                 lower:
                   description: |
                     No block hashes are returned that are predecessors of any
-                    block with an hash from this array.
+                    block with a hash from this array.
                   type: array
                   items:
                     $ref: '#/components/schemas/blockHash'
@@ -2479,7 +2479,7 @@ paths:
               description: |
                 The original work received that was received from `/mining/work`
                 with updated nonce value such that it satisfies the
-                Proof-of-Work. The nonce are are last 8 bytes of the work header
+                Proof-of-Work. The nonce are last 8 bytes of the work header
                 bytes.
 
                 The PoW hash of a valid block is computed using `blake2s`. It
@@ -2586,7 +2586,7 @@ paths:
         port:
           default: 1848
     get:
-      tags: [ misc ] 
+      tags: [ misc ]
       summary: Health Check
       description: |
         Checks whether the chainweb-node is up and running and responding to API
@@ -2722,5 +2722,3 @@ paths:
 
                 event:BlockHeader
                 data:{"txCount":0,"powHash":"00000000000001c40ddfd6574f9962a443714f3817bbea773a55fec63c7d95c8","header":{"creationTime":1619037446256086,"parent":"usmNftUR_mHpXOm8gCvtbZ50_9VaefaIVvcMdrKwc5A","height":1554652,"hash":"SOfbK_kI_9BtgLemWmb3FWOgDCTxf1tPulKCq1ndmWA","chainId":18,"weight":"i7XsQnkhY9yLAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA","featureFlags":0,"epochStart":1619035885828397,"adjacents":{"19":"fQJ5JKQLdGEwZIoC5HrhJstk3Iibj_a2dfmJl9osG-o","17":"L-GeIWZE4fMCICSpPptsfYpsLj3oO5eCiyJimclYJiY","3":"V7m9ROQmJs2i1UI05t8J6rjkfg7m795esdsIjhqyqfc"},"payloadHash":"Ji7WisfH5IulPMcFglexGcVDnA59aS5k1YSE2_6L4t8","chainwebVersion":"mainnet01","target":"tvH4nBuGx3opw-50T8-i6ECi68IgpFLOjAcAAAAAAAA","nonce":"9499180874660840183"},"target":"000000000000078cce52a420c2eba240e8a2cf4f74eec3297ac7861b9cf8f1b6"}
-
-
