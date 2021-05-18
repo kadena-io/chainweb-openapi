@@ -188,11 +188,14 @@ tags:
 - name: pact
   x-displayName: Pact Endpoints
   description: |
-    [Pact](https://pactlang.org) endpoints use the route prefix `/chain/0/pact/` in addition to the base
-    URL.
+    The [Pact](https://pactlang.org) endpoints are documented in the [Pact API
+    Specification](./pact.html).
 
-    The Pact Endpoints are documented in
-    [this section of the Pact Language Reference](https://pact-language.readthedocs.io/en/stable/pact-reference.html#endpoints)
+    The Pact endpoints for chain `{chainId}` use the route prefix
+    `/chain/{chainId}/pact/` in addition to the base URL.
+
+    Futher details can also be found in [this section of the Pact Language
+    Reference](https://pact-language.readthedocs.io/en/stable/pact-reference.html#endpoints).
 
 - name: rosetta
   x-displayName: Rosetta Endpoints
@@ -705,7 +708,7 @@ components:
       title: Block Payload
       description: |
         Payload of a Block including the Merkle roots for transactions and
-        transaction outputs
+        transaction outputs.
       required: [ transactions, minerData, transactionsHash, outputsHash, payloadHash ]
       example:
         $ref: '#/components/examples/payloads/0'
