@@ -1,6 +1,6 @@
 # Kadena Chainweb Node API Specification
 
-A live preview is available [here](https://us-east1.api.chainweb.com/openapi).
+The latest version can be viewed [here](https://kadena-io.github.io/chainweb-openapi/).
 
 Build Docker image:
 
