@@ -27,21 +27,21 @@ info:
 # ############################################################################ #
 
 servers:
-- url: "https://api.chainweb.com/chainweb/mainnet01/{apiVersion}"
+- url: "https://api.chainweb.com/chainweb/{apiVersion}/mainnet01"
   description: |
     Chainweb mainnet service API. It also serves some endpoints of the P2P API.
   variables:
     apiVersion:
       default: "0.0"
 
-- url: "https://api.testnet.chainweb.com/chainweb/testnet04/{apiVersion}"
+- url: "https://api.testnet.chainweb.com/chainweb/{apiVersion}/testnet04"
   description: |
     Chainweb testnet service API. It also serves some endpoints of the P2P API.
   variables:
     apiVersion:
       default: "0.0"
 
-- url: "{schema}://{domain}:{port}/chainweb/{chainwebVersion}/{apiVersion}"
+- url: "{schema}://{domain}:{port}/chainweb/{apiVersion}/{chainwebVersion}"
   description: |
     An generic chainweb-node. It may serve only a subset of the endpoints.
   variables:
@@ -58,7 +58,7 @@ servers:
     apiVersion:
       default: "0.0"
 
-- url: "https://{location}.chainweb.com/chainweb/mainnet01/{apiVersion}"
+- url: "https://{location}.chainweb.com/chainweb/{apiVersion}/mainnet01"
   description: Chainweb mainnet P2P bootstrap node. Only P2P API endpoints are served.
   variables:
     location:
@@ -67,7 +67,7 @@ servers:
     apiVersion:
       default: "0.0"
 
-- url: "https://{location}.testnet.chainweb.com/chainweb/testnet04/{apiVersion}"
+- url: "https://{location}.testnet.chainweb.com/chainweb/{apiVersion}/testnet04"
   description: Chainweb testnet P2P bootstrap node. Only P2P API endpoints are served.
   variables:
     location:
