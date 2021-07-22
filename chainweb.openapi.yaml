@@ -182,6 +182,9 @@ tags:
     *   `application/octet-stream`, when supported by the endpoint, returns block
         headers as binary.
 
+- name: config
+  x-displayName: Config Endpoint
+
 - name: misc
   x-displayName: Miscellaneous Endpoints
 
@@ -460,6 +463,7 @@ x-tagGroups:
   - payload
   - mempool
   - peer
+  - config
 
 - name: chainweb_service
   x-displayName: Chainweb Service API
@@ -977,6 +981,15 @@ components:
             ]
         }
 
+    nodeConfig:
+      title: Node Configuration
+      description: |
+        The configuration of a node. Private information regarding certificates
+        and local networks are removed. The schema is subject to change and not
+        part of the stable API.
+      example:
+        $ref: '#/components/examples/nodeConfig'
+
   # ########################################################################## #
   responses:
 
@@ -1474,6 +1487,98 @@ components:
           "coinbase": "eyJnYXMiOjAsInJlc3VsdCI6eyJzdGF0dXMiOiJzdWNjZXNzIiwiZGF0YSI6IldyaXRlIHN1Y2NlZWRlZCJ9LCJyZXFLZXkiOiJJbkV4WDFkUk16SnliRmhCWW1KcU9WTnZkMXB2YmtabmNHRXdlRnBXUWtKdmNUWTJiRk0xY0RSQ1ZVVWkiLCJsb2dzIjoiSVc0N0QxTXFMVW9mRnNKbWpoWGdDZnhnb2Fzb0xTc05YZUFiOFRPb2NCNCIsIm1ldGFEYXRhIjpudWxsLCJjb250aW51YXRpb24iOm51bGwsInR4SWQiOjEyNzIzNzB9"
         }
       ]
+
+    nodeConfig:
+      {
+        "allowReadsInLocal": false,
+        "rosetta": true,
+        "throttling": {
+          "local": 1,
+          "mining": 2,
+          "global": 200,
+          "putPeer": 21
+        },
+        "serviceApi": {
+          "interface": "invalid",
+          "port": 0
+        },
+        "validateHashesOnReplay": false,
+        "chainwebVersion": "mainnet01",
+        "pactQueueSize": 2000,
+        "mining": {
+          "coordination": {
+            "enabled": false,
+            "updateStreamTimeout": 240,
+            "limit": 1200,
+            "updateStreamLimit": 2000,
+            "miners": []
+          },
+          "nodeMining": {
+            "miner": {
+              "account": "",
+              "predicate": "keys-all",
+              "public-keys": []
+            },
+            "enabled": false
+          }
+        },
+        "p2p": {
+          "peer": {
+            "certificateChainFile": null,
+            "key": null,
+            "interface": "*",
+            "certificateChain": null,
+            "hostaddress": {
+              "hostname": "34.70.108.163",
+              "port": 1789
+            },
+            "keyFile": null
+          },
+          "maxPeerCount": 100,
+          "private": false,
+          "ignoreBootstrapNodes": false,
+          "maxSessionCount": 8,
+          "bootstrapReachability": 0.5,
+          "sessionTimeout": 300,
+          "peers": [
+            {
+              "address": {
+                "hostname": "us-e1.chainweb.com",
+                "port": 443
+              },
+              "id": null
+            },
+            {
+              "address": {
+                "hostname": "us-w1.chainweb.com",
+                "port": 443
+              },
+              "id": null
+            }
+          ]
+        },
+        "transactionIndex": {
+          "enabled": true,
+          "configuration": {}
+        },
+        "gasLimitOfBlock": 150000,
+        "reorgLimit": 480,
+        "headerStream": true,
+        "mempoolP2p": {
+          "enabled": true,
+          "configuration": {
+            "pollInterval": 30,
+            "maxSessionCount": 6,
+            "sessionTimeout": 240
+          }
+        },
+        "reintroTxs": true,
+        "cuts": {
+          "pruneChainDatabase": "none",
+          "fetchTimeout": 3000000,
+          "initialCutHeightLimit": null
+        }
+      }
 
 # ############################################################################ #
 # Paths
@@ -2569,6 +2674,30 @@ paths:
 
   # ########################################################################## #
   # Misc
+
+  /config:
+    get:
+      tags: [ config ]
+      summary: Configuration of Chainweb Node
+      description: |
+        Returns the configuration of chainweb-node as a JSON structure.
+        Sensitive information is removed from the result. The JSON schema depends
+        on the chainweb node version and is not part of the stable chainweb-node
+        API.
+      responses:
+        "200":
+          headers:
+            x-peer-addr:
+              $ref: '#/components/headers/x-peer-addr'
+            x-server-timestamp:
+              $ref: '#/components/headers/x-server-timestamp'
+            x-chainweb-node-version:
+              $ref: '#/components/headers/x-chainweb-node-version'
+          content:
+            application/json:
+              summary: Configuration of the chainweb node
+              example:
+                $ref: "#/components/examples/nodeConfig"
 
   /health-check:
     servers:
