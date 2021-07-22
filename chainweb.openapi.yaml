@@ -1671,7 +1671,7 @@ paths:
                 $ref: '#/components/examples/blockHashPage'
 
   /chain/{chain}/hash/branch:
-    get:
+    post:
       summary: Get Block Hash Branches
       description: |
         A page of block hashes from branches of the block chain in
@@ -1848,7 +1848,7 @@ paths:
           description: The value of the `Accept` header is not supported.
 
   /chain/{chain}/header/branch:
-    get:
+    post:
       summary: Get Block Header Branches
       description: |
         A page of block headers from branches of the block chain in
