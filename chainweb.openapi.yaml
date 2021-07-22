@@ -1071,7 +1071,7 @@ components:
             summary: Singleton request body
             value: [ "qx346ILpakzgbNZbE8oHqF5TZQghp-HPcV-0Ptc_n2s" ]
 
-    blockHashArray:
+    payloadHashArray:
       description: An array of block payload hashes
       content:
         application/json:
