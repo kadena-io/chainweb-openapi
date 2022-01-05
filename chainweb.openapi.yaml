@@ -2796,9 +2796,6 @@ paths:
 
         The server may terminate this stream from time to time and it is up to
         the client to reinitiate the stream.
-
-        WARNING: This is **not** a stable API. It is disabled by default. This endpoint
-        is likely to be removed or replaced in the future.
       responses:
         "200":
           description: |
