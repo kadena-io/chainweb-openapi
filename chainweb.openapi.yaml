@@ -51,7 +51,7 @@ servers:
     domain:
       default: api.chainweb.com
     port:
-      default: 1848
+      default: "1848"
     chainwebVersion:
       default: mainnet01
       enum: [ "mainnet01", "testnet04" ]
@@ -542,9 +542,8 @@ components:
     hostAddress:
       title: Host Address
       description: Host address containing IPv4 and port
-      schema:
-        type: string
-        pattern: '^\d{4}.\d{4}.\d{4}.\d{4}:\d$'
+      type: string
+      pattern: '^\d{4}.\d{4}.\d{4}.\d{4}:\d$'
       example: '10.36.1.3:42988'
 
     # Signed Transaction Text
@@ -561,7 +560,7 @@ components:
       type: string
       description: Request key of a Pact transaction
       pattern: "^[a-zA-Z0-9_-]{43}$"
-      contentEncoding: base64url
+      # contentEncoding: base64url
       minLength: 43
       maxLength: 43
       example: y3aWL72-3wAy7vL9wcegGXnstH0lHi-q-cfxkhD5JCw
@@ -572,7 +571,7 @@ components:
       type: string
       description: Base64Url (without padding) encoded SHA256 hash
       pattern: "^[a-zA-Z0-9_-]{43}$"
-      contentEncoding: base64url
+      # contentEncoding: base64url
       minLength: 43
       maxLength: 43
       example: y3aWL72-3wAy7vL9wcegGXnstH0lHi-q-cfxkhD5JCw
@@ -616,7 +615,7 @@ components:
       pattern: "^[a-zA-Z0-9_-]{43}$"
       minLength: 43
       maxLength: 43
-      contentEncoding: base64url
+      # contentEncoding: base64url
       example: iil_D0t2MGqjAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
 
     # Target
@@ -629,7 +628,7 @@ components:
       pattern: "^[a-zA-Z0-9_-]{43}$"
       minLength: 43
       maxLength: 43
-      contentEncoding: base64url
+      # contentEncoding: base64url
       example: 2uMCnB4lWsErj9w1C1vAp1sHYd-sABf3kgcAAAAAAAA
 
     # Nonce
@@ -651,16 +650,17 @@ components:
       pattern: "[a-zA-Z0-9_-]{424}"
       minLength: 424
       maxLength: 424
-      contentEncoding: base64url
+      # contentEncoding: base64url
       example:
-        $ref: '#/components/examples/base64HeaderPage/items/0'
+        value:
+          $ref: '#/components/examples/base64HeaderPage/value/items/0'
 
     # Binary encoded Block Header
     binaryHeader:
       title: Binary Block Header
       description: Binary representation of a block header
       type: string
-      contentMediaType: application/octet-stream
+      # contentMediaType: application/octet-stream
       minLength: 318
       maxLength: 318
 
@@ -670,7 +670,8 @@ components:
       description: JSON Encoded Block Header
       required: [creationTime, parent, height, hash, chainId, weight, featureFlags, epochStart, adjacents, payloadHash, chainwebVersion, target, nonce]
       example:
-        $ref: '#/components/examples/blockHeaderPage/items/0'
+        value:
+          $ref: '#/components/examples/blockHeaderPage/value/items/0'
       properties:
         creationTime:
           $ref: '#/components/schemas/posixTimestampMicro'
@@ -715,18 +716,19 @@ components:
         transaction outputs.
       required: [ transactions, minerData, transactionsHash, outputsHash, payloadHash ]
       example:
-        $ref: '#/components/examples/payloads/0'
+        value:
+          $ref: '#/components/examples/payloads/value/1'
       properties:
         transactions:
           type: array
           description: Array of base64Url (without padding) encoded JSON texts of signed Pact transactions
           items:
             type: string
-            contentEncoding: base64url
+            # contentEncoding: base64url
             description: Base64Url (without padding) encoded JSON text of a signed Pact transaction
         minerData:
           type: string
-          contentEncoding: base64url
+          # contentEncoding: base64url
           description: Base64Url (without padding) encoded JSON text of the miner data of the payload
         transactionsHash:
           $ref: '#/components/schemas/sha256Hash'
@@ -743,7 +745,7 @@ components:
         transactions and transaction outputs
       required: [ transactions, minerData, transactionsHash, outputsHash, payloadHash, coinbase ]
       example:
-        $ref: '#/components/examples/payloadsWithOutputs/0'
+        $ref: '#/components/examples/emptyPayload'
       properties:
         transactions:
           type: array
@@ -755,17 +757,17 @@ components:
             minItems: 2
             maxItems: 2
             items:
-              contentEncoding: base64url
+              # contentEncoding: base64url
               oneOf:
               - type: string
-                contentEncoding: base64url
+                # contentEncoding: base64url
                 description: Base64Url (without padding) encoded JSON text of a signed Pact transaction
               - type: string
-                contentEncoding: base64url
+                # contentEncoding: base64url
                 description: Base64Url (without padding) encoded JSON text of a transaction output
         minerData:
           type: string
-          contentEncoding: base64url
+          # contentEncoding: base64url
           description: Base64Url (without padding) encoded JSON text of the miner data of the payload
         transactionsHash:
           $ref: '#/components/schemas/sha256Hash'
@@ -775,7 +777,7 @@ components:
           $ref: '#/components/schemas/payloadHash'
         coinbase:
           type: string
-          contentEncoding: base64url
+          # contentEncoding: base64url
           description: Base64Url (without padding) encoded JSON text of coinbase output of the block
 
     # Peer Info
@@ -784,7 +786,7 @@ components:
       description: Peer info object
       required: [id, address]
       example:
-        $ref: '#/components/examples/peers/items/0'
+        $ref: '#/components/examples/peers/value/items/0'
       properties:
         id:
           description: |
@@ -794,7 +796,7 @@ components:
 
           type: string
           pattern: "^[a-zA-Z0-9_-]{43}$"
-          contentEncoding: base64url
+          # contentEncoding: base64url
         address:
           required: [hostname, port]
           properties:
@@ -836,22 +838,13 @@ components:
           description: The sum of the weights of all blocks in the cut
           type: string
           pattern: "^[a-zA-Z0-9_-]{43}$"
-          contentEncoding: base64url
+          # contentEncoding: base64url
         hashes:
           required: ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10"]
           description: |
             An object that maps chain Ids to their respective block hash and
             block height
           additionalProperties: false
-          patternProperties:
-            "^1?[0-9]$":
-              required: [height, hash]
-              properties:
-                height:
-                  type: integer
-                  minimum: 0
-                hash:
-                  $ref: '#/components/schemas/blockHash'
 
     # Info
     nodeInfo:
@@ -870,9 +863,11 @@ components:
           example: "0.0"
         nodeChains:
           type: array
-          items: integer
+          items:
+            description: Chain identifiers
+            type: integer
           minimum: 0
-          example: 0
+          example: [0]
         nodeVersion:
           type: string
           enum: [ mainnet01, testnet04 ]
@@ -898,6 +893,17 @@ components:
                 type: array
                 minItems: 2
                 maxItems: 2
+                items:
+                  oneOf:
+                  - description: a chain identifier
+                    type: integer
+                    minimum: 0
+                  - description: an adjacency list for that chain
+                    type: array
+                    minItems: 0
+                    items:
+                      type: integer
+                      minimum: 0
 
     # Page (use with allOf to provide an schema for itmes)
     page:
@@ -958,14 +964,14 @@ components:
       properties:
         account:
           title: Account Name
-          summary: Miner account name. Usually this is the same as the public key.
+          description: Miner account name. Usually this is the same as the public key.
           type: string
           example: "f880a433d6e2a13a32b6169030f56245efdd8c1b8a5027e9ce98a88e886bef27"
         predicate:
           title: Key Predicate
           enum: [ "keys-all", "keys-any" ]
           example: "keys-all"
-          summary: key predicate. For a single key this is usually `keys-all`.
+          description: key predicate. For a single key this is usually `keys-all`.
         public-keys:
           type: array
           items:
@@ -991,7 +997,7 @@ components:
         $ref: '#/components/examples/nodeConfig'
 
   # ########################################################################## #
-  responses:
+  responses: {}
 
   # ########################################################################## #
   parameters:
@@ -1054,7 +1060,7 @@ components:
       schema:
         $ref: '#/components/schemas/payloadHash'
       example:
-        $ref: '#/components/examples/payloadHashes/0'
+        $ref: '#/components/examples/payloadHash'
 
     blockHash:
       name: blockHash
@@ -1064,7 +1070,7 @@ components:
       schema:
         $ref: '#/components/schemas/blockHash'
       example:
-        $ref: '#/components/examples/blockHashes/0'
+        $ref: '#/components/examples/blockHashes'
 
   # ########################################################################## #
   requestBodies:
@@ -1077,12 +1083,10 @@ components:
             items:
               $ref: "#/components/schemas/requestKey"
           examples:
-          - empty:
-            summary: Empty request body
-            value: []
-          - singleton:
-            summary: Singleton request body
-            value: [ "qx346ILpakzgbNZbE8oHqF5TZQghp-HPcV-0Ptc_n2s" ]
+            "empty request body":
+              value: []
+            "singleton request body":
+              value: [ "qx346ILpakzgbNZbE8oHqF5TZQghp-HPcV-0Ptc_n2s" ]
 
     payloadHashArray:
       description: An array of block payload hashes
@@ -1120,351 +1124,369 @@ components:
       example: '10.36.1.3:42988'
 
   # ########################################################################## #
-  securitySchemes:
+  securitySchemes: {}
 
   # ########################################################################## #
-  links:
+  links: {}
 
   # ########################################################################## #
-  callbacks:
+  callbacks: {}
 
   # ########################################################################## #
   examples:
 
-    blockHashes: [ k0an0qEORusqQg9ZjKrxa-0Bo0-hQVYLXqWi5LHxg3k ]
-    requestKeys: [ qx346ILpakzgbNZbE8oHqF5TZQghp-HPcV-0Ptc_n2s ]
+    blockHashes:
+      value: [ k0an0qEORusqQg9ZjKrxa-0Bo0-hQVYLXqWi5LHxg3k ]
+    requestKeys:
+      value: [ qx346ILpakzgbNZbE8oHqF5TZQghp-HPcV-0Ptc_n2s ]
 
-    signedTxText: >
-      {"hash":"y3aWL72-3wAy7vL9wcegGXnstH0lHi-q-cfxkhD5JCw","sigs":[{"sig":"8ddc06b37c496f2cadc4f7412405a80faf3ab07482ff5553b9b5fcc73d1b4121275ad5948d9b4078e553b71f8b42eaf6b24135bf2fb4d5840c16bcdde0e35e0f"}],"cmd":"{\"networkId\":\"mainnet01\",\"payload\":{\"exec\":{\"data\":{\"account-keyset\":{\"pred\":\"keys-all\",\"keys\":[\"acc28032a1bb725b7ba0a3593ab86f393894fa6659281f3dfdfee0afe48559a2\"]}},\"code\":\"(coin.transfer-create \\\"60241f51ea34e05c61fbea9d\\\" \\\"acc28032a1bb725b7ba0a3593ab86f393894fa6659281f3dfdfee0afe48559a2\\\" (read-keyset \\\"account-keyset\\\") 5007.0000)\"}},\"signers\":[{\"pubKey\":\"acc28032a1bb725b7ba0a3593ab86f393894fa6659281f3dfdfee0afe48559a2\",\"clist\":[{\"args\":[\"60241f51ea34e05c61fbea9d\",\"acc28032a1bb725b7ba0a3593ab86f393894fa6659281f3dfdfee0afe48559a2\",5007],\"name\":\"coin.TRANSFER\"},{\"args\":[],\"name\":\"coin.GAS\"}]}],\"meta\":{\"creationTime\":1618949714,\"ttl\":300,\"gasLimit\":600,\"chainId\":\"0\",\"gasPrice\":1.0e-7,\"sender\":\"acc28032a1bb725b7ba0a3593ab86f393894fa6659281f3dfdfee0afe48559a2\"},\"nonce\":\"\\\"2021-04-20T20:16:13.645Z\\\"\"}"}
+    signedTxText:
+      value: < {"hash":"y3aWL72-3wAy7vL9wcegGXnstH0lHi-q-cfxkhD5JCw","sigs":[{"sig":"8ddc06b37c496f2cadc4f7412405a80faf3ab07482ff5553b9b5fcc73d1b4121275ad5948d9b4078e553b71f8b42eaf6b24135bf2fb4d5840c16bcdde0e35e0f"}],"cmd":"{\"networkId\":\"mainnet01\",\"payload\":{\"exec\":{\"data\":{\"account-keyset\":{\"pred\":\"keys-all\",\"keys\":[\"acc28032a1bb725b7ba0a3593ab86f393894fa6659281f3dfdfee0afe48559a2\"]}},\"code\":\"(coin.transfer-create \\\"60241f51ea34e05c61fbea9d\\\" \\\"acc28032a1bb725b7ba0a3593ab86f393894fa6659281f3dfdfee0afe48559a2\\\" (read-keyset \\\"account-keyset\\\") 5007.0000)\"}},\"signers\":[{\"pubKey\":\"acc28032a1bb725b7ba0a3593ab86f393894fa6659281f3dfdfee0afe48559a2\",\"clist\":[{\"args\":[\"60241f51ea34e05c61fbea9d\",\"acc28032a1bb725b7ba0a3593ab86f393894fa6659281f3dfdfee0afe48559a2\",5007],\"name\":\"coin.TRANSFER\"},{\"args\":[],\"name\":\"coin.GAS\"}]}],\"meta\":{\"creationTime\":1618949714,\"ttl\":300,\"gasLimit\":600,\"chainId\":\"0\",\"gasPrice\":1.0e-7,\"sender\":\"acc28032a1bb725b7ba0a3593ab86f393894fa6659281f3dfdfee0afe48559a2\"},\"nonce\":\"\\\"2021-04-20T20:16:13.645Z\\\"\"}"}
 
     peers:
-      {
-        "next": "inclusive:3",
-        "items": [
-          {
-            "address": {
-              "hostname": "85.238.99.91",
-              "port": 30004
+      value:
+        {
+          "next": "inclusive:3",
+          "items": [
+            {
+              "address": {
+                "hostname": "85.238.99.91",
+                "port": 30004
+              },
+              "id": "PRLmVUcc9AH3fyfMYiWeC4nV2i1iHwc0-aM7iAO8h18"
             },
-            "id": "PRLmVUcc9AH3fyfMYiWeC4nV2i1iHwc0-aM7iAO8h18"
-          },
-          {
-            "address": {
-              "hostname": "us-w3.chainweb.com",
-              "port": 443
+            {
+              "address": {
+                "hostname": "us-w3.chainweb.com",
+                "port": 443
+              },
+              "id": null
             },
-            "id": null
-          },
-          {
-            "address": {
-              "hostname": "95.111.232.151",
-              "port": 30004
-            },
-            "id": "DguFKLFMxp12vfl1z3cQIJQlh8xOpeZuBkpJU9Y-VLo"
-          }
-        ],
-        "limit": 3
-      }
+            {
+              "address": {
+                "hostname": "95.111.232.151",
+                "port": 30004
+              },
+              "id": "DguFKLFMxp12vfl1z3cQIJQlh8xOpeZuBkpJU9Y-VLo"
+            }
+          ],
+          "limit": 3
+        }
 
     blockHashPage:
-      {
-        "next":"inclusive:o1S4NNFhKWg8T1HEkmDvsTH9Ut9l3_qHRpp00yRKZIk",
-        "items": [
-          "k0an0qEORusqQg9ZjKrxa-0Bo0-hQVYLXqWi5LHxg3k",
-          "vhVa6Deh10RXLRf3L-MSQTYqaL-_IY_mi-v58MjP9R8"
-        ],
-        "limit": 2
-      }
+      value:
+        {
+          "next":"inclusive:o1S4NNFhKWg8T1HEkmDvsTH9Ut9l3_qHRpp00yRKZIk",
+          "items": [
+            "k0an0qEORusqQg9ZjKrxa-0Bo0-hQVYLXqWi5LHxg3k",
+            "vhVa6Deh10RXLRf3L-MSQTYqaL-_IY_mi-v58MjP9R8"
+          ],
+          "limit": 2
+        }
 
     blockHashBranchPage:
-      {
-        "next":"inclusive:o1S4NNFhKWg8T1HEkmDvsTH9Ut9l3_qHRpp00yRKZIk",
-        "items": [
-          "QxGCAz5AY1Y41nh1yWtgqhKhZ9pPiPRagFdIKNqBH74",
-          "RClyuyZAacwvPpmLXKbTwrIRXWeUSjiNhJVP2esH8KM"
-        ],
-        "limit": 2
-      }
+      value:
+        {
+          "next":"inclusive:o1S4NNFhKWg8T1HEkmDvsTH9Ut9l3_qHRpp00yRKZIk",
+          "items": [
+            "QxGCAz5AY1Y41nh1yWtgqhKhZ9pPiPRagFdIKNqBH74",
+            "RClyuyZAacwvPpmLXKbTwrIRXWeUSjiNhJVP2esH8KM"
+          ],
+          "limit": 2
+        }
 
     base64HeaderBranchPage:
-      {
-        "next": "inclusive:u9Va7MRkDSOCm0yWpsC2w-4Z0oyEMv-BjofkHeIln6g",
-        "items": [
-          "AAAAAAAAAADX5AyHgcAFAEQpcrsmQGnMLz6Zi1ym08KyEV1nlEo4jYSVT9nrB_CjAwAFAAAA4BMlW68KbggSREOGDeH_oFFoUrpZ0zX0hM0TTdYrEAYKAAAARoxLy8ECsIIWebtW8zZsH1xfRGu4NOuSlgH4cAJLFcwPAAAAsHRn1laXo2DK2_85nOH7apQyC6Vr_gEctSElqdrCC03a4wKcHiVawSuP3DULW8CnWwdh36wAF_eSBwAAAAAAAA3PRGZVm8h4aY9cMgXAQf3QbYSNDUnFxjZnr8FwcknXAAAAAIopfw9LdjBqowAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA3LgXAAAAAAAFAAAAavQWLYHABQAOBvq0L1PrvEMRggM-QGNWONZ4dclrYKoSoWfaT4j0WoBXSCjagR--",
-          "AAAAAAAAAAC46tSFgcAFANxrUMH15DY-83DeKwlvDWsj4DY4Sphc5I82jCVSpSuCAwAFAAAAwdorGxUmrIkWyssvz3oHm3uqurfNd5ywiD6NHsZQEr8KAAAA750C1IKC9doZZKtqCckOF8JmIaHMhDfopNobHeJvmXMPAAAA4pgr0U_1kQxou-NIc42nICYqOgLM1Vawamal-HuhLvfa4wKcHiVawSuP3DULW8CnWwdh36wAF_eSBwAAAAAAANdqRLGXd6y6OGwShrFC7vBrIWf_TLCfaYpLnu-q7A7AAAAAAI5IadugqQ5qowAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA27gXAAAAAAAFAAAAavQWLYHABQBFGVPEmhORyEQpcrsmQGnMLz6Zi1ym08KyEV1nlEo4jYSVT9nrB_Cj",
-        ],
-        "limit": 2
-      }
+      value:
+        {
+          "next": "inclusive:u9Va7MRkDSOCm0yWpsC2w-4Z0oyEMv-BjofkHeIln6g",
+          "items": [
+            "AAAAAAAAAADX5AyHgcAFAEQpcrsmQGnMLz6Zi1ym08KyEV1nlEo4jYSVT9nrB_CjAwAFAAAA4BMlW68KbggSREOGDeH_oFFoUrpZ0zX0hM0TTdYrEAYKAAAARoxLy8ECsIIWebtW8zZsH1xfRGu4NOuSlgH4cAJLFcwPAAAAsHRn1laXo2DK2_85nOH7apQyC6Vr_gEctSElqdrCC03a4wKcHiVawSuP3DULW8CnWwdh36wAF_eSBwAAAAAAAA3PRGZVm8h4aY9cMgXAQf3QbYSNDUnFxjZnr8FwcknXAAAAAIopfw9LdjBqowAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA3LgXAAAAAAAFAAAAavQWLYHABQAOBvq0L1PrvEMRggM-QGNWONZ4dclrYKoSoWfaT4j0WoBXSCjagR--",
+            "AAAAAAAAAAC46tSFgcAFANxrUMH15DY-83DeKwlvDWsj4DY4Sphc5I82jCVSpSuCAwAFAAAAwdorGxUmrIkWyssvz3oHm3uqurfNd5ywiD6NHsZQEr8KAAAA750C1IKC9doZZKtqCckOF8JmIaHMhDfopNobHeJvmXMPAAAA4pgr0U_1kQxou-NIc42nICYqOgLM1Vawamal-HuhLvfa4wKcHiVawSuP3DULW8CnWwdh36wAF_eSBwAAAAAAANdqRLGXd6y6OGwShrFC7vBrIWf_TLCfaYpLnu-q7A7AAAAAAI5IadugqQ5qowAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA27gXAAAAAAAFAAAAavQWLYHABQBFGVPEmhORyEQpcrsmQGnMLz6Zi1ym08KyEV1nlEo4jYSVT9nrB_Cj",
+          ],
+          "limit": 2
+        }
 
     blockHeaderBranchPage:
-      {
-        "next": "inclusive:3GtQwfXkNj7zcN4rCW8NayPgNjhKmFzkjzaMJVKlK4I",
-        "items": [
-          {
-            "creationTime": 1619037432636631,
-            "parent": "RClyuyZAacwvPpmLXKbTwrIRXWeUSjiNhJVP2esH8KM",
-            "height": 1554652,
-            "hash": "QxGCAz5AY1Y41nh1yWtgqhKhZ9pPiPRagFdIKNqBH74",
-            "chainId": 0,
-            "weight": "iil_D0t2MGqjAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
-            "featureFlags": 0,
-            "epochStart": 1619035923346538,
-            "adjacents": {
-              "15": "sHRn1laXo2DK2_85nOH7apQyC6Vr_gEctSElqdrCC00",
-              "5": "4BMlW68KbggSREOGDeH_oFFoUrpZ0zX0hM0TTdYrEAY",
-              "10": "RoxLy8ECsIIWebtW8zZsH1xfRGu4NOuSlgH4cAJLFcw"
+      value:
+        {
+          "next": "inclusive:3GtQwfXkNj7zcN4rCW8NayPgNjhKmFzkjzaMJVKlK4I",
+          "items": [
+            {
+              "creationTime": 1619037432636631,
+              "parent": "RClyuyZAacwvPpmLXKbTwrIRXWeUSjiNhJVP2esH8KM",
+              "height": 1554652,
+              "hash": "QxGCAz5AY1Y41nh1yWtgqhKhZ9pPiPRagFdIKNqBH74",
+              "chainId": 0,
+              "weight": "iil_D0t2MGqjAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+              "featureFlags": 0,
+              "epochStart": 1619035923346538,
+              "adjacents": {
+                "15": "sHRn1laXo2DK2_85nOH7apQyC6Vr_gEctSElqdrCC00",
+                "5": "4BMlW68KbggSREOGDeH_oFFoUrpZ0zX0hM0TTdYrEAY",
+                "10": "RoxLy8ECsIIWebtW8zZsH1xfRGu4NOuSlgH4cAJLFcw"
+              },
+              "payloadHash": "Dc9EZlWbyHhpj1wyBcBB_dBthI0NScXGNmevwXBySdc",
+              "chainwebVersion": "mainnet01",
+              "target": "2uMCnB4lWsErj9w1C1vAp1sHYd-sABf3kgcAAAAAAAA",
+              "nonce": "13613065763022308878"
             },
-            "payloadHash": "Dc9EZlWbyHhpj1wyBcBB_dBthI0NScXGNmevwXBySdc",
-            "chainwebVersion": "mainnet01",
-            "target": "2uMCnB4lWsErj9w1C1vAp1sHYd-sABf3kgcAAAAAAAA",
-            "nonce": "13613065763022308878"
-          },
-          {
-            "creationTime": 1619037412190904,
-            "parent": "3GtQwfXkNj7zcN4rCW8NayPgNjhKmFzkjzaMJVKlK4I",
-            "height": 1554651,
-            "hash": "RClyuyZAacwvPpmLXKbTwrIRXWeUSjiNhJVP2esH8KM",
-            "chainId": 0,
-            "weight": "jkhp26CpDmqjAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
-            "featureFlags": 0,
-            "epochStart": 1619035923346538,
-            "adjacents": {
-              "15": "4pgr0U_1kQxou-NIc42nICYqOgLM1Vawamal-HuhLvc",
-              "5": "wdorGxUmrIkWyssvz3oHm3uqurfNd5ywiD6NHsZQEr8",
-              "10": "750C1IKC9doZZKtqCckOF8JmIaHMhDfopNobHeJvmXM"
-            },
-            "payloadHash": "12pEsZd3rLo4bBKGsULu8GshZ_9MsJ9pikue76rsDsA",
-            "chainwebVersion": "mainnet01",
-            "target": "2uMCnB4lWsErj9w1C1vAp1sHYd-sABf3kgcAAAAAAAA",
-            "nonce": "14452354234648303941"
-          }
-        ],
-        "limit": 2
-      }
+            {
+              "creationTime": 1619037412190904,
+              "parent": "3GtQwfXkNj7zcN4rCW8NayPgNjhKmFzkjzaMJVKlK4I",
+              "height": 1554651,
+              "hash": "RClyuyZAacwvPpmLXKbTwrIRXWeUSjiNhJVP2esH8KM",
+              "chainId": 0,
+              "weight": "jkhp26CpDmqjAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+              "featureFlags": 0,
+              "epochStart": 1619035923346538,
+              "adjacents": {
+                "15": "4pgr0U_1kQxou-NIc42nICYqOgLM1Vawamal-HuhLvc",
+                "5": "wdorGxUmrIkWyssvz3oHm3uqurfNd5ywiD6NHsZQEr8",
+                "10": "750C1IKC9doZZKtqCckOF8JmIaHMhDfopNobHeJvmXM"
+              },
+              "payloadHash": "12pEsZd3rLo4bBKGsULu8GshZ_9MsJ9pikue76rsDsA",
+              "chainwebVersion": "mainnet01",
+              "target": "2uMCnB4lWsErj9w1C1vAp1sHYd-sABf3kgcAAAAAAAA",
+              "nonce": "14452354234648303941"
+            }
+          ],
+          "limit": 2
+        }
 
     blockHeaderPage:
-      {
-        "next": "inclusive:o1S4NNFhKWg8T1HEkmDvsTH9Ut9l3_qHRpp00yRKZIk",
-        "items": [
-          {
-            "creationTime": 1602382624629329,
-            "parent": "HaXABq1PKSKlhncJk0_Mt75_lL7NS3wI627QfXZ_85k",
-            "height": 1000000,
-            "hash": "k0an0qEORusqQg9ZjKrxa-0Bo0-hQVYLXqWi5LHxg3k",
-            "chainId": 0,
-            "weight": "NQn4BGftuWAeAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
-            "featureFlags": 0,
-            "epochStart": 1602381443331834,
-            "adjacents": {
-              "15": "MItdqgHZxf7j6l0oE8X-G9-VyMbnQmZrtSniuRe_EJ8",
-              "5": "Mpic85rur2MYf3zli8s8bHxTFjriFoMPTr6ZPs8sjxM",
-              "10": "VBKuhU_hQmuvKlx88A5o-FH0rzNo59NsdxmOGNBQ-yc"
+      value:
+        {
+          "next": "inclusive:o1S4NNFhKWg8T1HEkmDvsTH9Ut9l3_qHRpp00yRKZIk",
+          "items": [
+            {
+              "creationTime": 1602382624629329,
+              "parent": "HaXABq1PKSKlhncJk0_Mt75_lL7NS3wI627QfXZ_85k",
+              "height": 1000000,
+              "hash": "k0an0qEORusqQg9ZjKrxa-0Bo0-hQVYLXqWi5LHxg3k",
+              "chainId": 0,
+              "weight": "NQn4BGftuWAeAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+              "featureFlags": 0,
+              "epochStart": 1602381443331834,
+              "adjacents": {
+                "15": "MItdqgHZxf7j6l0oE8X-G9-VyMbnQmZrtSniuRe_EJ8",
+                "5": "Mpic85rur2MYf3zli8s8bHxTFjriFoMPTr6ZPs8sjxM",
+                "10": "VBKuhU_hQmuvKlx88A5o-FH0rzNo59NsdxmOGNBQ-yc"
+              },
+              "payloadHash": "GpaWbHkHrCjRhY8hKE0qZ1WsBBaG3Y_zkFLV2sYumQA",
+              "chainwebVersion": "mainnet01",
+              "target": "QrcsbEm-3WjyCGAGlzIEhLEN3ZMWORoyYy8AAAAAAAA",
+              "nonce": "13095611958898437"
             },
-            "payloadHash": "GpaWbHkHrCjRhY8hKE0qZ1WsBBaG3Y_zkFLV2sYumQA",
-            "chainwebVersion": "mainnet01",
-            "target": "QrcsbEm-3WjyCGAGlzIEhLEN3ZMWORoyYy8AAAAAAAA",
-            "nonce": "13095611958898437"
-          },
-          {
-            "creationTime": 1602382678045236,
-            "parent": "k0an0qEORusqQg9ZjKrxa-0Bo0-hQVYLXqWi5LHxg3k",
-            "height": 1000001,
-            "hash": "vhVa6Deh10RXLRf3L-MSQTYqaL-_IY_mi-v58MjP9R8",
-            "chainId": 0,
-            "weight": "bOkHN2JUv2AeAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
-            "featureFlags": 0,
-            "epochStart": 1602381443331834,
-            "adjacents": {
-              "15": "Kv0sz_rTANjoiJwMrdZFCJNFwdH0U_M5ouwMr3BXBfo",
-              "5": "ALcxv1ZiwwQ_QX9eOBZMbzIop6n7XtveS1FqOFwyvGM",
-              "10": "C76ElC60qXSJQCHePpzzJxsCYvvrqvmkoHPyZnex-4Q"
-            },
-            "payloadHash": "smUiDW9jfD_0vrdt4-fXKT_lqC90RsgEGObdp3FznFY",
-            "chainwebVersion": "mainnet01",
-            "target": "QrcsbEm-3WjyCGAGlzIEhLEN3ZMWORoyYy8AAAAAAAA",
-            "nonce": "110239794631051275"
-          }
-        ],
-        "limit": 2
-      }
+            {
+              "creationTime": 1602382678045236,
+              "parent": "k0an0qEORusqQg9ZjKrxa-0Bo0-hQVYLXqWi5LHxg3k",
+              "height": 1000001,
+              "hash": "vhVa6Deh10RXLRf3L-MSQTYqaL-_IY_mi-v58MjP9R8",
+              "chainId": 0,
+              "weight": "bOkHN2JUv2AeAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+              "featureFlags": 0,
+              "epochStart": 1602381443331834,
+              "adjacents": {
+                "15": "Kv0sz_rTANjoiJwMrdZFCJNFwdH0U_M5ouwMr3BXBfo",
+                "5": "ALcxv1ZiwwQ_QX9eOBZMbzIop6n7XtveS1FqOFwyvGM",
+                "10": "C76ElC60qXSJQCHePpzzJxsCYvvrqvmkoHPyZnex-4Q"
+              },
+              "payloadHash": "smUiDW9jfD_0vrdt4-fXKT_lqC90RsgEGObdp3FznFY",
+              "chainwebVersion": "mainnet01",
+              "target": "QrcsbEm-3WjyCGAGlzIEhLEN3ZMWORoyYy8AAAAAAAA",
+              "nonce": "110239794631051275"
+            }
+          ],
+          "limit": 2
+        }
 
     base64HeaderPage:
-      {
-        "next": "inclusive:o1S4NNFhKWg8T1HEkmDvsTH9Ut9l3_qHRpp00yRKZIk",
-        "items": [
-          "AAAAAAAAAABRoiLHW7EFAB2lwAatTykipYZ3CZNPzLe-f5S-zUt8COtu0H12f_OZAwAFAAAAMpic85rur2MYf3zli8s8bHxTFjriFoMPTr6ZPs8sjxMKAAAAVBKuhU_hQmuvKlx88A5o-FH0rzNo59NsdxmOGNBQ-ycPAAAAMItdqgHZxf7j6l0oE8X-G9-VyMbnQmZrtSniuRe_EJ9CtyxsSb7daPIIYAaXMgSEsQ3dkxY5GjJjLwAAAAAAABqWlmx5B6wo0YWPIShNKmdVrAQWht2P85BS1drGLpkAAAAAADUJ-ARn7blgHgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQEIPAAAAAAAFAAAA-na5gFuxBQAFL-3CY4YuAJNGp9KhDkbrKkIPWYyq8WvtAaNPoUFWC16louSx8YN5",
-          "AAAAAAAAAAA0slHKW7EFAJNGp9KhDkbrKkIPWYyq8WvtAaNPoUFWC16louSx8YN5AwAFAAAAALcxv1ZiwwQ_QX9eOBZMbzIop6n7XtveS1FqOFwyvGMKAAAAC76ElC60qXSJQCHePpzzJxsCYvvrqvmkoHPyZnex-4QPAAAAKv0sz_rTANjoiJwMrdZFCJNFwdH0U_M5ouwMr3BXBfpCtyxsSb7daPIIYAaXMgSEsQ3dkxY5GjJjLwAAAAAAALJlIg1vY3w_9L63bePn1yk_5agvdEbIBBjm3adxc5xWAAAAAGzpBzdiVL9gHgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQUIPAAAAAAAFAAAA-na5gFuxBQALiBhXgqaHAb4VWug3oddEVy0X9y_jEkE2Kmi_vyGP5ovr-fDIz_Uf"
-        ],
-        "limit": 2
-      }
+      value:
+        {
+          "next": "inclusive:o1S4NNFhKWg8T1HEkmDvsTH9Ut9l3_qHRpp00yRKZIk",
+          "items": [
+            "AAAAAAAAAABRoiLHW7EFAB2lwAatTykipYZ3CZNPzLe-f5S-zUt8COtu0H12f_OZAwAFAAAAMpic85rur2MYf3zli8s8bHxTFjriFoMPTr6ZPs8sjxMKAAAAVBKuhU_hQmuvKlx88A5o-FH0rzNo59NsdxmOGNBQ-ycPAAAAMItdqgHZxf7j6l0oE8X-G9-VyMbnQmZrtSniuRe_EJ9CtyxsSb7daPIIYAaXMgSEsQ3dkxY5GjJjLwAAAAAAABqWlmx5B6wo0YWPIShNKmdVrAQWht2P85BS1drGLpkAAAAAADUJ-ARn7blgHgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQEIPAAAAAAAFAAAA-na5gFuxBQAFL-3CY4YuAJNGp9KhDkbrKkIPWYyq8WvtAaNPoUFWC16louSx8YN5",
+            "AAAAAAAAAAA0slHKW7EFAJNGp9KhDkbrKkIPWYyq8WvtAaNPoUFWC16louSx8YN5AwAFAAAAALcxv1ZiwwQ_QX9eOBZMbzIop6n7XtveS1FqOFwyvGMKAAAAC76ElC60qXSJQCHePpzzJxsCYvvrqvmkoHPyZnex-4QPAAAAKv0sz_rTANjoiJwMrdZFCJNFwdH0U_M5ouwMr3BXBfpCtyxsSb7daPIIYAaXMgSEsQ3dkxY5GjJjLwAAAAAAALJlIg1vY3w_9L63bePn1yk_5agvdEbIBBjm3adxc5xWAAAAAGzpBzdiVL9gHgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQUIPAAAAAAAFAAAA-na5gFuxBQALiBhXgqaHAb4VWug3oddEVy0X9y_jEkE2Kmi_vyGP5ovr-fDIz_Uf"
+          ],
+          "limit": 2
+        }
 
     info:
-      {
-        "nodeNumberOfChains": 20,
-        "nodeApiVersion": "0.0",
-        "nodeChains": ["12","13","14","15","8","9","10","11","4","5","6","7","0","16","1","17","2","18","3","19"],
-        "nodeVersion": "mainnet01",
-        "nodeGraphHistory": [
-          [
-            0,
+      value:
+        {
+          "nodeNumberOfChains": 20,
+          "nodeApiVersion": "0.0",
+          "nodeChains": ["12","13","14","15","8","9","10","11","4","5","6","7","0","16","1","17","2","18","3","19"],
+          "nodeVersion": "mainnet01",
+          "nodeGraphHistory": [
             [
-              [0,[5,2,3]],
-              [1,[4,6,3]],
-              [2,[4,7,0]],
-              [3,[8,0,1]],
-              [4,[9,1,2]],
-              [5,[9,6,0]],
-              [6,[5,7,1]],
-              [7,[8,6,2]],
-              [8,[9,7,3]],
-              [9,[8,4,5]]
-            ]
-          ],
-          [
-            852054,
+              0,
+              [
+                [0,[5,2,3]],
+                [1,[4,6,3]],
+                [2,[4,7,0]],
+                [3,[8,0,1]],
+                [4,[9,1,2]],
+                [5,[9,6,0]],
+                [6,[5,7,1]],
+                [7,[8,6,2]],
+                [8,[9,7,3]],
+                [9,[8,4,5]]
+              ]
+            ],
             [
-              [0,[15,10,5]],
-              [1,[11,6,16]],
-              [2,[12,7,17]],
-              [3,[13,8,18]],
-              [4,[14,9,19]],
-              [5,[8,7,0]],
-              [6,[8,9,1]],
-              [7,[9,5,2]],
-              [8,[5,6,3]],
-              [9,[4,6,7]],
-              [10,[11,0,19]],
-              [11,[12,10,1]],
-              [12,[13,11,2]],
-              [13,[12,14,3]],
-              [14,[13,15,4]],
-              [15,[14,0,16]],
-              [16,[15,1,17]],
-              [17,[16,2,18]],
-              [18,[17,3,19]],
-              [19,[10,4,18]]
+              852054,
+              [
+                [0,[15,10,5]],
+                [1,[11,6,16]],
+                [2,[12,7,17]],
+                [3,[13,8,18]],
+                [4,[14,9,19]],
+                [5,[8,7,0]],
+                [6,[8,9,1]],
+                [7,[9,5,2]],
+                [8,[5,6,3]],
+                [9,[4,6,7]],
+                [10,[11,0,19]],
+                [11,[12,10,1]],
+                [12,[13,11,2]],
+                [13,[12,14,3]],
+                [14,[13,15,4]],
+                [15,[14,0,16]],
+                [16,[15,1,17]],
+                [17,[16,2,18]],
+                [18,[17,3,19]],
+                [19,[10,4,18]]
+              ]
             ]
           ]
-        ]
-      }
+        }
 
     cut:
-      {
-        "origin": null,
-        "height": 30798466,
-        "weight": "b0wYplmNiTBXCwAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
-        "hashes": {
-          "15": {
-            "height": 1539923,
-            "hash": "jsc9rugvcHXDiBAuoO9_j8R_b_jchtJJ8b5596i8wVg"
+      value:
+        {
+          "origin": null,
+          "height": 30798466,
+          "weight": "b0wYplmNiTBXCwAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+          "hashes": {
+            "15": {
+              "height": 1539923,
+              "hash": "jsc9rugvcHXDiBAuoO9_j8R_b_jchtJJ8b5596i8wVg"
+            },
+            "7": {
+              "height": 1539923,
+              "hash": "j_hJ9iiH_ATyeQeeRN3auGXjbBWiFgnTU0dYPIz8cKM"
+            },
+            "13": {
+              "height": 1539923,
+              "hash": "S-4TqMgWGlK1k33XRlU9w0Lfwr0RvkO5Jn78Au1OglM"
+            },
+            "14": {
+              "height": 1539923,
+              "hash": "xSuULf--S4TrgYNz82deaGhnPLWrg3pXkynGeUPUGwA"
+            },
+            "0": {
+              "height": 1539923,
+              "hash": "qEaSmWt_tDcJC9AGbgWY9x12LW5VED7hGgfyz9x_S3w"
+            },
+            "19": {
+              "height": 1539923,
+              "hash": "1PrRg20XyQ_2cfgGOgNK9K-cqIJ1vO8-A-RJlfN5m00"
+            },
+            "12": {
+              "height": 1539923,
+              "hash": "-j1qcAS9Fs-WQmc3WEhzZ96VojxnlIA2TFpfyIv31Zs"
+            },
+            "17": {
+              "height": 1539924,
+              "hash": "xzVBXaQxzlUfUrakDgppUubQBRXGh-Uy0HBdMNwCq_Y"
+            },
+            "1": {
+              "height": 1539923,
+              "hash": "TJuC6nfhamfD517gspAZmqD9umR71nAgttDOi1JbBHw"
+            },
+            "18": {
+              "height": 1539924,
+              "hash": "4VOHPAqwioySYRycdl5MxfscQHwtlwwCAt7AySYQT98"
+            },
+            "4": {
+              "height": 1539923,
+              "hash": "0g0rOoSznVW2BJDBmK0Lbxz22F-sxTZUNIrUs_Q8Ye4"
+            },
+            "16": {
+              "height": 1539923,
+              "hash": "qs1aEY8kSxfUBb_JRVswv5dYINRXBjGJteC-6RC1hjc"
+            },
+            "2": {
+              "height": 1539924,
+              "hash": "4ineCWfnO1rneWuBMLPzqTl2HF_sZpypT_3TEzf3VLc"
+            },
+            "5": {
+              "height": 1539923,
+              "hash": "5y_TL-clnF_wELMBKyJk0Sz8RVShw_bGQETJdrMkADA"
+            },
+            "8": {
+              "height": 1539924,
+              "hash": "s7c3B55VbDsS6EJ-nc9S5k2kNbPOBGI8xxF3vUg4d4Q"
+            },
+            "11": {
+              "height": 1539924,
+              "hash": "TIhegjZ0GEC73T4m0BVuFtfLNGuS56IUWEuf93AJ5UU"
+            },
+            "3": {
+              "height": 1539924,
+              "hash": "ZEOMXB2ByqzL2HfYVKIZKAnoe4wIeJ2SaltnXDir59k"
+            },
+            "6": {
+              "height": 1539923,
+              "hash": "YkQKv6P4_C4jRM3RqKK9FWPxIneeLzlkKQS9ATAQYRk"
+            },
+            "9": {
+              "height": 1539922,
+              "hash": "bowQf63xSY9owHKhK1yGee2Q0Fn8yL_oCLaEUn-CGoA"
+            },
+            "10": {
+              "height": 1539924,
+              "hash": "uP-pHW4QKrV9fN1mlDGwKuaiIDlJW7xYSj1nW53EHM4"
+            }
           },
-          "7": {
-            "height": 1539923,
-            "hash": "j_hJ9iiH_ATyeQeeRN3auGXjbBWiFgnTU0dYPIz8cKM"
-          },
-          "13": {
-            "height": 1539923,
-            "hash": "S-4TqMgWGlK1k33XRlU9w0Lfwr0RvkO5Jn78Au1OglM"
-          },
-          "14": {
-            "height": 1539923,
-            "hash": "xSuULf--S4TrgYNz82deaGhnPLWrg3pXkynGeUPUGwA"
-          },
-          "0": {
-            "height": 1539923,
-            "hash": "qEaSmWt_tDcJC9AGbgWY9x12LW5VED7hGgfyz9x_S3w"
-          },
-          "19": {
-            "height": 1539923,
-            "hash": "1PrRg20XyQ_2cfgGOgNK9K-cqIJ1vO8-A-RJlfN5m00"
-          },
-          "12": {
-            "height": 1539923,
-            "hash": "-j1qcAS9Fs-WQmc3WEhzZ96VojxnlIA2TFpfyIv31Zs"
-          },
-          "17": {
-            "height": 1539924,
-            "hash": "xzVBXaQxzlUfUrakDgppUubQBRXGh-Uy0HBdMNwCq_Y"
-          },
-          "1": {
-            "height": 1539923,
-            "hash": "TJuC6nfhamfD517gspAZmqD9umR71nAgttDOi1JbBHw"
-          },
-          "18": {
-            "height": 1539924,
-            "hash": "4VOHPAqwioySYRycdl5MxfscQHwtlwwCAt7AySYQT98"
-          },
-          "4": {
-            "height": 1539923,
-            "hash": "0g0rOoSznVW2BJDBmK0Lbxz22F-sxTZUNIrUs_Q8Ye4"
-          },
-          "16": {
-            "height": 1539923,
-            "hash": "qs1aEY8kSxfUBb_JRVswv5dYINRXBjGJteC-6RC1hjc"
-          },
-          "2": {
-            "height": 1539924,
-            "hash": "4ineCWfnO1rneWuBMLPzqTl2HF_sZpypT_3TEzf3VLc"
-          },
-          "5": {
-            "height": 1539923,
-            "hash": "5y_TL-clnF_wELMBKyJk0Sz8RVShw_bGQETJdrMkADA"
-          },
-          "8": {
-            "height": 1539924,
-            "hash": "s7c3B55VbDsS6EJ-nc9S5k2kNbPOBGI8xxF3vUg4d4Q"
-          },
-          "11": {
-            "height": 1539924,
-            "hash": "TIhegjZ0GEC73T4m0BVuFtfLNGuS56IUWEuf93AJ5UU"
-          },
-          "3": {
-            "height": 1539924,
-            "hash": "ZEOMXB2ByqzL2HfYVKIZKAnoe4wIeJ2SaltnXDir59k"
-          },
-          "6": {
-            "height": 1539923,
-            "hash": "YkQKv6P4_C4jRM3RqKK9FWPxIneeLzlkKQS9ATAQYRk"
-          },
-          "9": {
-            "height": 1539922,
-            "hash": "bowQf63xSY9owHKhK1yGee2Q0Fn8yL_oCLaEUn-CGoA"
-          },
-          "10": {
-            "height": 1539924,
-            "hash": "uP-pHW4QKrV9fN1mlDGwKuaiIDlJW7xYSj1nW53EHM4"
-          }
-        },
-        "id": "BBz7KeurYTeQ0hMGbwUbQC84cRbVcacoDQTye-3qkXI",
-        "instance": "mainnet01"
-      }
+          "id": "BBz7KeurYTeQ0hMGbwUbQC84cRbVcacoDQTye-3qkXI",
+          "instance": "mainnet01"
+        }
+
+    payloadHash:
+      value: "GpaWbHkHrCjRhY8hKE0qZ1WsBBaG3Y_zkFLV2sYumQA"
 
     payloadHashes:
-    - GpaWbHkHrCjRhY8hKE0qZ1WsBBaG3Y_zkFLV2sYumQA
-    - jcQOWz7K9qKnkUv4Z883D2ZjkFFGgccoSroWGaoogLM
+      value:
+        [
+          "GpaWbHkHrCjRhY8hKE0qZ1WsBBaG3Y_zkFLV2sYumQA",
+          "jcQOWz7K9qKnkUv4Z883D2ZjkFFGgccoSroWGaoogLM"
+        ]
 
     payloads:
-      [
-        {
-          "transactions":[],
-          "minerData":"eyJhY2NvdW50IjoiYTFiMzE0MGNiN2NjODk1YzBlMDkxNzAyZWQwNTU3OWZiZTA1YzZlNjc0NWY4MmNlNjAzNzQ2YjQwMGM4MTU0OCIsInByZWRpY2F0ZSI6ImtleXMtYWxsIiwicHVibGljLWtleXMiOlsiYTFiMzE0MGNiN2NjODk1YzBlMDkxNzAyZWQwNTU3OWZiZTA1YzZlNjc0NWY4MmNlNjAzNzQ2YjQwMGM4MTU0OCJdfQ",
-          "transactionsHash":"nT0j4xw2woMkdXXaopdurXIn24OG-jNMqQzUGfxV_MA",
-          "outputsHash":"4pXRrZ2K0_V0iGAxQCKrKdLjQTBZHBOQS7P-47kdnhY",
-          "payloadHash":"GpaWbHkHrCjRhY8hKE0qZ1WsBBaG3Y_zkFLV2sYumQA"
-        },
-        {
-          "transactions": [
-            "eyJoYXNoIjoiMi16Q3dmRFZZR010WHljd2pTLXRlNzh5U3l3T3JXcjNSdUhiQlJnNDdhRSIsInNpZ3MiOlt7InNpZyI6ImZiMTVkNzkyYTNkNDM1MDI5ODJmOGQ1MGUyMzA1NTI5OWEwZjdhMWRmMWE4YjUyMmE5NTMxNWUyZDljY2MyNmE1MzI4M2I5YTNhNDM5ZWE0ZGY4MGM1ZTIwMjg4NDhjNjFhMWY0MGM5OWIyOTYzOWM0NGNkYTgwMzBmYmViYjBjIn1dLCJjbWQiOiJ7XCJuZXR3b3JrSWRcIjpcIm1haW5uZXQwMVwiLFwicGF5bG9hZFwiOntcImV4ZWNcIjp7XCJkYXRhXCI6e30sXCJjb2RlXCI6XCIoY29pbi50cmFuc2ZlciBcXFwiZTc1NzU4ZGQyYTFjNTk2NDRjMjJlMDQyYzZlYzA3NTI2ZWE0ZTU3MTU0ZjlkYmMyMDc2ZThhODRhYzE5NGYzMlxcXCIgXFxcIjQ2NzdhMDllYTE2MDJlNGUwOWZlMDFlYjExOTZjZjQ3YzBmNDRhYTQ0YWFjOTAzZDVmNjFiZTdkYTM0MjUxMjhcXFwiIDMuNzc2KVwifX0sXCJzaWduZXJzXCI6W3tcInB1YktleVwiOlwiZTc1NzU4ZGQyYTFjNTk2NDRjMjJlMDQyYzZlYzA3NTI2ZWE0ZTU3MTU0ZjlkYmMyMDc2ZThhODRhYzE5NGYzMlwiLFwiY2xpc3RcIjpbe1wiYXJnc1wiOltdLFwibmFtZVwiOlwiY29pbi5HQVNcIn0se1wiYXJnc1wiOltcImU3NTc1OGRkMmExYzU5NjQ0YzIyZTA0MmM2ZWMwNzUyNmVhNGU1NzE1NGY5ZGJjMjA3NmU4YTg0YWMxOTRmMzJcIixcIjQ2NzdhMDllYTE2MDJlNGUwOWZlMDFlYjExOTZjZjQ3YzBmNDRhYTQ0YWFjOTAzZDVmNjFiZTdkYTM0MjUxMjhcIiwzLjc3Nl0sXCJuYW1lXCI6XCJjb2luLlRSQU5TRkVSXCJ9XX1dLFwibWV0YVwiOntcImNyZWF0aW9uVGltZVwiOjE2MDIzODI4MTQsXCJ0dGxcIjoyODgwMCxcImdhc0xpbWl0XCI6NjAwLFwiY2hhaW5JZFwiOlwiMFwiLFwiZ2FzUHJpY2VcIjoxLjBlLTUsXCJzZW5kZXJcIjpcImU3NTc1OGRkMmExYzU5NjQ0YzIyZTA0MmM2ZWMwNzUyNmVhNGU1NzE1NGY5ZGJjMjA3NmU4YTg0YWMxOTRmMzJcIn0sXCJub25jZVwiOlwiXFxcIjIwMjAtMTAtMTFUMDI6MjE6MTQuMTk0WlxcXCJcIn0ifQ"
-          ],
-          "minerData": "eyJhY2NvdW50IjoiYTFiMzE0MGNiN2NjODk1YzBlMDkxNzAyZWQwNTU3OWZiZTA1YzZlNjc0NWY4MmNlNjAzNzQ2YjQwMGM4MTU0OCIsInByZWRpY2F0ZSI6ImtleXMtYWxsIiwicHVibGljLWtleXMiOlsiYTFiMzE0MGNiN2NjODk1YzBlMDkxNzAyZWQwNTU3OWZiZTA1YzZlNjc0NWY4MmNlNjAzNzQ2YjQwMGM4MTU0OCJdfQ",
-          "transactionsHash": "lWcQRlj3MV7FSem8P4G-8GMRf1-O7zQqi_AwmWnk-N0",
-          "outputsHash": "9BzXZbhjSSevp4K0bYFqi1GdLjeX_DB-4u1T5Em8abs",
-          "payloadHash": "jcQOWz7K9qKnkUv4Z883D2ZjkFFGgccoSroWGaoogLM"
-        }
-      ]
+      value:
+        [
+          {
+            "transactions":[],
+            "minerData":"eyJhY2NvdW50IjoiYTFiMzE0MGNiN2NjODk1YzBlMDkxNzAyZWQwNTU3OWZiZTA1YzZlNjc0NWY4MmNlNjAzNzQ2YjQwMGM4MTU0OCIsInByZWRpY2F0ZSI6ImtleXMtYWxsIiwicHVibGljLWtleXMiOlsiYTFiMzE0MGNiN2NjODk1YzBlMDkxNzAyZWQwNTU3OWZiZTA1YzZlNjc0NWY4MmNlNjAzNzQ2YjQwMGM4MTU0OCJdfQ",
+            "transactionsHash":"nT0j4xw2woMkdXXaopdurXIn24OG-jNMqQzUGfxV_MA",
+            "outputsHash":"4pXRrZ2K0_V0iGAxQCKrKdLjQTBZHBOQS7P-47kdnhY",
+            "payloadHash":"GpaWbHkHrCjRhY8hKE0qZ1WsBBaG3Y_zkFLV2sYumQA"
+          },
+          {
+            "transactions": [
+              "eyJoYXNoIjoiMi16Q3dmRFZZR010WHljd2pTLXRlNzh5U3l3T3JXcjNSdUhiQlJnNDdhRSIsInNpZ3MiOlt7InNpZyI6ImZiMTVkNzkyYTNkNDM1MDI5ODJmOGQ1MGUyMzA1NTI5OWEwZjdhMWRmMWE4YjUyMmE5NTMxNWUyZDljY2MyNmE1MzI4M2I5YTNhNDM5ZWE0ZGY4MGM1ZTIwMjg4NDhjNjFhMWY0MGM5OWIyOTYzOWM0NGNkYTgwMzBmYmViYjBjIn1dLCJjbWQiOiJ7XCJuZXR3b3JrSWRcIjpcIm1haW5uZXQwMVwiLFwicGF5bG9hZFwiOntcImV4ZWNcIjp7XCJkYXRhXCI6e30sXCJjb2RlXCI6XCIoY29pbi50cmFuc2ZlciBcXFwiZTc1NzU4ZGQyYTFjNTk2NDRjMjJlMDQyYzZlYzA3NTI2ZWE0ZTU3MTU0ZjlkYmMyMDc2ZThhODRhYzE5NGYzMlxcXCIgXFxcIjQ2NzdhMDllYTE2MDJlNGUwOWZlMDFlYjExOTZjZjQ3YzBmNDRhYTQ0YWFjOTAzZDVmNjFiZTdkYTM0MjUxMjhcXFwiIDMuNzc2KVwifX0sXCJzaWduZXJzXCI6W3tcInB1YktleVwiOlwiZTc1NzU4ZGQyYTFjNTk2NDRjMjJlMDQyYzZlYzA3NTI2ZWE0ZTU3MTU0ZjlkYmMyMDc2ZThhODRhYzE5NGYzMlwiLFwiY2xpc3RcIjpbe1wiYXJnc1wiOltdLFwibmFtZVwiOlwiY29pbi5HQVNcIn0se1wiYXJnc1wiOltcImU3NTc1OGRkMmExYzU5NjQ0YzIyZTA0MmM2ZWMwNzUyNmVhNGU1NzE1NGY5ZGJjMjA3NmU4YTg0YWMxOTRmMzJcIixcIjQ2NzdhMDllYTE2MDJlNGUwOWZlMDFlYjExOTZjZjQ3YzBmNDRhYTQ0YWFjOTAzZDVmNjFiZTdkYTM0MjUxMjhcIiwzLjc3Nl0sXCJuYW1lXCI6XCJjb2luLlRSQU5TRkVSXCJ9XX1dLFwibWV0YVwiOntcImNyZWF0aW9uVGltZVwiOjE2MDIzODI4MTQsXCJ0dGxcIjoyODgwMCxcImdhc0xpbWl0XCI6NjAwLFwiY2hhaW5JZFwiOlwiMFwiLFwiZ2FzUHJpY2VcIjoxLjBlLTUsXCJzZW5kZXJcIjpcImU3NTc1OGRkMmExYzU5NjQ0YzIyZTA0MmM2ZWMwNzUyNmVhNGU1NzE1NGY5ZGJjMjA3NmU4YTg0YWMxOTRmMzJcIn0sXCJub25jZVwiOlwiXFxcIjIwMjAtMTAtMTFUMDI6MjE6MTQuMTk0WlxcXCJcIn0ifQ"
+            ],
+            "minerData": "eyJhY2NvdW50IjoiYTFiMzE0MGNiN2NjODk1YzBlMDkxNzAyZWQwNTU3OWZiZTA1YzZlNjc0NWY4MmNlNjAzNzQ2YjQwMGM4MTU0OCIsInByZWRpY2F0ZSI6ImtleXMtYWxsIiwicHVibGljLWtleXMiOlsiYTFiMzE0MGNiN2NjODk1YzBlMDkxNzAyZWQwNTU3OWZiZTA1YzZlNjc0NWY4MmNlNjAzNzQ2YjQwMGM4MTU0OCJdfQ",
+            "transactionsHash": "lWcQRlj3MV7FSem8P4G-8GMRf1-O7zQqi_AwmWnk-N0",
+            "outputsHash": "9BzXZbhjSSevp4K0bYFqi1GdLjeX_DB-4u1T5Em8abs",
+            "payloadHash": "jcQOWz7K9qKnkUv4Z883D2ZjkFFGgccoSroWGaoogLM"
+          }
+        ]
 
-    payloadsWithOutputs:
-      [
+    emptyPayload:
+      value:
         {
           "transactions": [],
           "minerData": "eyJhY2NvdW50IjoiYTFiMzE0MGNiN2NjODk1YzBlMDkxNzAyZWQwNTU3OWZiZTA1YzZlNjc0NWY4MmNlNjAzNzQ2YjQwMGM4MTU0OCIsInByZWRpY2F0ZSI6ImtleXMtYWxsIiwicHVibGljLWtleXMiOlsiYTFiMzE0MGNiN2NjODk1YzBlMDkxNzAyZWQwNTU3OWZiZTA1YzZlNjc0NWY4MmNlNjAzNzQ2YjQwMGM4MTU0OCJdfQ",
@@ -1472,7 +1494,10 @@ components:
           "outputsHash": "4pXRrZ2K0_V0iGAxQCKrKdLjQTBZHBOQS7P-47kdnhY",
           "payloadHash": "GpaWbHkHrCjRhY8hKE0qZ1WsBBaG3Y_zkFLV2sYumQA",
           "coinbase": "eyJnYXMiOjAsInJlc3VsdCI6eyJzdGF0dXMiOiJzdWNjZXNzIiwiZGF0YSI6IldyaXRlIHN1Y2NlZWRlZCJ9LCJyZXFLZXkiOiJJa2hoV0VGQ2NURlFTMU5MYkdodVkwcHJNRjlOZERjMVgyeE1OMDVUTTNkSk5qSTNVV1pZV2w4NE5Xc2kiLCJsb2dzIjoiZ3Noak1kWFJrVGxKYmIxalZkQWJ6SVVDcGpQb1JBQ2pEbExzRzBXNkJEMCIsIm1ldGFEYXRhIjpudWxsLCJjb250aW51YXRpb24iOm51bGwsInR4SWQiOjEyNzIzNTB9"
-        },
+        }
+
+    payloadWithTransactions:
+      value:
         {
           "transactions": [
             [
@@ -1486,99 +1511,106 @@ components:
           "payloadHash": "jcQOWz7K9qKnkUv4Z883D2ZjkFFGgccoSroWGaoogLM",
           "coinbase": "eyJnYXMiOjAsInJlc3VsdCI6eyJzdGF0dXMiOiJzdWNjZXNzIiwiZGF0YSI6IldyaXRlIHN1Y2NlZWRlZCJ9LCJyZXFLZXkiOiJJbkV4WDFkUk16SnliRmhCWW1KcU9WTnZkMXB2YmtabmNHRXdlRnBXUWtKdmNUWTJiRk0xY0RSQ1ZVVWkiLCJsb2dzIjoiSVc0N0QxTXFMVW9mRnNKbWpoWGdDZnhnb2Fzb0xTc05YZUFiOFRPb2NCNCIsIm1ldGFEYXRhIjpudWxsLCJjb250aW51YXRpb24iOm51bGwsInR4SWQiOjEyNzIzNzB9"
         }
-      ]
+
+    payloadsWithOutputs:
+      value:
+        [
+          $ref: '#/components/examples/emptyPayload',
+          $ref: '#/components/examples/payloadWithTransactions'
+        ]
 
     nodeConfig:
-      {
-        "allowReadsInLocal": false,
-        "rosetta": true,
-        "throttling": {
-          "local": 1,
-          "mining": 2,
-          "global": 200,
-          "putPeer": 21
-        },
-        "serviceApi": {
-          "interface": "invalid",
-          "port": 0
-        },
-        "validateHashesOnReplay": false,
-        "chainwebVersion": "mainnet01",
-        "pactQueueSize": 2000,
-        "mining": {
-          "coordination": {
-            "enabled": false,
-            "updateStreamTimeout": 240,
-            "limit": 1200,
-            "updateStreamLimit": 2000,
-            "miners": []
+      value:
+        {
+          "allowReadsInLocal": false,
+          "rosetta": true,
+          "throttling": {
+            "local": 1,
+            "mining": 2,
+            "global": 200,
+            "putPeer": 21
           },
-          "nodeMining": {
-            "miner": {
-              "account": "",
-              "predicate": "keys-all",
-              "public-keys": []
-            },
-            "enabled": false
-          }
-        },
-        "p2p": {
-          "peer": {
-            "certificateChainFile": null,
-            "key": null,
-            "interface": "*",
-            "certificateChain": null,
-            "hostaddress": {
-              "hostname": "34.70.108.163",
-              "port": 1789
-            },
-            "keyFile": null
+          "serviceApi": {
+            "interface": "invalid",
+            "port": 0
           },
-          "maxPeerCount": 100,
-          "private": false,
-          "ignoreBootstrapNodes": false,
-          "maxSessionCount": 8,
-          "bootstrapReachability": 0.5,
-          "sessionTimeout": 300,
-          "peers": [
-            {
-              "address": {
-                "hostname": "us-e1.chainweb.com",
-                "port": 443
-              },
-              "id": null
+          "validateHashesOnReplay": false,
+          "chainwebVersion": "mainnet01",
+          "pactQueueSize": 2000,
+          "mining": {
+            "coordination": {
+              "enabled": false,
+              "updateStreamTimeout": 240,
+              "limit": 1200,
+              "updateStreamLimit": 2000,
+              "miners": []
             },
-            {
-              "address": {
-                "hostname": "us-w1.chainweb.com",
-                "port": 443
+            "nodeMining": {
+              "miner": {
+                "account": "",
+                "predicate": "keys-all",
+                "public-keys": []
               },
-              "id": null
+              "enabled": false
             }
-          ]
-        },
-        "transactionIndex": {
-          "enabled": true,
-          "configuration": {}
-        },
-        "gasLimitOfBlock": 150000,
-        "reorgLimit": 480,
-        "headerStream": true,
-        "mempoolP2p": {
-          "enabled": true,
-          "configuration": {
-            "pollInterval": 30,
-            "maxSessionCount": 6,
-            "sessionTimeout": 240
+          },
+          "p2p": {
+            "peer": {
+              "certificateChainFile": null,
+              "key": null,
+              "interface": "*",
+              "certificateChain": null,
+              "hostaddress": {
+                "hostname": "34.70.108.163",
+                "port": 1789
+              },
+              "keyFile": null
+            },
+            "maxPeerCount": 100,
+            "private": false,
+            "ignoreBootstrapNodes": false,
+            "maxSessionCount": 8,
+            "bootstrapReachability": 0.5,
+            "sessionTimeout": 300,
+            "peers": [
+              {
+                "address": {
+                  "hostname": "us-e1.chainweb.com",
+                  "port": 443
+                },
+                "id": null
+              },
+              {
+                "address": {
+                  "hostname": "us-w1.chainweb.com",
+                  "port": 443
+                },
+                "id": null
+              }
+            ]
+          },
+          "transactionIndex": {
+            "enabled": true,
+            "configuration": {}
+          },
+          "gasLimitOfBlock": 150000,
+          "reorgLimit": 480,
+          "headerStream": true,
+          "mempoolP2p": {
+            "enabled": true,
+            "configuration": {
+              "pollInterval": 30,
+              "maxSessionCount": 6,
+              "sessionTimeout": 240
+            }
+          },
+          "reintroTxs": true,
+          "cuts": {
+            "pruneChainDatabase": "none",
+            "fetchTimeout": 3000000,
+            "initialCutHeightLimit": null
           }
-        },
-        "reintroTxs": true,
-        "cuts": {
-          "pruneChainDatabase": "none",
-          "fetchTimeout": 3000000,
-          "initialCutHeightLimit": null
         }
-      }
 
 # ############################################################################ #
 # Paths
@@ -1590,7 +1622,6 @@ paths:
   # Cut
 
   /cut:
-    tags: [ p2p_api, cut ]
     summary: Cut Endpoints
     description: |
       A cut represents a distributed state of a chainweb. It references one
@@ -1601,7 +1632,7 @@ paths:
       one of them is an adjacent parent (is a direct dependency) of the other or
       if the blocks do not depend at all on each other.
     get:
-      description: Query the current cut from a Chainweb node.
+      summary: Query the current cut from a Chainweb node.
       tags: [ "cut" ]
       parameters:
       - name: maxheight
@@ -1613,7 +1644,7 @@ paths:
           minimum: 0
       responses:
         "200":
-          description:
+          description: "The current cut"
           headers:
             x-peer-addr:
               $ref: '#/components/headers/x-peer-addr'
@@ -1628,6 +1659,7 @@ paths:
               example:
                 $ref: '#/components/examples/cut'
     put:
+      summary: "Publish a cut to a Chainweb node."
       description: |
         Publish a cut to a Chainweb node.
 
@@ -1647,7 +1679,6 @@ paths:
             example:
               $ref: '#/components/examples/cut'
         required: true
-      headers:
       responses:
         "204":
           description: The cut was added to the cut processing pipeline of the remote node
@@ -1668,6 +1699,7 @@ paths:
       - $ref: '#/components/parameters/next'
       responses:
         "200":
+          description: Peers from the peer database of the remote node
           headers:
             x-peer-addr:
               $ref: '#/components/headers/x-peer-addr'
@@ -1677,7 +1709,6 @@ paths:
               $ref: '#/components/headers/x-chainweb-node-version'
           content:
             application/json:
-              summary: Peers from the peer database of the remote node
               schema:
                 allOf:
                 - properties:
@@ -1706,7 +1737,7 @@ paths:
                     nullable: true
       responses:
         "204":
-          summary: The peer got added to the peer database of the remote node.
+          description: The peer got added to the peer database of the remote node.
           headers:
             x-peer-addr:
               $ref: '#/components/headers/x-peer-addr'
@@ -1715,7 +1746,6 @@ paths:
             x-chainweb-node-version:
               $ref: '#/components/headers/x-chainweb-node-version'
         "400":
-          summary: Bad request
           headers:
             x-peer-addr:
               $ref: '#/components/headers/x-peer-addr'
@@ -1732,7 +1762,6 @@ paths:
             check fails an error is returned.
           content:
             text/plain:
-              summary: The reason of the failure.
               example:
                 'Invalid hostaddress: IsNotReachable (PeerInfo {_peerId = Nothing, _peerAddr = HostAddress {_hostAddressHost = us-w1.chainweb.com, _hostAddressPort = 444}}) "\"HttpExceptionRequest Request {\\n  host                 = \\\"us-w1.chainweb.com\\\"\\n  port                 = 444\\n  secure               = True\\n  requestHeaders       = [(\\\"X-Chainweb-Node-Version\\\",\\\"2.6\\\")]\\n  path                 = \\\"/chainweb/0.0/mainnet01/cut/peer\\\"\\n  queryString          = \\\"\\\"\\n  method               = \\\"GET\\\"\\n  proxy                = Nothing\\n  rawBody              = False\\n  redirectCount        = 10\\n  responseTimeout      = ResponseTimeoutMicro 2000000\\n  requestVersion       = HTTP/1.1\\n}\\n ConnectionTimeout\""'
 
@@ -1742,10 +1771,6 @@ paths:
   /chain/{chain}/hash:
     get:
       summary: Get Block Hashes
-      description: |
-        A page of a collection of block hashes in **ascending** order
-        that satisfies query parameters. Any block hash from the chain
-        database is returned. **This includes hashes of orphaned blocks.**
       tags: [ blockhash ]
       parameters:
       - $ref: '#/components/parameters/chain'
@@ -1755,6 +1780,10 @@ paths:
       - $ref: '#/components/parameters/maxheight'
       responses:
         "200":
+          description: |
+            A page of a collection of block hashes in **ascending** order
+            that satisfies query parameters. Any block hash from the chain
+            database is returned. **This includes hashes of orphaned blocks.**
           headers:
             x-peer-addr:
               $ref: '#/components/headers/x-peer-addr'
@@ -1828,6 +1857,7 @@ paths:
                 summary: Another example that returns an empty page
       responses:
         "200":
+          description: "The requested block hashes"
           headers:
             x-peer-addr:
               $ref: '#/components/headers/x-peer-addr'
@@ -1846,7 +1876,7 @@ paths:
                         $ref: '#/components/schemas/blockHash'
                 - $ref: '#/components/schemas/page'
               example:
-                $ref: '#/components/examples/hashesBranchPage'
+                $ref: '#/components/examples/blockHashBranchPage'
 
   # ########################################################################## #
   # Block Headers
@@ -1867,6 +1897,7 @@ paths:
       - $ref: '#/components/parameters/maxheight'
       responses:
         "200":
+          description: "The requested block headers"
           headers:
             x-peer-addr:
               $ref: '#/components/headers/x-peer-addr'
@@ -1918,6 +1949,7 @@ paths:
       - $ref: '#/components/parameters/blockHash'
       responses:
         "200":
+          description: "The block header with that hash was found"
           headers:
             x-peer-addr:
               $ref: '#/components/headers/x-peer-addr'
@@ -1930,13 +1962,15 @@ paths:
               schema:
                 $ref: '#/components/schemas/base64Header'
               example:
-                $ref: '#/components/examples/base64HeaderPage/items/0'
+                value:
+                  $ref: '#/components/examples/base64HeaderPage/value/items/0'
 
             application/json;blockheader-encoding=object:
               schema:
                 $ref: '#/components/schemas/blockHeader'
               example:
-                $ref: '#/components/examples/blockHeaderPage/items/0'
+                value:
+                  $ref: '#/components/examples/blockHeaderPage/value/items/0'
 
             application/octet-stream:
               schema:
@@ -2005,6 +2039,7 @@ paths:
                 summary: Another example that returns an empty page
       responses:
         "200":
+          description: "The block headers were found"
           headers:
             x-peer-addr:
               $ref: '#/components/headers/x-peer-addr'
@@ -2058,6 +2093,7 @@ paths:
       - $ref: '#/components/parameters/payloadHash'
       responses:
         "200":
+          description: The payload data of for the given block payload hash
           headers:
             x-peer-addr:
               $ref: '#/components/headers/x-peer-addr'
@@ -2067,19 +2103,19 @@ paths:
               $ref: '#/components/headers/x-chainweb-node-version'
           content:
             application/json:
-              description: The payload data of for the given block payload hash
               schema:
                 $ref: '#/components/schemas/payload'
               examples:
                 payload:
                   summary: Payload with one transaction
                   value:
-                    $ref: '#/components/examples/payloads/1'
+                    $ref: '#/components/examples/payloads/value/1'
                 emptyPayload:
                   summary: Empty block payload
                   value:
-                    $ref: '#/components/examples/payloads/0'
+                    $ref: '#/components/examples/payloads/value/0'
         "404":
+          description: "The block payload with that hash was not found"
           headers:
             x-peer-addr:
               $ref: '#/components/headers/x-peer-addr'
@@ -2108,6 +2144,9 @@ paths:
         $ref: '#/components/requestBodies/payloadHashArray'
       responses:
         "200":
+          description: |
+            Array of the some or all of the requested block payloads. The
+            payloads maybe returned in any order.
           headers:
             x-peer-addr:
               $ref: '#/components/headers/x-peer-addr'
@@ -2117,9 +2156,6 @@ paths:
               $ref: '#/components/headers/x-chainweb-node-version'
           content:
             application/json:
-              description: |
-                Array of the some or all of the requested block payloads. The
-                payloads maybe returned in any order.
               schema:
                 type: array
                 items:
@@ -2145,6 +2181,7 @@ paths:
       - $ref: '#/components/parameters/payloadHash'
       responses:
         "200":
+          description: The payload with outputs for the given block payload hash
           headers:
             x-peer-addr:
               $ref: '#/components/headers/x-peer-addr'
@@ -2154,19 +2191,19 @@ paths:
               $ref: '#/components/headers/x-chainweb-node-version'
           content:
             application/json:
-              description: The payload with outputs for the given block payload hash
               schema:
                 $ref: '#/components/schemas/payloadWithOutputs'
               examples:
                 payload:
                   summary: Payload with outputs with one transaction
                   value:
-                    $ref: '#/components/examples/payloadsWithOutputs/1'
+                    $ref: '#/components/examples/payloadWithTransactions'
                 emptyPayload:
                   summary: Empty block payload
                   value:
-                    $ref: '#/components/examples/payloadsWithOutputs/0'
+                    $ref: '#/components/examples/emptyPayload'
         "404":
+          description: "A block payload with that hash was not found"
           headers:
             x-peer-addr:
               $ref: '#/components/headers/x-peer-addr'
@@ -2195,6 +2232,9 @@ paths:
         $ref: '#/components/requestBodies/payloadHashArray'
       responses:
         "200":
+          description: |
+            Array of the some or all of the requested block payloads with
+            outputs. Result items maybe returned in any order.
           headers:
             x-peer-addr:
               $ref: '#/components/headers/x-peer-addr'
@@ -2204,9 +2244,6 @@ paths:
               $ref: '#/components/headers/x-chainweb-node-version'
           content:
             application/json:
-              description: |
-                Array of the some or all of the requested block payloads with
-                outputs. Result items maybe returned in any order.
               schema:
                 type: array
                 items:
@@ -2242,6 +2279,7 @@ paths:
           format: int64
       responses:
         "200":
+          description: recent state of pending transactions in the mempool
           headers:
             x-peer-addr:
               $ref: '#/components/headers/x-peer-addr'
@@ -2251,14 +2289,13 @@ paths:
               $ref: '#/components/headers/x-chainweb-node-version'
           content:
             application/json:
-              summary: recent state of pending transactions in the mempool
               schema:
                 properties:
                   hashes:
                     type: array
                   highwaterMark:
                     type: array
-                    summary: "two-element array: `[nonce (integer), since (int64)]`"
+                    description: "two-element array: `[nonce (integer), since (int64)]`"
                     items:
                       type: integer
               examples:
@@ -2279,6 +2316,11 @@ paths:
         $ref: '#/components/requestBodies/requestKeyArray'
       responses:
         "200":
+          description: |
+            Array of boolean values that indicate whether the respective
+            transaction is in the mempool.
+
+            The array has the same size as the request body.
           headers:
             x-peer-addr:
               $ref: '#/components/headers/x-peer-addr'
@@ -2288,11 +2330,6 @@ paths:
               $ref: '#/components/headers/x-chainweb-node-version'
           content:
             application/json:
-              description: |
-                Array of boolean values that indicate whether the respective
-                transaction is in the mempool.
-
-                The array has the same size as the request body.
               schema:
                 type: array
                 items:
@@ -2318,6 +2355,8 @@ paths:
         $ref: '#/components/requestBodies/requestKeyArray'
       responses:
         "200":
+          description: |
+            Array of lookup results for the respective transactions
           headers:
             x-peer-addr:
               $ref: '#/components/headers/x-peer-addr'
@@ -2327,8 +2366,6 @@ paths:
               $ref: '#/components/headers/x-chainweb-node-version'
           content:
             application/json:
-              summary: |
-                Array of lookup results for the respective transactions
               schema:
                 type: array
                 items:
@@ -2378,6 +2415,7 @@ paths:
                 value: []
       responses:
         "200":
+          description: "Transactions were inserted"
           headers:
             x-peer-addr:
               $ref: '#/components/headers/x-peer-addr'
@@ -2396,6 +2434,7 @@ paths:
       - $ref: '#/components/parameters/next'
       responses:
         "200":
+          description: "Peer information"
           headers:
             x-peer-addr:
               $ref: '#/components/headers/x-peer-addr'
@@ -2460,7 +2499,6 @@ paths:
               $ref: '#/components/headers/x-chainweb-node-version'
           content:
             text/plain:
-              summary: The reason of the failure.
               example:
                 'Invalid hostaddress: IsNotReachable (PeerInfo {_peerId = Nothing, _peerAddr = HostAddress {_hostAddressHost = us-w1.chainweb.com, _hostAddressPort = 444}}) "\"HttpExceptionRequest Request {\\n  host                 = \\\"us-w1.chainweb.com\\\"\\n  port                 = 444\\n  secure               = True\\n  requestHeaders       = [(\\\"X-Chainweb-Node-Version\\\",\\\"2.6\\\")]\\n  path                 = \\\"/chainweb/0.0/mainnet01/cut/peer\\\"\\n  queryString          = \\\"\\\"\\n  method               = \\\"GET\\\"\\n  proxy                = Nothing\\n  rawBody              = False\\n  redirectCount        = 10\\n  responseTimeout      = ResponseTimeoutMicro 2000000\\n  requestVersion       = HTTP/1.1\\n}\\n ConnectionTimeout\""'
 
@@ -2480,7 +2518,7 @@ paths:
         domain:
           default: example.com
         port:
-          default: 1848
+          default: "1848"
         chainwebVersion:
           default: mainnet01
           enum: [ "mainnet01", "testnet04" ]
@@ -2506,6 +2544,7 @@ paths:
               $ref: '#/components/schemas/minerInfo'
       responses:
         "200":
+          description: "A mining work item"
           headers:
             x-peer-addr:
               $ref: '#/components/headers/x-peer-addr'
@@ -2528,7 +2567,7 @@ paths:
                       The chain selection made by the Node. This is
                       informational. Generally, miner should not care about the
                       chain.
-                    type: byte
+                    type: integer
                   targetBytes:
                     title: 32 PoW Target Bytes
                     description: |
@@ -2538,7 +2577,7 @@ paths:
                       For arithmetic comparisons the hash-target and the PoW
                       hash are interpreted as unsigned 256 bit integral number
                       in little endian encoding.
-                    type: byte
+                    type: integer
                   headerBytes:
                     title: 286 Work Header Bytes
                     description: |
@@ -2553,7 +2592,7 @@ paths:
                       required to update the creation time. The value must be
                       strictly larger than the creation time of the parent block
                       and must not be in the future.
-                    type: byte
+                    type: integer
 
   /chainweb/0.0/mainnet01/mining/solved:
     servers:
@@ -2568,7 +2607,7 @@ paths:
         domain:
           default: example.com
         port:
-          default: 1848
+          default: "1848"
         chainwebVersion:
           default: mainnet01
           enum: [ "mainnet01", "testnet04" ]
@@ -2600,9 +2639,10 @@ paths:
                 Miners are free but not required to also update the creation time.
                 The value must be strictly larger than the creation time of the
                 parent block and must not be in the future.
-              type: byte
+              type: integer
       responses:
         "204":
+          description: "Solved mining work is valid"
           headers:
             x-peer-addr:
               $ref: '#/components/headers/x-peer-addr'
@@ -2624,7 +2664,7 @@ paths:
         domain:
           default: example.com
         port:
-          default: 1848
+          default: "1848"
         chainwebVersion:
           default: mainnet01
           enum: [ "mainnet01", "testnet04" ]
@@ -2645,10 +2685,10 @@ paths:
           tells the Node to only inform the Miner of a new Cut when the
           specific chain in question has updated.
         content:
-          applicaiton/octet-stream:
+          application/octet-stream:
             schema:
               title: 4 Chain ID bytes
-              type: byte
+              type: integer
       responses:
         "200":
           description: |
@@ -2686,6 +2726,7 @@ paths:
         API.
       responses:
         "200":
+          description: Configuration of the chainweb node
           headers:
             x-peer-addr:
               $ref: '#/components/headers/x-peer-addr'
@@ -2695,17 +2736,16 @@ paths:
               $ref: '#/components/headers/x-chainweb-node-version'
           content:
             application/json:
-              summary: Configuration of the chainweb node
               example:
                 $ref: "#/components/examples/nodeConfig"
 
   /health-check:
     servers:
-    - url: "https://api.chainweb.com/"
+    - url: "https://api.chainweb.com"
       description: Chainweb service API for mainnet
-    - url: "https://api.testnet.chainweb.com/"
+    - url: "https://api.testnet.chainweb.com"
       description: Chainweb service API for testnet
-    - url: "{schema}://{domain}:{port}/"
+    - url: "{schema}://{domain}:{port}"
       description: |
         Service API endpoint of a chainweb-node. It may serve only a subset of
         the endpoints.
@@ -2716,7 +2756,7 @@ paths:
         domain:
           default: api.chainweb.com
         port:
-          default: 1848
+          default: "1848"
     get:
       tags: [ misc ]
       summary: Health Check
@@ -2726,6 +2766,7 @@ paths:
         [/cut/get](#tag/cut/paths/~1cut/get) endpoint should be used instead.
       responses:
         "200":
+          description: The node is healthy
           headers:
             x-peer-addr:
               $ref: '#/components/headers/x-peer-addr'
@@ -2735,18 +2776,17 @@ paths:
               $ref: '#/components/headers/x-chainweb-node-version'
           content:
             text/plain:
-              summary: The node is healthy
               schema:
                 type: string
               example: "Health check OK."
 
   /info:
     servers:
-    - url: "https://api.chainweb.com/"
+    - url: "https://api.chainweb.com"
       description: Chainweb service API for mainnet
-    - url: "https://api.testnet.chainweb.com/"
+    - url: "https://api.testnet.chainweb.com"
       description: Chainweb service API for testnet
-    - url: "{schema}://{domain}:{port}/"
+    - url: "{schema}://{domain}:{port}"
       description: |
         Service API endpoint of a chainweb-node. It may serve only a subset of
         the endpoints.
@@ -2757,13 +2797,14 @@ paths:
         domain:
           default: api.chainweb.com
         port:
-          default: 1848
+          default: "1848"
     get:
       tags: [ misc ]
       summary: General Node Info
       description: Provides general information about the node and the chainweb version
       responses:
         "200":
+          description: General information about the node and the chainweb version
           headers:
             x-peer-addr:
               $ref: '#/components/headers/x-peer-addr'
@@ -2773,9 +2814,8 @@ paths:
               $ref: '#/components/headers/x-chainweb-node-version'
           content:
             application/json:
-              summary: General information about the node and the chainweb version
               schema:
-                $ref: "#/components/schemas/info"
+                $ref: "#/components/schemas/nodeInfo"
               example:
                 $ref: "#/components/examples/info"
 
