@@ -1049,7 +1049,8 @@ components:
     backupPact:
       name: backupPact
       in: query
-      description: Flag, if present back up the Pact databases too
+      description: |
+        Flag, if present back up the Pact databases too. Extra disk space and time required
       required: false
       allowEmptyValue: true
 
@@ -2729,6 +2730,36 @@ paths:
   /make-backup:
     post:
       summary: Start a backup job
+      description: |
+        Backup jobs are identified by the Unix timestamp when they're begun.
+
+        If a backup job is already in progress, this endpoint will return its
+        identifier instead of starting a new one.
+
+        The RocksDB portion of the database is always backed up; if backupPact
+        is set, the Sqlite (Pact) portion is backed up as well, taking much
+        longer.
+
+        There is no automatic backup retention policy - users need to delete old
+        backups.
+
+        This API is enabled by configuring the node thus:
+        ```yaml
+        backup:
+          api.enabled: true
+          directory: {some file path to put backups in}
+        ```
+        The backup directory ideally will be located in the same partition as the
+        RocksDB portion of the node database.
+
+        RocksDB backups to the same partition as holds the active RocksDB
+        database will have almost zero space overhead immediately, but over time
+        as the active database diverges from the backup the space overhead will
+        increase.  If the backup is to another partition, it will take longer
+        and take as much disk space as the active RocksDB database.
+
+        Pact database backups always require about as much space as the active
+        Pact database does.
       tags: [ misc ]
       parameters:
       - $ref: '#/components/parameters/backupPact'
