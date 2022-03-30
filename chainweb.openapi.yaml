@@ -655,6 +655,18 @@ components:
       example:
         $ref: '#/components/examples/base64HeaderPage/items/0'
 
+    backupStatus:
+      title: Backup job status
+      type: string
+      pattern: "backup-done|backup-in-progress|backup-failed"
+
+    backupId:
+      title: Backup job identifier
+      description: Textual backup job identifier
+      type: string
+      pattern: "[a-zA-Z0-9_-]+"
+      example: 1648665437000
+
     # Binary encoded Block Header
     binaryHeader:
       title: Binary Block Header
@@ -1025,6 +1037,22 @@ components:
         type: integer
         minimum: 0
         example: 0
+
+    backupId:
+      name: backupId
+      in: path
+      description: The identifier of the backup being checked
+      required: true
+      schema:
+        $ref: '#/components/schemas/backupId'
+
+    backupPact:
+      name: backupPact
+      in: query
+      description: |
+        Flag, if present back up the Pact databases too. Extra disk space and time required
+      required: false
+      allowEmptyValue: true
 
     minheight:
       name: minheight
@@ -2698,6 +2726,86 @@ paths:
               summary: Configuration of the chainweb node
               example:
                 $ref: "#/components/examples/nodeConfig"
+
+  /make-backup:
+    post:
+      summary: Start a backup job
+      description: |
+        Backup jobs are identified by the Unix timestamp when they're begun.
+
+        If a backup job is already in progress, this endpoint will return its
+        identifier instead of starting a new one.
+
+        The RocksDB portion of the database is always backed up; if backupPact
+        is set, the Sqlite (Pact) portion is backed up as well, taking much
+        longer.
+
+        There is no automatic backup retention policy - users need to delete old
+        backups.
+
+        This API is enabled by configuring the node thus:
+        ```yaml
+        backup:
+          api.enabled: true
+          directory: {some file path to put backups in}
+        ```
+        The backup directory ideally will be located in the same partition as the
+        RocksDB portion of the node database.
+
+        RocksDB backups to the same partition as holds the active RocksDB
+        database will have almost zero space overhead immediately, but over time
+        as the active database diverges from the backup the space overhead will
+        increase.  If the backup is to another partition, it will take longer
+        and take as much disk space as the active RocksDB database.
+
+        Pact database backups always require about as much space as the active
+        Pact database does.
+      tags: [ misc ]
+      parameters:
+      - $ref: '#/components/parameters/backupPact'
+      responses:
+        "200":
+          headers:
+            x-peer-addr:
+              $ref: '#/components/headers/x-peer-addr'
+            x-server-timestamp:
+              $ref: '#/components/headers/x-server-timestamp'
+            x-chainweb-node-version:
+              $ref: '#/components/headers/x-chainweb-node-version'
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/backupId'
+
+  /check-backup/{backupId}:
+    get:
+      summary: Check the status of a backup job
+      tags: [ misc ]
+      parameters:
+      - $ref: '#/components/parameters/backupId'
+      responses:
+        "200":
+          headers:
+            x-peer-addr:
+              $ref: '#/components/headers/x-peer-addr'
+            x-server-timestamp:
+              $ref: '#/components/headers/x-server-timestamp'
+            x-chainweb-node-version:
+              $ref: '#/components/headers/x-chainweb-node-version'
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/backupStatus'
+
+        "404":
+          headers:
+            x-peer-addr:
+              $ref: '#/components/headers/x-peer-addr'
+            x-server-timestamp:
+              $ref: '#/components/headers/x-server-timestamp'
+            x-chainweb-node-version:
+              $ref: '#/components/headers/x-chainweb-node-version'
+          description: There is no backup job with that identifier
 
   /health-check:
     servers:
