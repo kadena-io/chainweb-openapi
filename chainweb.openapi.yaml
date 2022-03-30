@@ -655,6 +655,18 @@ components:
       example:
         $ref: '#/components/examples/base64HeaderPage/items/0'
 
+    backupStatus:
+      title: Backup job status
+      type: string
+      pattern: "backup-done|backup-in-progress|backup-failed"
+
+    backupId:
+      title: Backup job identifier
+      description: Textual backup job identifier
+      type: string
+      pattern: "[a-zA-Z0-9_-]+"
+      example: 1648665437000
+
     # Binary encoded Block Header
     binaryHeader:
       title: Binary Block Header
@@ -1025,6 +1037,21 @@ components:
         type: integer
         minimum: 0
         example: 0
+
+    backupId:
+      name: backupId
+      in: path
+      description: The identifier of the backup being checked
+      required: true
+      schema:
+        $ref: '#/components/schemas/backupId'
+
+    backupPact:
+      name: backupPact
+      in: query
+      description: Flag, if present back up the Pact databases too
+      required: false
+      allowEmptyValue: true
 
     minheight:
       name: minheight
@@ -2698,6 +2725,56 @@ paths:
               summary: Configuration of the chainweb node
               example:
                 $ref: "#/components/examples/nodeConfig"
+
+  /make-backup:
+    post:
+      summary: Start a backup job
+      tags: [ misc ]
+      parameters:
+      - $ref: '#/components/parameters/backupPact'
+      responses:
+        "200":
+          headers:
+            x-peer-addr:
+              $ref: '#/components/headers/x-peer-addr'
+            x-server-timestamp:
+              $ref: '#/components/headers/x-server-timestamp'
+            x-chainweb-node-version:
+              $ref: '#/components/headers/x-chainweb-node-version'
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/backupId'
+
+  /check-backup/{backupId}:
+    get:
+      summary: Check the status of a backup job
+      tags: [ misc ]
+      parameters:
+      - $ref: '#/components/parameters/backupId'
+      responses:
+        "200":
+          headers:
+            x-peer-addr:
+              $ref: '#/components/headers/x-peer-addr'
+            x-server-timestamp:
+              $ref: '#/components/headers/x-server-timestamp'
+            x-chainweb-node-version:
+              $ref: '#/components/headers/x-chainweb-node-version'
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/backupStatus'
+
+        "404":
+          headers:
+            x-peer-addr:
+              $ref: '#/components/headers/x-peer-addr'
+            x-server-timestamp:
+              $ref: '#/components/headers/x-server-timestamp'
+            x-chainweb-node-version:
+              $ref: '#/components/headers/x-chainweb-node-version'
+          description: There is no backup job with that identifier
 
   /health-check:
     servers:
