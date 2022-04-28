@@ -2321,6 +2321,8 @@ paths:
                 properties:
                   hashes:
                     type: array
+                    items:
+                      type: string
                   highwaterMark:
                     type: array
                     description: "two-element array: `[nonce (integer), since (int64)]`"
