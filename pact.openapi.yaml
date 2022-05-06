@@ -530,8 +530,9 @@ components:
       - title: String
         description: Pact strings encode directly to JSON strings.
         type: string
+
       - title: Decimal
-        description: JSON numbers encode to Pact decimals.
+        description: There are two alternative JSON representations for Decimal.
         oneOf:
         - title: Number
           description: |
@@ -549,12 +550,23 @@ components:
               example:
                 "1.23498218000001"
       - title: Integer
-        description: Pact integers use a special schema.
+        description: There are two alternative JSON representations for Integer.
+        type: object
         required: [int]
         properties:
           int:
-            type: number
-            description: JSON number to be truncated to an integer value.
+            oneOf:
+            - title: Number
+              description: |
+                JSON numbers are rounded to integer values.
+              type: number
+              example: 12345
+            - title: String
+              description: |
+                When JSON number precision is not enough, you can specify the integer as a string
+              type: string
+              example:
+                "123456789"
       - title: Boolean
         description: JSON booleans encode to Pact booleans.
         type: boolean
