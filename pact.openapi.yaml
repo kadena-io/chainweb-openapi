@@ -532,7 +532,7 @@ components:
         type: string
 
       - title: Decimal
-        description: There are two alternative JSON representations for Integer.
+        description: There are two alternative JSON representations for Decimal.
         oneOf:
         - title: Number
           description: |
