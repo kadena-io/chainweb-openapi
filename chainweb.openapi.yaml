@@ -1,4 +1,4 @@
-openapi: '3.0'
+openapi: '3.0.0'
 
 # ############################################################################ #
 # Info
@@ -54,7 +54,7 @@ servers:
       default: "1848"
     chainwebVersion:
       default: mainnet01
-      enum: [ "mainnet01", "testnet04" ]
+      enum: [ "test-singleton", "development", "mainnet01", "testnet04" ]
     apiVersion:
       default: "0.0"
 
@@ -523,9 +523,7 @@ components:
     chainwebVersion:
       title: Chainweb Version
       description: The version of the Chainweb network
-      enum:
-      - mainnet01
-      - testnet04
+      enum: [ "test-singleton", "development", "mainnet01", "testnet04" ]
 
     # chain id
     chainId:
@@ -637,19 +635,19 @@ components:
       description: |
         PoW nonce of the block. This is computed by the miner such that the
         block hash is smaller than the target.
-      type: integer
-      format: int64
-      minimum: 0
-      example: 14452354234648303941
+      type: string
+      # format: int64
+      # minimum: 0
+      # example: 14452354234648303941
 
     # JSON encoded Block Header
     base64Header:
       title: Base64Url Block Header
       description: Base64Url (without padding) encoded binary block header
       type: string
-      pattern: "[a-zA-Z0-9_-]{424}"
-      minLength: 424
-      maxLength: 424
+      pattern: "[a-zA-Z0-9_-]+"
+      # minLength: 424
+      # maxLength: 424
       # contentEncoding: base64url
       example:
         value:
@@ -708,9 +706,8 @@ components:
             represented as an associative array that maps the adjancent chain
             ids to the respective block hash.
           type: object
-          properties:
-            "^1?[0-9]$":
-                $ref: '#/components/schemas/blockHash'
+          additionalProperties:
+            $ref: '#/components/schemas/blockHash'
         payloadHash:
           $ref: '#/components/schemas/payloadHash'
         chainwebVersion:
@@ -882,7 +879,7 @@ components:
           example: [0]
         nodeVersion:
           type: string
-          enum: [ mainnet01, testnet04 ]
+          enum: [ "test-singleton", "development", "mainnet01", "testnet04" ]
           example: mainnet01
         nodeGraphHistory:
           description: |
@@ -921,7 +918,7 @@ components:
     page:
       title: Page
       description: Page of a collection of items
-      required: [items, next, limit]
+      required: [next, limit, items]
       example:
         $ref: '#/components/examples/base64HeaderPage'
       properties:
@@ -940,8 +937,14 @@ components:
             A cursor that can be used to query the next page. It should be used
             literally as value for the `next` parameter in a follow-up request.
 
-          type: string
+          oneOf:
+            - type: 'null'
+            - type: string
+          nullable: true
           pattern: '^(inclusive|exclusive):.*$'
+        items:
+          description: |
+            The items in the page.
 
     # Mining Update Event Stream
     miningUpdateEventStream:
@@ -1105,7 +1108,7 @@ components:
     requestKeyArray:
       description: Array of request keys
       content:
-        application/json:
+        application/json;charset=utf-8:
           schema:
             type: array
             items:
@@ -1119,7 +1122,7 @@ components:
     payloadHashArray:
       description: An array of block payload hashes
       content:
-        application/json:
+        application/json;charset=utf-8:
           schema:
             type: array
             items:
@@ -1681,7 +1684,7 @@ paths:
             x-chainweb-node-version:
               $ref: '#/components/headers/x-chainweb-node-version'
           content:
-            application/json:
+            application/json;charset=utf-8:
               schema:
                 $ref: '#/components/schemas/cut'
               example:
@@ -1699,7 +1702,7 @@ paths:
       requestBody:
         description: A cut with an origin property that is not `null`.
         content:
-          application/json:
+          application/json;charset=utf-8:
             schema:
               allOf:
               - $ref: '#/components/schemas/cut'
@@ -1736,7 +1739,7 @@ paths:
             x-chainweb-node-version:
               $ref: '#/components/headers/x-chainweb-node-version'
           content:
-            application/json:
+            application/json;charset=utf-8:
               schema:
                 allOf:
                 - properties:
@@ -1756,7 +1759,7 @@ paths:
           The peer that is added to the peer database of the cut P2P network of
           the remote host.
         content:
-          application/json:
+          application/json;charset=utf-8:
             schema:
               allOf:
               - $ref: '#/components/schemas/peer'
@@ -1820,7 +1823,7 @@ paths:
             x-chainweb-node-version:
               $ref: '#/components/headers/x-chainweb-node-version'
           content:
-            application/json:
+            application/json;charset=utf-8:
               schema:
                 allOf:
                 - properties:
@@ -1831,6 +1834,17 @@ paths:
                 - $ref: '#/components/schemas/page'
               example:
                 $ref: '#/components/examples/blockHashPage'
+        "404":
+          description: |
+            The `next` or `maxheight` parameter indicated a nonexistent block height.
+          content:
+            application/json;charset=utf-8:
+              schema:
+                properties:
+                  reason:
+                    type: string
+                  key:
+                    type: string
 
   /chain/{chain}/hash/branch:
     post:
@@ -1852,7 +1866,7 @@ paths:
       requestBody:
         description: Upper and lower bounds of the queried branches
         content:
-          application/json:
+          application/json;charset=utf-8:
             schema:
               properties:
                 lower:
@@ -1894,7 +1908,7 @@ paths:
             x-chainweb-node-version:
               $ref: '#/components/headers/x-chainweb-node-version'
           content:
-            application/json:
+            application/json;charset=utf-8:
               schema:
                 allOf:
                 - properties:
@@ -1934,12 +1948,13 @@ paths:
             x-chainweb-node-version:
               $ref: '#/components/headers/x-chainweb-node-version'
           content:
-            application/json:
+            application/json;charset=utf-8:
               schema:
                 allOf:
                 - properties:
                     items:
                       description: Array of base64 encoded block headers
+                      type: array
                       items:
                         $ref: '#/components/schemas/base64Header'
                 - $ref: '#/components/schemas/page'
@@ -1966,6 +1981,17 @@ paths:
             x-chainweb-node-version:
               $ref: '#/components/headers/x-chainweb-node-version'
           description: The value of the `Accept` header is not supported.
+        "404":
+          description: |
+            The `next` or `maxheight` parameter indicated a nonexistent block height.
+          content:
+            application/json;charset=utf-8:
+              schema:
+                properties:
+                  reason:
+                    type: string
+                  key:
+                    type: string
 
   /chain/{chain}/header/{blockHash}:
     get:
@@ -1986,7 +2012,7 @@ paths:
             x-chainweb-node-version:
               $ref: '#/components/headers/x-chainweb-node-version'
           content:
-            application/json:
+            application/json;charset=utf-8:
               schema:
                 $ref: '#/components/schemas/base64Header'
               example:
@@ -2034,7 +2060,7 @@ paths:
       requestBody:
         description: Upper and lower bounds of the queried branches
         content:
-          application/json:
+          application/json;charset=utf-8:
             schema:
               properties:
                 lower:
@@ -2055,7 +2081,7 @@ paths:
             examples:
               singletonLimited:
                 value: { "lower":["RClyuyZAacwvPpmLXKbTwrIRXWeUSjiNhJVP2esH8KM"], "upper": ["QxGCAz5AY1Y41nh1yWtgqhKhZ9pPiPRagFdIKNqBH74"]}
-                summary: Ancestors of block that are not acestors of another block
+                summary: Ancestors of block that are not ancestors of another block
               singleton:
                 value: { "lower":[], "upper": ["QxGCAz5AY1Y41nh1yWtgqhKhZ9pPiPRagFdIKNqBH74"]}
                 summary: Ancestors of one block
@@ -2076,7 +2102,7 @@ paths:
             x-chainweb-node-version:
               $ref: '#/components/headers/x-chainweb-node-version'
           content:
-            application/json:
+            application/json;charset=utf-8:
               schema:
                 allOf:
                 - properties:
@@ -2130,7 +2156,7 @@ paths:
             x-chainweb-node-version:
               $ref: '#/components/headers/x-chainweb-node-version'
           content:
-            application/json:
+            application/json;charset=utf-8:
               schema:
                 $ref: '#/components/schemas/payload'
               examples:
@@ -2152,7 +2178,7 @@ paths:
             x-chainweb-node-version:
               $ref: '#/components/headers/x-chainweb-node-version'
           content:
-            application/json:
+            application/json;charset=utf-8:
               schema:
                 properties:
                   reason:
@@ -2183,7 +2209,7 @@ paths:
             x-chainweb-node-version:
               $ref: '#/components/headers/x-chainweb-node-version'
           content:
-            application/json:
+            application/json;charset=utf-8:
               schema:
                 type: array
                 items:
@@ -2218,7 +2244,7 @@ paths:
             x-chainweb-node-version:
               $ref: '#/components/headers/x-chainweb-node-version'
           content:
-            application/json:
+            application/json;charset=utf-8:
               schema:
                 $ref: '#/components/schemas/payloadWithOutputs'
               examples:
@@ -2240,7 +2266,7 @@ paths:
             x-chainweb-node-version:
               $ref: '#/components/headers/x-chainweb-node-version'
           content:
-            application/json:
+            application/json;charset=utf-8:
               schema:
                 properties:
                   reason:
@@ -2271,7 +2297,7 @@ paths:
             x-chainweb-node-version:
               $ref: '#/components/headers/x-chainweb-node-version'
           content:
-            application/json:
+            application/json;charset=utf-8:
               schema:
                 type: array
                 items:
@@ -2316,7 +2342,7 @@ paths:
             x-chainweb-node-version:
               $ref: '#/components/headers/x-chainweb-node-version'
           content:
-            application/json:
+            application/json;charset=utf-8:
               schema:
                 properties:
                   hashes:
@@ -2359,7 +2385,7 @@ paths:
             x-chainweb-node-version:
               $ref: '#/components/headers/x-chainweb-node-version'
           content:
-            application/json:
+            application/json;charset=utf-8:
               schema:
                 type: array
                 items:
@@ -2395,7 +2421,7 @@ paths:
             x-chainweb-node-version:
               $ref: '#/components/headers/x-chainweb-node-version'
           content:
-            application/json:
+            application/json;charset=utf-8:
               schema:
                 type: array
                 items:
@@ -2431,7 +2457,7 @@ paths:
       requestBody:
         description: Array of strings of JSON encoded signed transactions
         content:
-          application/json:
+          application/json;charset=utf-8:
             schema:
               type: array
               items:
@@ -2473,7 +2499,7 @@ paths:
             x-chainweb-node-version:
               $ref: '#/components/headers/x-chainweb-node-version'
           content:
-            application/json:
+            application/json;charset=utf-8:
               schema:
                 description: Peers from the peer database of the remote node
                 allOf:
@@ -2496,7 +2522,7 @@ paths:
           The peer that is added to the peer database of the mempoo P2P network of
           the chain `{chain}` of remote host.
         content:
-          application/json:
+          application/json;charset=utf-8:
             schema:
               allOf:
               - $ref: '#/components/schemas/peer'
@@ -2551,7 +2577,7 @@ paths:
           default: "1848"
         chainwebVersion:
           default: mainnet01
-          enum: [ "mainnet01", "testnet04" ]
+          enum: [ "test-singleton", "development", "mainnet01", "testnet04" ]
         apiVersion:
           default: "0.0"
     get:
@@ -2561,7 +2587,7 @@ paths:
       requestBody:
         description: Miner Info
         content:
-          application/json:
+          application/json;charset=utf-8:
             example:
               {
                   "account": "miner",
@@ -2640,7 +2666,7 @@ paths:
           default: "1848"
         chainwebVersion:
           default: mainnet01
-          enum: [ "mainnet01", "testnet04" ]
+          enum: [ "test-singleton", "development", "mainnet01", "testnet04" ]
         apiVersion:
           default: "0.0"
     post:
@@ -2697,7 +2723,7 @@ paths:
           default: "1848"
         chainwebVersion:
           default: mainnet01
-          enum: [ "mainnet01", "testnet04" ]
+          enum: [ "test-singleton", "development", "mainnet01", "testnet04" ]
         apiVersion:
           default: "0.0"
     get:
@@ -2765,7 +2791,7 @@ paths:
             x-chainweb-node-version:
               $ref: '#/components/headers/x-chainweb-node-version'
           content:
-            application/json:
+            application/json;charset=utf-8:
               example:
                 $ref: "#/components/examples/nodeConfig"
 
@@ -2807,6 +2833,7 @@ paths:
       - $ref: '#/components/parameters/backupPact'
       responses:
         "200":
+          description: "A backup job has been created"
           headers:
             x-peer-addr:
               $ref: '#/components/headers/x-peer-addr'
@@ -2827,6 +2854,7 @@ paths:
       - $ref: '#/components/parameters/backupId'
       responses:
         "200":
+          description: "A backup job with that identifier exists, here is its status"
           headers:
             x-peer-addr:
               $ref: '#/components/headers/x-peer-addr'
@@ -2923,7 +2951,7 @@ paths:
             x-chainweb-node-version:
               $ref: '#/components/headers/x-chainweb-node-version'
           content:
-            application/json:
+            application/json;charset=utf-8:
               schema:
                 $ref: "#/components/schemas/nodeInfo"
               example:
