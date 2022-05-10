@@ -2746,7 +2746,8 @@ paths:
         This API is enabled by configuring the node thus:
         ```yaml
         backup:
-          api.enabled: true
+          api:
+            enabled: true
           directory: {some file path to put backups in}
         ```
         The backup directory ideally will be located in the same partition as the
