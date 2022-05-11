@@ -175,9 +175,9 @@ tags:
     chain the `branch` endpoints can be used, which return blocks in descending
     order starting from the leafs of branches of the block chain.
 
-    *   `application/json`, returns block headers in base64Url (without padding)
+    *   `application/json;charset=utf-8`, returns block headers in base64Url (without padding)
         encoded binary.
-    *   `application/json;blockheader-encoding=object`, returns block headers in
+    *   `application/json;charset=utf-8;blockheader-encoding=object`, returns block headers in
         JSON encoding.
     *   `application/octet-stream`, when supported by the endpoint, returns block
         headers as binary.
@@ -1663,8 +1663,8 @@ paths:
       one of them is an adjacent parent (is a direct dependency) of the other or
       if the blocks do not depend at all on each other.
     get:
+      tags: [ p2p_api, cut ]
       summary: Query the current cut from a Chainweb node.
-      tags: [ "cut" ]
       parameters:
       - name: maxheight
         in: query
@@ -1698,7 +1698,7 @@ paths:
         will first try to obtain all missing dependencies from the node that is
         indicated in by the origin property before searching for the dependencies in the
         P2P network.
-      tags: [ cut ]
+      tags: [ p2p_api, cut ]
       requestBody:
         description: A cut with an origin property that is not `null`.
         content:
@@ -1792,7 +1792,7 @@ paths:
             whether the peer can be reached via the provided address. If this
             check fails an error is returned.
           content:
-            text/plain:
+            text/plain;charset=utf-8:
               example:
                 'Invalid hostaddress: IsNotReachable (PeerInfo {_peerId = Nothing, _peerAddr = HostAddress {_hostAddressHost = us-w1.chainweb.com, _hostAddressPort = 444}}) "\"HttpExceptionRequest Request {\\n  host                 = \\\"us-w1.chainweb.com\\\"\\n  port                 = 444\\n  secure               = True\\n  requestHeaders       = [(\\\"X-Chainweb-Node-Version\\\",\\\"2.6\\\")]\\n  path                 = \\\"/chainweb/0.0/mainnet01/cut/peer\\\"\\n  queryString          = \\\"\\\"\\n  method               = \\\"GET\\\"\\n  proxy                = Nothing\\n  rawBody              = False\\n  redirectCount        = 10\\n  responseTimeout      = ResponseTimeoutMicro 2000000\\n  requestVersion       = HTTP/1.1\\n}\\n ConnectionTimeout\""'
 
@@ -1836,7 +1836,7 @@ paths:
                 $ref: '#/components/examples/blockHashPage'
         "404":
           description: |
-            The `next` or `maxheight` parameter indicated a nonexistent block height.
+            A parameter indicated a nonexistent block height.
           content:
             application/json;charset=utf-8:
               schema:
@@ -1961,7 +1961,7 @@ paths:
               example:
                 $ref: '#/components/examples/base64HeaderPage'
 
-            application/json;blockheader-encoding=object:
+            application/json;charset=utf-8;blockheader-encoding=object:
               schema:
                 allOf:
                 - properties:
@@ -1997,7 +1997,7 @@ paths:
     get:
       summary: Get Block Header by Hash
       description: Query a block header by its hash
-      tags: [ header ]
+      tags: [ p2p_api, header ]
       parameters:
       - $ref: '#/components/parameters/chain'
       - $ref: '#/components/parameters/blockHash'
@@ -2019,7 +2019,7 @@ paths:
                 value:
                   $ref: '#/components/examples/base64HeaderPage/value/items/0'
 
-            application/json;blockheader-encoding=object:
+            application/json;charset=utf-8;blockheader-encoding=object:
               schema:
                 $ref: '#/components/schemas/blockHeader'
               example:
@@ -2050,7 +2050,7 @@ paths:
         Only blocks are returned that are ancestors of the some block in the
         set of upper bounds and are not ancestors of any block in the set of
         lower bounds.
-      tags: [ header ]
+      tags: [ p2p_api, header ]
       parameters:
       - $ref: '#/components/parameters/chain'
       - $ref: '#/components/parameters/limit'
@@ -2114,7 +2114,7 @@ paths:
               example:
                 $ref: '#/components/examples/base64HeaderBranchPage'
 
-            application/json;blockheader-encoding=object:
+            application/json;charset=utf-8;blockheader-encoding=object:
               schema:
                 allOf:
                 - properties:
