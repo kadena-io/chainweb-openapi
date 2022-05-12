@@ -558,7 +558,6 @@ components:
       type: string
       description: Request key of a Pact transaction
       pattern: "^[a-zA-Z0-9_-]{43}$"
-      # contentEncoding: base64url
       minLength: 43
       maxLength: 43
       example: y3aWL72-3wAy7vL9wcegGXnstH0lHi-q-cfxkhD5JCw
@@ -569,7 +568,6 @@ components:
       type: string
       description: Base64Url (without padding) encoded SHA256 hash
       pattern: "^[a-zA-Z0-9_-]{43}$"
-      # contentEncoding: base64url
       minLength: 43
       maxLength: 43
       example: y3aWL72-3wAy7vL9wcegGXnstH0lHi-q-cfxkhD5JCw
@@ -613,7 +611,6 @@ components:
       pattern: "^[a-zA-Z0-9_-]{43}$"
       minLength: 43
       maxLength: 43
-      # contentEncoding: base64url
       example: iil_D0t2MGqjAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
 
     # Target
@@ -626,7 +623,6 @@ components:
       pattern: "^[a-zA-Z0-9_-]{43}$"
       minLength: 43
       maxLength: 43
-      # contentEncoding: base64url
       example: 2uMCnB4lWsErj9w1C1vAp1sHYd-sABf3kgcAAAAAAAA
 
     # Nonce
@@ -636,9 +632,7 @@ components:
         PoW nonce of the block. This is computed by the miner such that the
         block hash is smaller than the target.
       type: string
-      # format: int64
-      # minimum: 0
-      # example: 14452354234648303941
+      pattern: "[0-9]+"
 
     # JSON encoded Block Header
     base64Header:
@@ -648,7 +642,6 @@ components:
       pattern: "[a-zA-Z0-9_-]+"
       # minLength: 424
       # maxLength: 424
-      # contentEncoding: base64url
       example:
         value:
           $ref: '#/components/examples/base64HeaderPage/value/items/0'
@@ -670,7 +663,6 @@ components:
       title: Binary Block Header
       description: Binary representation of a block header
       type: string
-      # contentMediaType: application/octet-stream
       minLength: 318
       maxLength: 318
 
@@ -733,11 +725,12 @@ components:
           description: Array of base64Url (without padding) encoded JSON texts of signed Pact transactions
           items:
             type: string
-            # contentEncoding: base64url
+            pattern: "[a-zA-Z0-9_-]+"
             description: Base64Url (without padding) encoded JSON text of a signed Pact transaction
         minerData:
           type: string
-          # contentEncoding: base64url
+          pattern: "[a-zA-Z0-9_-]+"
+
           description: Base64Url (without padding) encoded JSON text of the miner data of the payload
         transactionsHash:
           $ref: '#/components/schemas/sha256Hash'
@@ -766,17 +759,16 @@ components:
             minItems: 2
             maxItems: 2
             items:
-              # contentEncoding: base64url
               oneOf:
               - type: string
-                # contentEncoding: base64url
+                pattern: "[a-zA-Z0-9_-]+"
                 description: Base64Url (without padding) encoded JSON text of a signed Pact transaction
               - type: string
-                # contentEncoding: base64url
+                pattern: "[a-zA-Z0-9_-]+"
                 description: Base64Url (without padding) encoded JSON text of a transaction output
         minerData:
           type: string
-          # contentEncoding: base64url
+          pattern: "[a-zA-Z0-9_-]+"
           description: Base64Url (without padding) encoded JSON text of the miner data of the payload
         transactionsHash:
           $ref: '#/components/schemas/sha256Hash'
@@ -786,7 +778,7 @@ components:
           $ref: '#/components/schemas/payloadHash'
         coinbase:
           type: string
-          # contentEncoding: base64url
+          pattern: "[a-zA-Z0-9_-]+"
           description: Base64Url (without padding) encoded JSON text of coinbase output of the block
 
     # Peer Info
@@ -804,8 +796,8 @@ components:
             an official CA signed certificate
 
           type: string
-          pattern: "^[a-zA-Z0-9_-]{43}$"
-          # contentEncoding: base64url
+          nullable: true
+          pattern: "[a-zA-Z0-9_-]{43}"
         address:
           required: [hostname, port]
           properties:
@@ -846,8 +838,7 @@ components:
         weight:
           description: The sum of the weights of all blocks in the cut
           type: string
-          pattern: "^[a-zA-Z0-9_-]{43}$"
-          # contentEncoding: base64url
+          pattern: "[a-zA-Z0-9_-]{43}"
         hashes:
           required: ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10"]
           description: |
