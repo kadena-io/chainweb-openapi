@@ -928,9 +928,7 @@ components:
             A cursor that can be used to query the next page. It should be used
             literally as value for the `next` parameter in a follow-up request.
 
-          oneOf:
-            - type: 'null'
-            - type: string
+          type: string
           nullable: true
           pattern: '^(inclusive|exclusive):.*$'
         items:
