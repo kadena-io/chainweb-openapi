@@ -807,7 +807,7 @@ components:
                 the respective node is using a valid CA signed SSL certificate.
 
               type: string
-              oneOf:
+              anyOf:
               - format: hostname
               - format: ipv4
               - format: ipv6
@@ -840,11 +840,15 @@ components:
           type: string
           pattern: "[a-zA-Z0-9_-]{43}"
         hashes:
+          type: object
           required: ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19"]
           description: |
             An object that maps chain Ids to their respective block hash and
             block height
-          additionalProperties: false
+        instance:
+          type: string
+        id:
+          type: string
 
     # Info
     nodeInfo:
