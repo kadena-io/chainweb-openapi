@@ -2465,7 +2465,7 @@ paths:
                   summary: result from empty request body
 
   /chain/{chain}/mempool/insert:
-    post:
+    put:
       summary: Insert Transactions into the Mempool
       tags: [ p2p_api, mempool ]
       parameters:
