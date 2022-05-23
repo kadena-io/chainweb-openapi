@@ -845,47 +845,8 @@ components:
           description: |
             An object that maps chain Ids to their respective block hash and
             block height
-          properties:
-            "0":
-              $ref: '#/components/schemas/hashWithBlockHeight'
-            "1":
-              $ref: '#/components/schemas/hashWithBlockHeight'
-            "2":
-              $ref: '#/components/schemas/hashWithBlockHeight'
-            "3":
-              $ref: '#/components/schemas/hashWithBlockHeight'
-            "4":
-              $ref: '#/components/schemas/hashWithBlockHeight'
-            "5":
-              $ref: '#/components/schemas/hashWithBlockHeight'
-            "6":
-              $ref: '#/components/schemas/hashWithBlockHeight'
-            "7":
-              $ref: '#/components/schemas/hashWithBlockHeight'
-            "8":
-              $ref: '#/components/schemas/hashWithBlockHeight'
-            "9":
-              $ref: '#/components/schemas/hashWithBlockHeight'
-            "10":
-              $ref: '#/components/schemas/hashWithBlockHeight'
-            "11":
-              $ref: '#/components/schemas/hashWithBlockHeight'
-            "12":
-              $ref: '#/components/schemas/hashWithBlockHeight'
-            "13":
-              $ref: '#/components/schemas/hashWithBlockHeight'
-            "14":
-              $ref: '#/components/schemas/hashWithBlockHeight'
-            "15":
-              $ref: '#/components/schemas/hashWithBlockHeight'
-            "16":
-              $ref: '#/components/schemas/hashWithBlockHeight'
-            "17":
-              $ref: '#/components/schemas/hashWithBlockHeight'
-            "18":
-              $ref: '#/components/schemas/hashWithBlockHeight'
-            "19":
-              $ref: '#/components/schemas/hashWithBlockHeight'
+          additionalProperties:
+            $ref: '#/components/schemas/hashWithBlockHeight'
         instance:
           type: string
         id:
