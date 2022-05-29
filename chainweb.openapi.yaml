@@ -1935,6 +1935,15 @@ paths:
                 - $ref: '#/components/schemas/page'
               example:
                 $ref: '#/components/examples/blockHashBranchPage'
+        "404":
+          description: "The requested block hashes could not be found"
+          headers:
+            x-peer-addr:
+              $ref: '#/components/headers/x-peer-addr'
+            x-server-timestamp:
+              $ref: '#/components/headers/x-server-timestamp'
+            x-chainweb-node-version:
+              $ref: '#/components/headers/x-chainweb-node-version'
 
   # ########################################################################## #
   # Block Headers
@@ -2046,6 +2055,16 @@ paths:
               schema:
                 $ref: '#/components/schemas/binaryHeader'
 
+        "404":
+          headers:
+            x-peer-addr:
+              $ref: '#/components/headers/x-peer-addr'
+            x-server-timestamp:
+              $ref: '#/components/headers/x-server-timestamp'
+            x-chainweb-node-version:
+              $ref: '#/components/headers/x-chainweb-node-version'
+          description: A block header with that block hash was not found.
+
         "406":
           headers:
             x-peer-addr:
@@ -2150,6 +2169,16 @@ paths:
             x-chainweb-node-version:
               $ref: '#/components/headers/x-chainweb-node-version'
           description: The value of the `Accept` header is not supported.
+
+        "404":
+          headers:
+            x-peer-addr:
+              $ref: '#/components/headers/x-peer-addr'
+            x-server-timestamp:
+              $ref: '#/components/headers/x-server-timestamp'
+            x-chainweb-node-version:
+              $ref: '#/components/headers/x-chainweb-node-version'
+          description: A block header indicated by a required parameter was not found.
 
   # ########################################################################## #
   # Payload
