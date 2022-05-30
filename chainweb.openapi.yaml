@@ -1860,7 +1860,7 @@ paths:
                   reason:
                     type: string
                   key:
-                    type: string
+                    $ref: '#/components/schemas/blockHash'
 
   /chain/{chain}/hash/branch:
     post:
@@ -1944,6 +1944,14 @@ paths:
               $ref: '#/components/headers/x-server-timestamp'
             x-chainweb-node-version:
               $ref: '#/components/headers/x-chainweb-node-version'
+          content:
+            application/json:
+              schema:
+                properties:
+                  reason:
+                    type: string
+                  key:
+                    $ref: '#/components/schemas/blockHash'
 
   # ########################################################################## #
   # Block Headers
@@ -2016,7 +2024,7 @@ paths:
                   reason:
                     type: string
                   key:
-                    type: string
+                    $ref: '#/components/schemas/blockHash'
 
   /chain/{chain}/header/{blockHash}:
     get:
@@ -2064,7 +2072,14 @@ paths:
             x-chainweb-node-version:
               $ref: '#/components/headers/x-chainweb-node-version'
           description: A block header with that block hash was not found.
-
+          content:
+            application/json:
+              schema:
+                properties:
+                  reason:
+                    type: string
+                  key:
+                    $ref: '#/components/schemas/blockHash'
         "406":
           headers:
             x-peer-addr:
@@ -2179,6 +2194,14 @@ paths:
             x-chainweb-node-version:
               $ref: '#/components/headers/x-chainweb-node-version'
           description: A block header indicated by a required parameter was not found.
+          content:
+            application/json:
+              schema:
+                properties:
+                  reason:
+                    type: string
+                  key:
+                    $ref: '#/components/schemas/blockHash'
 
   # ########################################################################## #
   # Payload
