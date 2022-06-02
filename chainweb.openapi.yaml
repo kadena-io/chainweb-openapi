@@ -174,7 +174,8 @@ tags:
     For only querying blocks that are included in the winning branch of the
     chain the `branch` endpoints can be used, which return blocks in descending
     order starting from the leafs of branches of the block chain.
-
+    
+    Block headers are returned in three different formats specified in the `accept` header of the request:
     *   `application/json`, returns block headers in base64Url (without padding)
         encoded binary.
     *   `application/json;blockheader-encoding=object`, returns block headers in
