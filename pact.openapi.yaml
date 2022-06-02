@@ -19,14 +19,14 @@ info:
 # ############################################################################ #
 
 servers:
-- url: "https://api.chainweb.com/chainweb/mainnet01/{apiVersion}/chain/{chainId}/pact/api/v1"
+- url: "https://api.chainweb.com/chainweb/{apiVersion}/mainnet01/chain/{chainId}/pact/api/v1"
   description: Pact API for a chain on the Kadena mainnet.
   variables:
     apiVersion:
       default: "0.0"
     chainId:
       default: "0"
-- url: "https://api.testnet.chainweb.com/chainweb/testnet04/{apiVersion}/chain/{chainId}/pact/api/v1"
+- url: "https://api.testnet.chainweb.com/chainweb/{apiVersion}/testnet04/chain/{chainId}/pact/api/v1"
   description: Pact API for a chain on the Kadena testnet.
   variables:
     apiVersion:
@@ -204,14 +204,14 @@ paths:
 
   /spv:
     servers:
-      - url: "https://api.chainweb.com/chainweb/mainnet01/{apiVersion}/chain/{chainId}/pact"
+      - url: "https://api.chainweb.com/chainweb/{apiVersion}/mainnet01/chain/{chainId}/pact"
         description: Pact API for a chain on the Kadena mainnet.
         variables:
           apiVersion:
             default: "0.0"
           chainId:
             default: "0"
-      - url: "https://api.testnet.chainweb.com/chainweb/testnet04/{apiVersion}/chain/{chainId}/pact"
+      - url: "https://api.testnet.chainweb.com/chainweb/{apiVersion}/testnet04/chain/{chainId}/pact"
         description: Pact API for a chain on the Kadena testnet.
         variables:
           apiVersion:
