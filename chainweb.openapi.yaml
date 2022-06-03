@@ -637,8 +637,9 @@ components:
         block hash is smaller than the target.
       type: string
       pattern: "[0-9]+"
+      minLength: 1
 
-    # JSON encoded Block Header
+    # Binary block header in base64Url encoding
     base64Header:
       title: Base64Url Block Header
       description: Base64Url (without padding) encoded binary block header
@@ -855,7 +856,7 @@ components:
           # contentEncoding: base64Url
         hashes:
           type: object
-          required: ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19"]
+          required: ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10"]
           description: |
             An object that maps chain Ids to their respective block hash and
             block height
@@ -1202,7 +1203,7 @@ components:
       value: [ qx346ILpakzgbNZbE8oHqF5TZQghp-HPcV-0Ptc_n2s ]
 
     signedTxText:
-      value: < {"hash":"y3aWL72-3wAy7vL9wcegGXnstH0lHi-q-cfxkhD5JCw","sigs":[{"sig":"8ddc06b37c496f2cadc4f7412405a80faf3ab07482ff5553b9b5fcc73d1b4121275ad5948d9b4078e553b71f8b42eaf6b24135bf2fb4d5840c16bcdde0e35e0f"}],"cmd":"{\"networkId\":\"mainnet01\",\"payload\":{\"exec\":{\"data\":{\"account-keyset\":{\"pred\":\"keys-all\",\"keys\":[\"acc28032a1bb725b7ba0a3593ab86f393894fa6659281f3dfdfee0afe48559a2\"]}},\"code\":\"(coin.transfer-create \\\"60241f51ea34e05c61fbea9d\\\" \\\"acc28032a1bb725b7ba0a3593ab86f393894fa6659281f3dfdfee0afe48559a2\\\" (read-keyset \\\"account-keyset\\\") 5007.0000)\"}},\"signers\":[{\"pubKey\":\"acc28032a1bb725b7ba0a3593ab86f393894fa6659281f3dfdfee0afe48559a2\",\"clist\":[{\"args\":[\"60241f51ea34e05c61fbea9d\",\"acc28032a1bb725b7ba0a3593ab86f393894fa6659281f3dfdfee0afe48559a2\",5007],\"name\":\"coin.TRANSFER\"},{\"args\":[],\"name\":\"coin.GAS\"}]}],\"meta\":{\"creationTime\":1618949714,\"ttl\":300,\"gasLimit\":600,\"chainId\":\"0\",\"gasPrice\":1.0e-7,\"sender\":\"acc28032a1bb725b7ba0a3593ab86f393894fa6659281f3dfdfee0afe48559a2\"},\"nonce\":\"\\\"2021-04-20T20:16:13.645Z\\\"\"}"}
+      value: {"hash":"y3aWL72-3wAy7vL9wcegGXnstH0lHi-q-cfxkhD5JCw","sigs":[{"sig":"8ddc06b37c496f2cadc4f7412405a80faf3ab07482ff5553b9b5fcc73d1b4121275ad5948d9b4078e553b71f8b42eaf6b24135bf2fb4d5840c16bcdde0e35e0f"}],"cmd":"{\"networkId\":\"mainnet01\",\"payload\":{\"exec\":{\"data\":{\"account-keyset\":{\"pred\":\"keys-all\",\"keys\":[\"acc28032a1bb725b7ba0a3593ab86f393894fa6659281f3dfdfee0afe48559a2\"]}},\"code\":\"(coin.transfer-create \\\"60241f51ea34e05c61fbea9d\\\" \\\"acc28032a1bb725b7ba0a3593ab86f393894fa6659281f3dfdfee0afe48559a2\\\" (read-keyset \\\"account-keyset\\\") 5007.0000)\"}},\"signers\":[{\"pubKey\":\"acc28032a1bb725b7ba0a3593ab86f393894fa6659281f3dfdfee0afe48559a2\",\"clist\":[{\"args\":[\"60241f51ea34e05c61fbea9d\",\"acc28032a1bb725b7ba0a3593ab86f393894fa6659281f3dfdfee0afe48559a2\",5007],\"name\":\"coin.TRANSFER\"},{\"args\":[],\"name\":\"coin.GAS\"}]}],\"meta\":{\"creationTime\":1618949714,\"ttl\":300,\"gasLimit\":600,\"chainId\":\"0\",\"gasPrice\":1.0e-7,\"sender\":\"acc28032a1bb725b7ba0a3593ab86f393894fa6659281f3dfdfee0afe48559a2\"},\"nonce\":\"\\\"2021-04-20T20:16:13.645Z\\\"\"}"}
 
     peers:
       value:
@@ -1816,6 +1817,9 @@ paths:
             x-chainweb-node-version:
               $ref: '#/components/headers/x-chainweb-node-version'
         "400":
+          description: |
+            Bad Request.
+            The request is invalid. It is either malformed or the provided peer is not reachable.
           headers:
             x-peer-addr:
               $ref: '#/components/headers/x-peer-addr'
@@ -1832,6 +1836,7 @@ paths:
             check fails an error is returned.
           content:
             text/plain:
+              description: "The reason for the failure."
               example:
                 'Invalid hostaddress: IsNotReachable (PeerInfo {_peerId = Nothing, _peerAddr = HostAddress {_hostAddressHost = us-w1.chainweb.com, _hostAddressPort = 444}}) "\"HttpExceptionRequest Request {\\n  host                 = \\\"us-w1.chainweb.com\\\"\\n  port                 = 444\\n  secure               = True\\n  requestHeaders       = [(\\\"X-Chainweb-Node-Version\\\",\\\"2.6\\\")]\\n  path                 = \\\"/chainweb/0.0/mainnet01/cut/peer\\\"\\n  queryString          = \\\"\\\"\\n  method               = \\\"GET\\\"\\n  proxy                = Nothing\\n  rawBody              = False\\n  redirectCount        = 10\\n  responseTimeout      = ResponseTimeoutMicro 2000000\\n  requestVersion       = HTTP/1.1\\n}\\n ConnectionTimeout\""'
 
@@ -2644,6 +2649,7 @@ paths:
               $ref: '#/components/headers/x-chainweb-node-version'
           content:
             text/plain:
+              description: "The reason for the failure."
               example:
                 'Invalid hostaddress: IsNotReachable (PeerInfo {_peerId = Nothing, _peerAddr = HostAddress {_hostAddressHost = us-w1.chainweb.com, _hostAddressPort = 444}}) "\"HttpExceptionRequest Request {\\n  host                 = \\\"us-w1.chainweb.com\\\"\\n  port                 = 444\\n  secure               = True\\n  requestHeaders       = [(\\\"X-Chainweb-Node-Version\\\",\\\"2.6\\\")]\\n  path                 = \\\"/chainweb/0.0/mainnet01/cut/peer\\\"\\n  queryString          = \\\"\\\"\\n  method               = \\\"GET\\\"\\n  proxy                = Nothing\\n  rawBody              = False\\n  redirectCount        = 10\\n  responseTimeout      = ResponseTimeoutMicro 2000000\\n  requestVersion       = HTTP/1.1\\n}\\n ConnectionTimeout\""'
 
