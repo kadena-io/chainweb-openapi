@@ -556,8 +556,9 @@ components:
     requestKey:
       title: Request Key
       type: string
-      description: Request key of a Pact transaction
+      description: Base64Url-encoded, request key of a Pact transaction
       pattern: "^[a-zA-Z0-9_-]{43}$"
+      # contentEncoding: base64Url
       minLength: 43
       maxLength: 43
       example: y3aWL72-3wAy7vL9wcegGXnstH0lHi-q-cfxkhD5JCw
@@ -568,6 +569,7 @@ components:
       type: string
       description: Base64Url (without padding) encoded SHA256 hash
       pattern: "^[a-zA-Z0-9_-]{43}$"
+      # contentEncoding: base64Url
       minLength: 43
       maxLength: 43
       example: y3aWL72-3wAy7vL9wcegGXnstH0lHi-q-cfxkhD5JCw
@@ -609,6 +611,7 @@ components:
         encoding of the numerical value.
       type: string
       pattern: "^[a-zA-Z0-9_-]{43}$"
+      # contentEncoding: base64Url
       minLength: 43
       maxLength: 43
       example: iil_D0t2MGqjAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
@@ -621,6 +624,7 @@ components:
         padding) 256 bit little endian encoding of the numerical value.
       type: string
       pattern: "^[a-zA-Z0-9_-]{43}$"
+      # contentEncoding: base64Url
       minLength: 43
       maxLength: 43
       example: 2uMCnB4lWsErj9w1C1vAp1sHYd-sABf3kgcAAAAAAAA
@@ -640,6 +644,7 @@ components:
       description: Base64Url (without padding) encoded binary block header
       type: string
       pattern: "[a-zA-Z0-9_-]+"
+      # contentEncoding: base64Url
       # minLength: 424
       # maxLength: 424
       example:
@@ -665,6 +670,7 @@ components:
       type: string
       minLength: 318
       maxLength: 318
+      # contentMediaType: application/octet-stream
 
     # JSON encoded Block Header
     blockHeader:
@@ -726,10 +732,12 @@ components:
           items:
             type: string
             pattern: "[a-zA-Z0-9_-]+"
+            # contentEncoding: base64Url
             description: Base64Url (without padding) encoded JSON text of a signed Pact transaction
         minerData:
           type: string
           pattern: "[a-zA-Z0-9_-]+"
+          # contentEncoding: base64Url
 
           description: Base64Url (without padding) encoded JSON text of the miner data of the payload
         transactionsHash:
@@ -762,13 +770,16 @@ components:
               oneOf:
               - type: string
                 pattern: "[a-zA-Z0-9_-]+"
+                # contentEncoding: base64Url
                 description: Base64Url (without padding) encoded JSON text of a signed Pact transaction
               - type: string
                 pattern: "[a-zA-Z0-9_-]+"
+                # contentEncoding: base64Url
                 description: Base64Url (without padding) encoded JSON text of a transaction output
         minerData:
           type: string
           pattern: "[a-zA-Z0-9_-]+"
+          # contentEncoding: base64Url
           description: Base64Url (without padding) encoded JSON text of the miner data of the payload
         transactionsHash:
           $ref: '#/components/schemas/sha256Hash'
@@ -779,6 +790,7 @@ components:
         coinbase:
           type: string
           pattern: "[a-zA-Z0-9_-]+"
+          # contentEncoding: base64Url
           description: Base64Url (without padding) encoded JSON text of coinbase output of the block
 
     # Peer Info
@@ -798,6 +810,7 @@ components:
           type: string
           nullable: true
           pattern: "[a-zA-Z0-9_-]{43}"
+          # contentEncoding: base64Url
         address:
           required: [hostname, port]
           properties:
@@ -839,6 +852,7 @@ components:
           description: The sum of the weights of all blocks in the cut
           type: string
           pattern: "[a-zA-Z0-9_-]{43}"
+          # contentEncoding: base64Url
         hashes:
           type: object
           required: ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19"]
@@ -2014,7 +2028,9 @@ paths:
                 - $ref: '#/components/schemas/page'
               example:
                 $ref: '#/components/examples/blockHeaderPage'
-        "406":
+        "404":
+          description: |
+            The `next` or `maxheight` parameter indicated a nonexistent block height.
           headers:
             x-peer-addr:
               $ref: '#/components/headers/x-peer-addr'
@@ -2022,10 +2038,6 @@ paths:
               $ref: '#/components/headers/x-server-timestamp'
             x-chainweb-node-version:
               $ref: '#/components/headers/x-chainweb-node-version'
-          description: The value of the `Accept` header is not supported.
-        "404":
-          description: |
-            The `next` or `maxheight` parameter indicated a nonexistent block height.
           content:
             application/json:
               schema:
