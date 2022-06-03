@@ -1694,7 +1694,7 @@ paths:
       if the blocks do not depend at all on each other.
     get:
       tags: [ p2p_api, service_api, cut ]
-      summary: Query the current cut from a Chainweb node.
+      summary: Query the current cut
       parameters:
       - name: maxheight
         in: query
@@ -1720,7 +1720,7 @@ paths:
               example:
                 $ref: '#/components/examples/cut'
     put:
-      summary: "Publish a cut to a Chainweb node."
+      summary: "Publish a cut"
       description: |
         Publish a cut to a Chainweb node.
 
