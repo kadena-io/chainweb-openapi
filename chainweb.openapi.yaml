@@ -1736,6 +1736,15 @@ paths:
               $ref: '#/components/headers/x-server-timestamp'
             x-chainweb-node-version:
               $ref: '#/components/headers/x-chainweb-node-version'
+        "401":
+          description: The requester is not a peer of this node, and thus not allowed to send it cuts
+          headers:
+            x-peer-addr:
+              $ref: '#/components/headers/x-peer-addr'
+            x-server-timestamp:
+              $ref: '#/components/headers/x-server-timestamp'
+            x-chainweb-node-version:
+              $ref: '#/components/headers/x-chainweb-node-version'
 
   /cut/peer:
     get:
