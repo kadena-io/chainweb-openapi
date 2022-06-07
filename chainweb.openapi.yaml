@@ -1817,9 +1817,6 @@ paths:
             x-chainweb-node-version:
               $ref: '#/components/headers/x-chainweb-node-version'
         "400":
-          description: |
-            Bad Request.
-            The request is invalid. It is either malformed or the provided peer is not reachable.
           headers:
             x-peer-addr:
               $ref: '#/components/headers/x-peer-addr'
