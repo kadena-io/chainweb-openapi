@@ -2715,7 +2715,8 @@ paths:
                       The chain selection made by the Node. This is
                       informational. Generally, miner should not care about the
                       chain.
-                    type: integer
+                    type: string
+                    format: binary
                   targetBytes:
                     title: 32 PoW Target Bytes
                     description: |
@@ -2725,7 +2726,8 @@ paths:
                       For arithmetic comparisons the hash-target and the PoW
                       hash are interpreted as unsigned 256 bit integral number
                       in little endian encoding.
-                    type: integer
+                    type: string
+                    format: binary
                   headerBytes:
                     title: 286 Work Header Bytes
                     description: |
@@ -2740,7 +2742,8 @@ paths:
                       required to update the creation time. The value must be
                       strictly larger than the creation time of the parent block
                       and must not be in the future.
-                    type: integer
+                    type: string
+                    format: binary
 
   /chainweb/0.0/mainnet01/mining/solved:
     servers:
@@ -2787,7 +2790,8 @@ paths:
                 Miners are free but not required to also update the creation time.
                 The value must be strictly larger than the creation time of the
                 parent block and must not be in the future.
-              type: integer
+              type: string
+              format: binary
       responses:
         "204":
           description: "Solved mining work is valid"
@@ -2836,7 +2840,8 @@ paths:
           application/octet-stream:
             schema:
               title: 4 Chain ID bytes
-              type: integer
+              type: string
+              format: binary
       responses:
         "200":
           description: |
