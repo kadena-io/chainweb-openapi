@@ -821,7 +821,7 @@ components:
                 the respective node is using a valid CA signed SSL certificate.
 
               type: string
-              anyOf:
+              oneOf:
               - format: hostname
               - format: ipv4
               - format: ipv6
