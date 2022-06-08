@@ -89,19 +89,24 @@ paths:
         content:
           application/json:
             schema:
-              type: array
-              minItems: 1
-              items:
-                $ref: '#/components/schemas/command'
+              required: [cmds]
+              properties:
+                cmds:
+                  type: array
+                  minItems: 1
+                  items:
+                    $ref: '#/components/schemas/command'
       responses:
         "200":
           content:
             application/json:
               schema:
+                required: [requestKeys]
                 properties:
                   requestKeys:
                     description: Request keys for use with `poll` or `listen` to retrieve results.
                     type: array
+                    minItems: 1
                     items:
                       $ref: '#/components/schemas/request-key'
         "400":
