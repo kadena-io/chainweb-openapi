@@ -761,14 +761,14 @@ components:
         transactions:
           type: array
           description: |
-            Array of pairs of base64Url (without padding) encoded JSON texts of
-            signed Pact transactions it their outputs
+            Array of pairs of transactions and their outputs.
+            Signed Pact transactions and outputs are base64Url-encoded without padding.
           items:
             type: array
             minItems: 2
             maxItems: 2
             items:
-              oneOf:
+              anyOf:
               - type: string
                 pattern: "[a-zA-Z0-9_-]+"
                 # contentEncoding: base64Url
