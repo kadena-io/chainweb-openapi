@@ -186,6 +186,8 @@ paths:
               $ref: '#/components/schemas/command'
       responses:
         "200":
+          description:
+            The command was accepted.
           content:
             application/json:
               schema:
