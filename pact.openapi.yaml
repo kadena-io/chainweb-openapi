@@ -62,11 +62,13 @@ paths:
               $ref: '#/components/schemas/command'
       responses:
         "200":
+          description: The command's result.
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/command-result'
         "400":
+          description: The command was invalid.
           content:
             text/plain:
               type: string
@@ -95,6 +97,7 @@ paths:
                 $ref: '#/components/schemas/command'
       responses:
         "200":
+          description: The command was successfully submitted, and the response contains its request key.
           content:
             application/json:
               schema:
@@ -105,6 +108,7 @@ paths:
                     items:
                       $ref: '#/components/schemas/request-key'
         "400":
+          description: The command failed.
           content:
             text/plain:
               type: string
@@ -135,6 +139,7 @@ paths:
                     $ref: '#/components/schemas/request-key'
       responses:
         "200":
+          description: The request key was found.
           content:
             application/json:
               schema:
@@ -162,6 +167,7 @@ paths:
                   $ref: '#/components/schemas/request-key'
       responses:
         "200":
+          description: The request key was found.
           content:
             application/json:
               schema:
@@ -232,11 +238,13 @@ paths:
               $ref: '#/components/schemas/spv-object'
       responses:
         "200":
+          description: The requested spv proof.
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/spv-proof'
         "400":
+          description: The requested spv proof was not findable.
           content:
             text/plain:
               example: "SPV target not reachable: target chain not reachable. Chainweb instance is too young"
