@@ -319,7 +319,6 @@ components:
                 type: string
                 description: Executable pact code.
               data:
-                type: any
                 description: Arbitrary JSON to be accessed via `read-msg`, `read-integer` et al in Pact code.
           - title: Continuation Message
             description: Continuation of a previous transaction defpact.
@@ -334,7 +333,6 @@ components:
                 type: boolean
                 description: Whether to execute a specified rollback on this step.
               data:
-                type: any
                 description: Arbitrary JSON to be accessed via `read-msg`, `read-integer` et al in Pact code.
               proof:
                 type: string
