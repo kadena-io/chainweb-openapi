@@ -452,6 +452,7 @@ components:
         result:
           oneOf:
           - title: Success
+            type: object
             properties:
               status:
                 type: string
@@ -459,6 +460,7 @@ components:
               data:
                 $ref: '#/components/schemas/pact-value'
           - title: Failure
+            type: object
             properties:
               status:
                 type: string
