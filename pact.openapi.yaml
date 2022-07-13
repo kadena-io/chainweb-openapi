@@ -91,10 +91,13 @@ paths:
         content:
           application/json:
             schema:
-              type: array
-              minItems: 1
-              items:
-                $ref: '#/components/schemas/command'
+              type: object
+              properties:
+                cmds:
+                  type: array
+                  minItems: 1
+                  items:
+                    $ref: '#/components/schemas/command'
       responses:
         "200":
           description: The command was successfully submitted, and the response contains its request key.
