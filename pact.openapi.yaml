@@ -564,11 +564,10 @@ components:
     pact-value:
       description: Pact value compound type.
       tags: [model-pact-value]
-      oneOf:
+      anyOf:
       - title: String
         description: Pact strings encode directly to JSON strings.
         type: string
-
       - title: Decimal
         description: There are two alternative JSON representations for Decimal.
         oneOf:
@@ -614,6 +613,7 @@ components:
         additionalProperties:
           $ref: '#/components/schemas/pact-value'
       - title: Time
+        type: object
         required: [time]
         properties:
           time:
@@ -627,12 +627,14 @@ components:
           $ref: '#/components/schemas/pact-value'
       - title: Module Reference
         description: Special pact value to directly reference a module or interface.
+        type: object
         properties:
           refName:
             type: string
             description: "Fully-qualified module or interface name."
       - title: Guard
         description: Special pact value for guard types.
+        type: object
         oneOf:
         - title: Keyset
           description: |
@@ -675,6 +677,7 @@ components:
                 $ref: '#/components/schemas/pact-value'
 
         - title: Module Guard
+          type: object
           description: |
             Autonomous guard that only allows module code access, or requires module admin.
           required: [moduleName,name]
@@ -692,6 +695,7 @@ components:
               type: string
               description: Distinguishing/informative name for module guard.
         - title: Pact Guard
+          type: object
           description: |
             Autonomous guard that only allows a particular pact execution, referenced by ID, to pass.
             Two executions of the same defpact code result in distinct pact IDs. A pact guard
@@ -704,7 +708,6 @@ components:
             name:
               type: string
               description: Distinguishing/informative name for pact guard.
-
 
     event:
       description: "Pact output event."
