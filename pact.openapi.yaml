@@ -487,6 +487,29 @@ components:
             blockHeight:
               type: number
               description: Block height of containing block.
+            publicMeta:
+              type: object
+              description: Public metadata.
+              properties:
+                creationTime:
+                  type: number
+                  description: POSIX time the command was created
+                ttl:
+                  type: number
+                  description: Transaction time to live
+                gasLimit:
+                  type: number
+                  description: The transaction's gas limit
+                chainId:
+                  type: string
+                  description: Chain identifier
+                gasPrice:
+                  type: number
+                  description: The price of each unit of gas in KDA
+                sender:
+                  type: string
+                  # TODO
+                  # description:
         events:
           type: array
           items:
