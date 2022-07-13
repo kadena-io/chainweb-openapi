@@ -143,8 +143,8 @@ paths:
           content:
             application/json:
               schema:
-                type: array
-                items:
+                type: object
+                additionalProperties:
                   $ref: '#/components/schemas/command-result'
 
   # ########################################################################## #
@@ -528,8 +528,10 @@ components:
                       type: string
                       description: "Chain ID of target chain for next step."
                     moduleHash:
-                      type: string
                       description: "Hash of module executing defpact."
+                      type: string
+        gas:
+          type: number
 
     pact-value:
       description: Pact value compound type.
