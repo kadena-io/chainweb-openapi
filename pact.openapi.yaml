@@ -92,6 +92,7 @@ paths:
           application/json:
             schema:
               type: object
+              required: [cmds]
               properties:
                 cmds:
                   type: array
@@ -100,14 +101,17 @@ paths:
                     $ref: '#/components/schemas/command'
       responses:
         "200":
-          description: The command was successfully submitted, and the response contains its request key.
+          description: The commands were successfully submitted. The response contains their request keys.
           content:
             application/json:
               schema:
+                type: object
+                required: [requestKeys]
                 properties:
                   requestKeys:
                     description: Request keys for use with `poll` or `listen` to retrieve results.
                     type: array
+                    minItems: 1
                     items:
                       $ref: '#/components/schemas/request-key'
         "400":
@@ -133,6 +137,7 @@ paths:
         content:
           application/json:
             schema:
+              type: object
               required: [requestKeys]
               properties:
                 requestKeys:
@@ -164,6 +169,7 @@ paths:
         content:
           application/json:
             schema:
+              type: object
               required: [listen]
               properties:
                 listen:
@@ -199,6 +205,7 @@ paths:
             The command was accepted.
           content:
             application/json:
+              type: object
               schema:
                 properties:
                   requestKeys:
@@ -272,6 +279,7 @@ components:
       title: Pact Command
       tags: [model-command]
       description: Represents a single blockchain Pact transaction.
+      type: object
       required: [cmd,hash,sigs]
       example:
         $ref: '#/components/examples/command'
@@ -309,6 +317,7 @@ components:
         Pact Command Payloads are encoded as strings in Pact commands, and contain all
         non-malleable data for a transaction.
       tags: [model-payload]
+      type: object
       required: [payload,meta,signers,networkId,nonce]
       example:
         $ref: '#/components/examples/payload'
@@ -445,6 +454,7 @@ components:
       example:
         $ref: '#/components/examples/command-result'
       description: The result of attempting to execute a single well-formed Pact command.
+      type: object
       required: [reqKey,result,logs,metaData,gas]
       properties:
         reqKey:
@@ -714,6 +724,7 @@ components:
 
     event:
       description: "Pact output event."
+      type: object
       properties:
         name:
           type: string
@@ -741,6 +752,7 @@ components:
     pact-error:
       description: |
         Verbose object describing failed execution.
+      type: object
       required: [message]
       properties:
         message:
