@@ -550,6 +550,9 @@ components:
                   description: Pact value object containing yielded data.
                   additionalProperties:
                     $ref: '#/components/schemas/pact-value'
+                source:
+                  type: string
+                  description: "Source chain ID."
                 provenance:
                   properties:
                     targetChainId:
