@@ -889,7 +889,7 @@ components:
     nodeInfo:
       title: Chainweb Node Info
       description: General information about a chainweb node
-      required: [height, weight, hashes]
+      required: [nodeNumberOfChains,nodeApiVersion,nodeChains,nodeVersion,nodeGraphHistory]
       example:
         $ref: '#/components/examples/info'
       properties:
