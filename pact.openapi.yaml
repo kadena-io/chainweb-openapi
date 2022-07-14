@@ -445,7 +445,7 @@ components:
       example:
         $ref: '#/components/examples/command-result'
       description: The result of attempting to execute a single well-formed Pact command.
-      required: [reqKey,result,txId,logs,metaData,continuation]
+      required: [reqKey,result,txId,logs,metaData,continuation,gas]
       properties:
         reqKey:
           $ref: '#/components/schemas/request-key'
@@ -716,8 +716,16 @@ components:
           type: string
           description: Event defcap name.
         module:
-          type: string
+          type: object
           description: Qualified module name of event defcap.
+          required: [name]
+          properties:
+            name:
+              type: string
+              description: module bare name
+            namespace:
+              type: string
+              description: module namespace
         params:
           type: array
           items:
