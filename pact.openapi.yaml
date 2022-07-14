@@ -445,7 +445,7 @@ components:
       example:
         $ref: '#/components/examples/command-result'
       description: The result of attempting to execute a single well-formed Pact command.
-      required: [reqKey,result,txId,logs,metaData,continuation,gas]
+      required: [reqKey,result,logs,metaData,gas]
       properties:
         reqKey:
           $ref: '#/components/schemas/request-key'
