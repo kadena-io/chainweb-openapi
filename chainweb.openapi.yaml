@@ -904,9 +904,9 @@ components:
           type: array
           items:
             description: Chain identifiers
-            type: integer
-          minimum: 0
-          example: [0]
+            type: string
+          minItems: 0
+          example: ["0"]
         nodeVersion:
           type: string
           enum: [ "test-singleton", "development", "mainnet01", "testnet04" ]
@@ -930,19 +930,22 @@ components:
                 minimum: 0
               - description: adjacency list encoding of the chain graph.
                 type: array
-                minItems: 2
-                maxItems: 2
                 items:
-                  oneOf:
-                  - description: a chain identifier
-                    type: integer
-                    minimum: 0
-                  - description: an adjacency list for that chain
-                    type: array
-                    minItems: 0
-                    items:
+                  description: A pair of the chain identifier and the list of chains adjacent to it.
+                  minItems: 2
+                  maxItems: 2
+                  type: array
+                  items:
+                    oneOf:
+                    - description: a chain identifier
                       type: integer
                       minimum: 0
+                    - description: an adjacency list for that chain
+                      type: array
+                      minItems: 0
+                      items:
+                        type: integer
+                        minimum: 0
 
     # Page (use with allOf to provide an schema for itmes)
     page:
