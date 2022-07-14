@@ -147,7 +147,7 @@ paths:
                     $ref: '#/components/schemas/request-key'
       responses:
         "200":
-          description: The request key was found.
+          description: The command results for some of the requested request keys.
           content:
             application/json:
               schema:
@@ -518,8 +518,6 @@ components:
                   description: The price of each unit of gas in KDA
                 sender:
                   type: string
-                  # TODO
-                  # description:
         events:
           type: array
           items:
