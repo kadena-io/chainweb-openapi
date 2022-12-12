@@ -541,7 +541,7 @@ components:
       title: Host Address
       description: Host address containing IPv4 and port
       type: string
-      pattern: '^\d{4}.\d{4}.\d{4}.\d{4}:\d$'
+      pattern: '^\d{4}.\d{4}.\d{4}.\d{4}:\d+$'
       example: '10.36.1.3:42988'
 
     # Signed Transaction Text
