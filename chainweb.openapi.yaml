@@ -541,7 +541,7 @@ components:
       title: Host Address
       description: Host address containing IPv4 and port
       type: string
-      pattern: '^\d{4}.\d{4}.\d{4}.\d{4}:\d$'
+      pattern: '^\d{4}.\d{4}.\d{4}.\d{4}:\d+$'
       example: '10.36.1.3:42988'
 
     # Signed Transaction Text
@@ -761,14 +761,14 @@ components:
         transactions:
           type: array
           description: |
-            Array of pairs of base64Url (without padding) encoded JSON texts of
-            signed Pact transactions it their outputs
+            Array of pairs of transactions and their outputs.
+            Signed Pact transactions and outputs are base64Url-encoded without padding.
           items:
             type: array
             minItems: 2
             maxItems: 2
             items:
-              oneOf:
+              anyOf:
               - type: string
                 pattern: "[a-zA-Z0-9_-]+"
                 # contentEncoding: base64Url
@@ -889,7 +889,7 @@ components:
     nodeInfo:
       title: Chainweb Node Info
       description: General information about a chainweb node
-      required: [height, weight, hashes]
+      required: [nodeNumberOfChains,nodeApiVersion,nodeChains,nodeVersion,nodeGraphHistory]
       example:
         $ref: '#/components/examples/info'
       properties:
@@ -904,9 +904,9 @@ components:
           type: array
           items:
             description: Chain identifiers
-            type: integer
-          minimum: 0
-          example: [0]
+            type: string
+          minItems: 0
+          example: ["0"]
         nodeVersion:
           type: string
           enum: [ "test-singleton", "development", "mainnet01", "testnet04" ]
@@ -930,19 +930,22 @@ components:
                 minimum: 0
               - description: adjacency list encoding of the chain graph.
                 type: array
-                minItems: 2
-                maxItems: 2
                 items:
-                  oneOf:
-                  - description: a chain identifier
-                    type: integer
-                    minimum: 0
-                  - description: an adjacency list for that chain
-                    type: array
-                    minItems: 0
-                    items:
+                  description: A pair of the chain identifier and the list of chains adjacent to it.
+                  minItems: 2
+                  maxItems: 2
+                  type: array
+                  items:
+                    oneOf:
+                    - description: a chain identifier
                       type: integer
                       minimum: 0
+                    - description: an adjacency list for that chain
+                      type: array
+                      minItems: 0
+                      items:
+                        type: integer
+                        minimum: 0
 
     # Page (use with allOf to provide an schema for itmes)
     page:
