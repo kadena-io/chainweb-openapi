@@ -85,8 +85,8 @@ paths:
         - name: signatureValidation
           in: query
           description: |
-            Require signature validation metadata validation during
-            preflight simulation.
+            Require user signature validation when validating transaction
+            metadata.
           required: false
           schema:
             type: bool
