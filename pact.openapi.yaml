@@ -50,8 +50,10 @@ paths:
     post:
       description: |
         Blocking/sync call to submit a command for non-transactional execution. In a
-        blockchain environment this would be a node-local “dirty read”. Any database
-        writes or changes to the environment are rolled back.
+        blockchain environment this would be a node-local “dirty read”, which can
+        either serve as a node-local repl execution, or fully gassed transaction
+        simulation and transaction validation. Any database writes or changes to the
+        environment are rolled back.
 
       tags: [endpoint-local]
       summary: local
@@ -60,6 +62,35 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/command'
+      parameters:
+        - name: preflight
+          in: query
+          description: |
+            Trigger fully-gassed mainnet transaction execution simulation and
+            transaction metadata validations.
+          required: false
+          schema:
+            type: bool
+
+        - name: rewindDepth
+          in: query
+          description: |
+            Rewind transaction execution environment by a number of block
+            heights.
+          required: false
+          schema:
+            type: integer
+            minimum: 0
+
+        - name: signatureValidation
+          in: query
+          description: |
+            Require user signature validation when validating transaction
+            metadata.
+          required: false
+          schema:
+            type: bool
+
       responses:
         "200":
           description: The command's result.
