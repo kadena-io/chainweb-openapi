@@ -72,15 +72,17 @@ paths:
           schema:
             type: bool
 
-        - name: rewindDepth
-          in: query
-          description: |
-            Rewind transaction execution environment by a number of block
-            heights.
-          required: false
-          schema:
-            type: integer
-            minimum: 0
+        # Note: turned off until this is supported properly
+        #
+        # - name: rewindDepth
+        #   in: query
+        #   description: |
+        #     Rewind transaction execution environment by a number of block
+        #     heights.
+        #   required: false
+        #   schema:
+        #     type: integer
+        #     minimum: 0
 
         - name: signatureValidation
           in: query
