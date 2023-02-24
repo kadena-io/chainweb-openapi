@@ -99,9 +99,7 @@ paths:
           content:
             application/json:
               schema:
-                oneOf:
-                  - $ref: '#/components/schemas/command-result'
-                  - $ref: '#/components/schemas/preflight-result'
+                $ref: '#/components/schemas/command-result'
         "400":
           description: The command was invalid.
           content:
@@ -482,25 +480,6 @@ components:
 
     # ######################################################################## #
     # Command Result and related
-
-    preflight-result:
-      title: Preflight result
-      tags: [model-preflight-result]
-      example:
-        $ref: '#/components/examples/preflight-result'
-      description:
-        The result of attempting to execute a single well-formed Pact /local preflight command.
-      type: object
-      required: [preflightWarnings,preflightResult]
-      properties:
-        preflightWarnings:
-          type: array
-          description:
-            A set of deprecation warnings generated as the result of pact command execution.
-          items:
-            type: string
-        preflightResult:
-          $ref: '#/components/schemas/command-result'
 
     command-result:
       title: Command Result
