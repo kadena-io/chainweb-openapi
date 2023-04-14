@@ -70,7 +70,7 @@ paths:
             transaction metadata validations.
           required: false
           schema:
-            type: bool
+            type: boolean
 
         # Note: turned off until this is supported properly
         #
@@ -91,7 +91,7 @@ paths:
             metadata.
           required: false
           schema:
-            type: bool
+            type: boolean
 
       responses:
         "200":
