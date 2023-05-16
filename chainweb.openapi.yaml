@@ -13,7 +13,6 @@ info:
     conservative extension of Bitcoin's Nakamoto consensus that extends
     Bitcoin's single chain algorithm to multiple chains. This allows for
     unlimited transaction throughput by horizontally scaling the number of chains.
-    For
 
     Feedback and bug reports for the content of this site are welcome. Please
     open an issue at [this github repository](https://github.com/kadena-io/chainweb-openapi/issues).

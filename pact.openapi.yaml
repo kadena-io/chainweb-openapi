@@ -493,7 +493,7 @@ components:
         The result of attempting to execute preflight simulation for a
         single well-formed Pact command.
       type: object
-      required: [preflightResult]
+      required: [preflightResult,preflightWarnings]
       properties:
         preflightResult:
           $ref: '#/components/schemas/command-result'
