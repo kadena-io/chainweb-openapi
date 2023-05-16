@@ -13,6 +13,7 @@ info:
     url: 'https://i.imgur.com/bAZFAGF.png'
     # backgroundColor: '#0033A0'
     alttext: Kadena Chainweb Logo
+    href: 'https://api.chainweb.com/openapi'
 
 # ############################################################################ #
 # Servers
@@ -99,7 +100,9 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/command-result'
+                oneOf:
+                  - $ref: '#/components/schemas/command-result'
+                  - $ref: '#/components/schemas/preflight-result'
         "400":
           description: The command was invalid.
           content:
@@ -481,6 +484,26 @@ components:
     # ######################################################################## #
     # Command Result and related
 
+    preflight-result:
+      title: Preflight /local result
+      tags: [model-preflight-result]
+      example:
+        $ref: '#/components/examples/preflight-result'
+      description:
+        The result of attempting to execute preflight simulation for a
+        single well-formed Pact command.
+      type: object
+      required: [preflightResult]
+      properties:
+        preflightResult:
+          $ref: '#/components/schemas/command-result'
+        preflightWarnings:
+          description:
+            A list of warnings associated with deprecated features in upcoming pact releases.
+          type: array
+          items:
+            type: string
+
     command-result:
       title: Command Result
       tags: [model-command-result]
@@ -826,6 +849,29 @@ components:
 
   examples:
 
+    preflight-result:
+      {
+        "preflightResult": { "gas":123,
+          "result": {
+            "status":"success",
+            "data":3
+            },
+          "reqKey":"cQ-guhschk0wTvMBtrqc92M7iYm4S2MYhipQ2vNKxoI",
+          "logs":"wsATyGqckuIvlm89hhd2j4t6RMkCrcwJe_oeCYr7Th8",
+          "metaData":null,
+          "continuation":null,
+          "txId":"456",
+          "events": [ {
+            "name": "TRANSFER",
+            "params": ["Alice", "Bob", 10.0],
+            "module": "coin",
+            "moduleHash": "ut_J_ZNkoyaPUEJhiwVeWnkSQn9JT9sQCWKdjjVVrWo"
+            } ]
+        },
+        "preflightWarnings": [
+          "Warning: Using deprecated native +: decimal/integer operator overload is deprecated"
+        ]
+      }
     command:
       { "hash": "H6XjdPHzMai2HLa3_yVkXfkFYMgA0bGfsB0kOsHAMuI",
         "sigs": [

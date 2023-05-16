@@ -13,6 +13,7 @@ info:
     conservative extension of Bitcoin's Nakamoto consensus that extends
     Bitcoin's single chain algorithm to multiple chains. This allows for
     unlimited transaction throughput by horizontally scaling the number of chains.
+    For
 
     Feedback and bug reports for the content of this site are welcome. Please
     open an issue at [this github repository](https://github.com/kadena-io/chainweb-openapi/issues).
@@ -174,7 +175,7 @@ tags:
     For only querying blocks that are included in the winning branch of the
     chain the `branch` endpoints can be used, which return blocks in descending
     order starting from the leafs of branches of the block chain.
-    
+
     Block headers are returned in three different formats specified in the `accept` header of the request:
     *   `application/json`, returns block headers in base64Url (without padding)
         encoded binary.
