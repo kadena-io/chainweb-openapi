@@ -178,6 +178,16 @@ paths:
                   minItems: 1
                   items:
                     $ref: '#/components/schemas/request-key'
+      parameters:
+        - name: confirmationDepth
+          in: query
+          description: |
+            Configures how many blocks should be mined until the requested transaction is ready.
+          required: false
+          schema:
+            type: integer
+            minimum: 0
+
       responses:
         "200":
           description: The command results for some of the requested request keys.
