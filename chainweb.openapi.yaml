@@ -174,7 +174,7 @@ tags:
     For only querying blocks that are included in the winning branch of the
     chain the `branch` endpoints can be used, which return blocks in descending
     order starting from the leafs of branches of the block chain.
-    
+
     Block headers are returned in three different formats specified in the `accept` header of the request:
     *   `application/json`, returns block headers in base64Url (without padding)
         encoded binary.
@@ -2202,6 +2202,17 @@ paths:
                 - $ref: '#/components/schemas/page'
               example:
                 $ref: '#/components/examples/blockHeaderBranchPage'
+
+        "400":
+          headers:
+            x-peer-addr:
+              $ref: '#/components/headers/x-peer-addr'
+            x-server-timestamp:
+              $ref: '#/components/headers/x-server-timestamp'
+            x-chainweb-node-version:
+              $ref: '#/components/headers/x-chainweb-node-version'
+          description: The branch bounds were exceeded.
+
         "406":
           headers:
             x-peer-addr:
