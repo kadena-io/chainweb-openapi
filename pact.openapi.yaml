@@ -701,10 +701,36 @@ components:
       - title: Module Reference
         description: Special pact value to directly reference a module or interface.
         type: object
+        required: [refName,refSpec]
+        example:
+          $ref: '#/components/examples/module_reference'
         properties:
           refName:
-            type: string
-            description: "Fully-qualified module or interface name."
+            type: object
+            required: [name,namespace]
+            description: The module name
+            properties:
+              name:
+                type: string
+                description: Bare name of a module
+              namespace:
+                type: string
+                nullable: true
+                description: Namespace of the indicated module
+          refSpec:
+            type: array
+            description: The module names to substitute for any references present in the module code
+            items:
+              type: object
+              required: [name,namespace]
+              properties:
+                name:
+                  type: string
+                  description: Bare name of a module
+                namespace:
+                  type: string
+                  nullable: true
+                  description: Namespace of the indicated module
       - title: Guard
         description: Special pact value for guard types.
         type: object
@@ -909,6 +935,19 @@ components:
         "nonce": "nonce-value"
       }
 
+    module_reference:
+      { 
+        "refName": {
+          "namespace": null,
+          "name": "coin"
+        },
+        "refSpec": [
+            {
+              "namespace": null,
+              "name": "fungible-v2"
+            }
+        ]
+      }
 
 
 # ############################################################################ #
