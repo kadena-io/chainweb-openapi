@@ -83,10 +83,10 @@ paths:
             type: integer
             minimum: 0
 
-        - name: signatureValidation
+        - name: signatureVerification
           in: query
           description: |
-            Require user signature validation when validating transaction
+            Require user signature verification when validating transaction
             metadata.
           required: false
           schema:
@@ -961,7 +961,7 @@ components:
       }
 
     module_reference:
-      { 
+      {
         "refName": {
           "namespace": null,
           "name": "coin"
