@@ -1015,7 +1015,7 @@ components:
     miningUpdateEventStream:
       title: Mining Update Events
       description: |
-        A stream of server-sent events. **This is not an JSON array**.
+        A stream of server-sent events. **This is not a JSON array**.
         Events are separated by empty lines (`\n\n`). Each event
         consists of a single line:
 
@@ -1025,7 +1025,7 @@ components:
       items:
         title: New Cut Event
         description: |
-          A `New Cut` event. **This is not an JSON object**.
+          A `New Cut` event. **This is not a JSON object**.
           Each event consists of a single `event` propert.
         properties:
           event:
@@ -3299,7 +3299,7 @@ paths:
       tags: [ misc ]
       summary: Blocks Event Stream
       description: |
-        An source of server events that emits a `BlockHeader` event for each new
+        A source of server events that emits a `BlockHeader` event for each new
         block header that is added to the chain database of the remote node.
 
         The stream contains blocks that may later become orphaned. It is
@@ -3327,14 +3327,14 @@ paths:
             text/event-stream:
               schema:
                 description: |
-                  A stream of `BlockHeader` events. **This is not an JSON array**.
+                  A stream of `BlockHeader` events. **This is not a JSON array**.
 
                   Events are separated by empty lines (`\n\n`). Each event
                   consists of two newline (`\n`) separated properties.
                 type: array
                 items:
                   description: |
-                    A `BlockHeader` event. **This is not an JSON object**.
+                    A `BlockHeader` event. **This is not a JSON object**.
 
                     Each event consists of an `event` property and a `data`
                     property which are separated by newlines.
@@ -3369,7 +3369,7 @@ paths:
       tags: [ misc ]
       summary: Blocks Event Stream
       description: |
-        An source of server events that emits a `Block` event for each new
+        A source of server events that emits a `Block` event for each new
         block that is added to the chain database of the remote node.
 
         The stream contains blocks that may later become orphaned. It is
@@ -3397,14 +3397,14 @@ paths:
             text/event-stream:
               schema:
                 description: |
-                  A stream of `Block` events. **This is not an JSON array**.
+                  A stream of `Block` events. **This is not a JSON array**.
 
                   Events are separated by empty lines (`\n\n`). Each event
                   consists of two newline (`\n`) separated properties.
                 type: array
                 items:
                   description: |
-                    A `Block` event. **This is not an JSON object**.
+                    A `Block` event. **This is not a JSON object**.
 
                     Each event consists of an `event` property and a `data`
                     property which are separated by newlines.
