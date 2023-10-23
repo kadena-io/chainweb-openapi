@@ -2153,7 +2153,7 @@ paths:
             x-chainweb-node-version:
               $ref: '#/components/headers/x-chainweb-node-version'
           content:
-            application/json;blockheader-encoding=object:
+            application/json:
               schema:
                 allOf:
                 - properties:
