@@ -163,17 +163,33 @@ tags:
     chain the `branch` endpoint can be used, which returns blocks in descending
     order starting from the leafs of branches of the block chain.
 
+- name: block
+  x-displayName: Block Endpoints
+  description: |
+    These endpoints return whole blocks, headers and payloads, from the chain
+    database.
+
+    Generally, blocks are returned in ascending order and include orphaned
+    blocks.
+
+    For only querying blocks that are included in the winning branch of the
+    chain the `branch` endpoints can be used, which return blocks in descending
+    order starting from the leafs of branches of the block chain.
+
+    Blocks are returned in only one format, with block headers and payloads in
+    JSON encoding.
+
 - name: header
   x-displayName: Block Header Endpoints
   description: |
     These endpoints return block headers from the chain database.
 
-    Generally, block headers are returned in ascending order and include headers
-    of orphaned blocks.
+    Similar to the block endpoints, block headers are generally returned in
+    ascending order and include headers of orphaned blocks.
 
-    For only querying blocks that are included in the winning branch of the
-    chain the `branch` endpoints can be used, which return blocks in descending
-    order starting from the leafs of branches of the block chain.
+    For only querying block headers that are included in the winning branch of
+    the chain the `branch` endpoints can be used, which return block headers in
+    descending order starting from the leafs of branches of the block chain.
 
     Block headers are returned in three different formats specified in the `accept` header of the request:
     *   `application/json`, returns block headers in base64Url (without padding)
@@ -470,6 +486,7 @@ x-tagGroups:
   x-displayName: Chainweb Service API
   tags:
   - service_api
+  - block
   - misc
   - mining
   - pact
@@ -794,6 +811,19 @@ components:
           pattern: "[a-zA-Z0-9_-]+"
           # contentEncoding: base64Url
           description: Base64Url (without padding) encoded JSON text of coinbase output of the block
+
+    block:
+      title: Full block
+      description: |
+        A block header and payload
+      required: [header, payloadWithOutputs]
+      example:
+          $ref: '#/components/examples/blockPage/value/items/0'
+      properties:
+        header:
+          $ref: '#/components/schemas/blockHeader'
+        payloadWithOutputs:
+          $ref: '#/components/schemas/payloadWithOutputs'
 
     # Peer Info
     peer:
@@ -1272,53 +1302,6 @@ components:
           "limit": 2
         }
 
-    blockHeaderBranchPage:
-      value:
-        {
-          "next": "inclusive:3GtQwfXkNj7zcN4rCW8NayPgNjhKmFzkjzaMJVKlK4I",
-          "items": [
-            {
-              "creationTime": 1619037432636631,
-              "parent": "RClyuyZAacwvPpmLXKbTwrIRXWeUSjiNhJVP2esH8KM",
-              "height": 1554652,
-              "hash": "QxGCAz5AY1Y41nh1yWtgqhKhZ9pPiPRagFdIKNqBH74",
-              "chainId": 0,
-              "weight": "iil_D0t2MGqjAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
-              "featureFlags": 0,
-              "epochStart": 1619035923346538,
-              "adjacents": {
-                "15": "sHRn1laXo2DK2_85nOH7apQyC6Vr_gEctSElqdrCC00",
-                "5": "4BMlW68KbggSREOGDeH_oFFoUrpZ0zX0hM0TTdYrEAY",
-                "10": "RoxLy8ECsIIWebtW8zZsH1xfRGu4NOuSlgH4cAJLFcw"
-              },
-              "payloadHash": "Dc9EZlWbyHhpj1wyBcBB_dBthI0NScXGNmevwXBySdc",
-              "chainwebVersion": "mainnet01",
-              "target": "2uMCnB4lWsErj9w1C1vAp1sHYd-sABf3kgcAAAAAAAA",
-              "nonce": "13613065763022308878"
-            },
-            {
-              "creationTime": 1619037412190904,
-              "parent": "3GtQwfXkNj7zcN4rCW8NayPgNjhKmFzkjzaMJVKlK4I",
-              "height": 1554651,
-              "hash": "RClyuyZAacwvPpmLXKbTwrIRXWeUSjiNhJVP2esH8KM",
-              "chainId": 0,
-              "weight": "jkhp26CpDmqjAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
-              "featureFlags": 0,
-              "epochStart": 1619035923346538,
-              "adjacents": {
-                "15": "4pgr0U_1kQxou-NIc42nICYqOgLM1Vawamal-HuhLvc",
-                "5": "wdorGxUmrIkWyssvz3oHm3uqurfNd5ywiD6NHsZQEr8",
-                "10": "750C1IKC9doZZKtqCckOF8JmIaHMhDfopNobHeJvmXM"
-              },
-              "payloadHash": "12pEsZd3rLo4bBKGsULu8GshZ_9MsJ9pikue76rsDsA",
-              "chainwebVersion": "mainnet01",
-              "target": "2uMCnB4lWsErj9w1C1vAp1sHYd-sABf3kgcAAAAAAAA",
-              "nonce": "14452354234648303941"
-            }
-          ],
-          "limit": 2
-        }
-
     blockHeaderPage:
       value:
         {
@@ -1361,6 +1344,75 @@ components:
               "chainwebVersion": "mainnet01",
               "target": "QrcsbEm-3WjyCGAGlzIEhLEN3ZMWORoyYy8AAAAAAAA",
               "nonce": "110239794631051275"
+            }
+          ],
+          "limit": 2
+        }
+
+    blockPage:
+      value:
+        {
+          "next": "inclusive:o1S4NNFhKWg8T1HEkmDvsTH9Ut9l3_qHRpp00yRKZIk",
+          "items": [
+            {
+              "blockHeader": {
+                "creationTime": 1602382624629329,
+                "parent": "HaXABq1PKSKlhncJk0_Mt75_lL7NS3wI627QfXZ_85k",
+                "height": 1000000,
+                "hash": "k0an0qEORusqQg9ZjKrxa-0Bo0-hQVYLXqWi5LHxg3k",
+                "chainId": 0,
+                "weight": "NQn4BGftuWAeAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+                "featureFlags": 0,
+                "epochStart": 1602381443331834,
+                "adjacents": {
+                  "15": "MItdqgHZxf7j6l0oE8X-G9-VyMbnQmZrtSniuRe_EJ8",
+                  "5": "Mpic85rur2MYf3zli8s8bHxTFjriFoMPTr6ZPs8sjxM",
+                  "10": "VBKuhU_hQmuvKlx88A5o-FH0rzNo59NsdxmOGNBQ-yc"
+                },
+                "payloadHash": "GpaWbHkHrCjRhY8hKE0qZ1WsBBaG3Y_zkFLV2sYumQA",
+                "chainwebVersion": "mainnet01",
+                "target": "QrcsbEm-3WjyCGAGlzIEhLEN3ZMWORoyYy8AAAAAAAA",
+                "nonce": "13095611958898437"
+              },
+              "payloadWithOutputs": {
+                "transactions":[],
+                "minerData":"eyJhY2NvdW50IjoiYTFiMzE0MGNiN2NjODk1YzBlMDkxNzAyZWQwNTU3OWZiZTA1YzZlNjc0NWY4MmNlNjAzNzQ2YjQwMGM4MTU0OCIsInByZWRpY2F0ZSI6ImtleXMtYWxsIiwicHVibGljLWtleXMiOlsiYTFiMzE0MGNiN2NjODk1YzBlMDkxNzAyZWQwNTU3OWZiZTA1YzZlNjc0NWY4MmNlNjAzNzQ2YjQwMGM4MTU0OCJdfQ",
+                "transactionsHash":"nT0j4xw2woMkdXXaopdurXIn24OG-jNMqQzUGfxV_MA",
+                "outputsHash":"4pXRrZ2K0_V0iGAxQCKrKdLjQTBZHBOQS7P-47kdnhY",
+                "payloadHash":"GpaWbHkHrCjRhY8hKE0qZ1WsBBaG3Y_zkFLV2sYumQA",
+                "coinbase":"eyJnYXMiOjAsInJlc3VsdCI6eyJzdGF0dXMiOiJzdWNjZXNzIiwiZGF0YSI6IldyaXRlIHN1Y2NlZWRlZCJ9LCJyZXFLZXkiOiJJa2hoV0VGQ2NURlFTMU5MYkdodVkwcHJNRjlOZERjMVgyeE1OMDVUTTNkSk5qSTNVV1pZV2w4NE5Xc2kiLCJsb2dzIjoiZ3Noak1kWFJrVGxKYmIxalZkQWJ6SVVDcGpQb1JBQ2pEbExzRzBXNkJEMCIsIm1ldGFEYXRhIjpudWxsLCJjb250aW51YXRpb24iOm51bGwsInR4SWQiOjEyNzIzNTB9"
+              }
+            },
+            {
+              "blockHeader": {
+                "creationTime": 1602382678045236,
+                "parent": "k0an0qEORusqQg9ZjKrxa-0Bo0-hQVYLXqWi5LHxg3k",
+                "height": 1000001,
+                "hash": "vhVa6Deh10RXLRf3L-MSQTYqaL-_IY_mi-v58MjP9R8",
+                "chainId": 0,
+                "weight": "bOkHN2JUv2AeAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+                "featureFlags": 0,
+                "epochStart": 1602381443331834,
+                "adjacents": {
+                  "15": "Kv0sz_rTANjoiJwMrdZFCJNFwdH0U_M5ouwMr3BXBfo",
+                  "5": "ALcxv1ZiwwQ_QX9eOBZMbzIop6n7XtveS1FqOFwyvGM",
+                  "10": "C76ElC60qXSJQCHePpzzJxsCYvvrqvmkoHPyZnex-4Q"
+                },
+                "payloadHash": "smUiDW9jfD_0vrdt4-fXKT_lqC90RsgEGObdp3FznFY",
+                "chainwebVersion": "mainnet01",
+                "target": "QrcsbEm-3WjyCGAGlzIEhLEN3ZMWORoyYy8AAAAAAAA",
+                "nonce": "110239794631051275"
+              },
+              "payloadWithOutputs": {
+                "transactions": [
+                    ["eyJoYXNoIjoibFRqWW9taEFDSEUxemphRFlvbnV6VGJmdEV1THp2SExNTUE5dzI0SFY5SSIsInNpZ3MiOlt7InNpZyI6IjE3ZDhkYmRmYjUyZWUyMmMyMTA5MGNjYzBkYzY0MzhmYjFjZjlmZWVmNmVjNGY1YWQwMTA3MzViNjllYjA4MjQ2MGU3ZTExYmI4NTBjM2FkN2M4MjAyNzFiMzViNmFiMDcyOTExNGExOGE2YWUwMmFiYWJmZGM0Yzc1ZWZiZjA0In1dLCJjbWQiOiJ7XCJuZXR3b3JrSWRcIjpcIm1haW5uZXQwMVwiLFwicGF5bG9hZFwiOntcImV4ZWNcIjp7XCJkYXRhXCI6e30sXCJjb2RlXCI6XCIoY29pbi50cmFuc2ZlciBcXFwiNjUyYTg4MzFhNWFkMjQzOTYxNWM4NzQ2NzliNjAwN2EwMzUzOTg1Mjk3YzhmN2MzNDhmMzhhYzYxODZiNzBmN1xcXCIgXFxcIjlhMjEyYjZiZDM5ZmZlOWMzZTIxNTk5ZDMyOWEzYTg0YzkwN2NkNGJlMWYzYjUyYWE0ZmU3NmEzNjk1Yzk1ODFcXFwiIDEwLjEzKVwifX0sXCJzaWduZXJzXCI6W3tcInB1YktleVwiOlwiNjUyYTg4MzFhNWFkMjQzOTYxNWM4NzQ2NzliNjAwN2EwMzUzOTg1Mjk3YzhmN2MzNDhmMzhhYzYxODZiNzBmN1wiLFwiY2xpc3RcIjpbe1wiYXJnc1wiOltdLFwibmFtZVwiOlwiY29pbi5HQVNcIn0se1wiYXJnc1wiOltcIjY1MmE4ODMxYTVhZDI0Mzk2MTVjODc0Njc5YjYwMDdhMDM1Mzk4NTI5N2M4ZjdjMzQ4ZjM4YWM2MTg2YjcwZjdcIixcIjlhMjEyYjZiZDM5ZmZlOWMzZTIxNTk5ZDMyOWEzYTg0YzkwN2NkNGJlMWYzYjUyYWE0ZmU3NmEzNjk1Yzk1ODFcIiwxMC4xM10sXCJuYW1lXCI6XCJjb2luLlRSQU5TRkVSXCJ9XX1dLFwibWV0YVwiOntcImNyZWF0aW9uVGltZVwiOjE2MDIzODI1NTgsXCJ0dGxcIjoyODgwMCxcImdhc0xpbWl0XCI6NjAwLFwiY2hhaW5JZFwiOlwiMFwiLFwiZ2FzUHJpY2VcIjoxLjBlLTUsXCJzZW5kZXJcIjpcIjY1MmE4ODMxYTVhZDI0Mzk2MTVjODc0Njc5YjYwMDdhMDM1Mzk4NTI5N2M4ZjdjMzQ4ZjM4YWM2MTg2YjcwZjdcIn0sXCJub25jZVwiOlwiXFxcIjIwMjAtMTAtMTFUMDI6MTc6MDMuNTM3WlxcXCJcIn0ifQ","eyJnYXMiOjU3MiwicmVzdWx0Ijp7InN0YXR1cyI6InN1Y2Nlc3MiLCJkYXRhIjoiV3JpdGUgc3VjY2VlZGVkIn0sInJlcUtleSI6ImxUallvbWhBQ0hFMXpqYURZb251elRiZnRFdUx6dkhMTU1BOXcyNEhWOUkiLCJsb2dzIjoicERxbDlQazJBSHAwanEyVzRWQmZPWmpWWEhTTHRqMklBWGZ0TlRBZXBFVSIsIm1ldGFEYXRhIjpudWxsLCJjb250aW51YXRpb24iOm51bGwsInR4SWQiOjEyNzIzNTN9"]
+                  ],
+                  "minerData":"eyJhY2NvdW50IjoiYTFiMzE0MGNiN2NjODk1YzBlMDkxNzAyZWQwNTU3OWZiZTA1YzZlNjc0NWY4MmNlNjAzNzQ2YjQwMGM4MTU0OCIsInByZWRpY2F0ZSI6ImtleXMtYWxsIiwicHVibGljLWtleXMiOlsiYTFiMzE0MGNiN2NjODk1YzBlMDkxNzAyZWQwNTU3OWZiZTA1YzZlNjc0NWY4MmNlNjAzNzQ2YjQwMGM4MTU0OCJdfQ",
+                  "transactionsHash":"Fzhmc04Cub7YcLd2ybMKBok8TpBQ6-W_msAV8gFzuhM",
+                  "outputsHash":"VsGmieWzCV3nwDHFtdKrGd61mycmtv_vJ9mI0VZrONI",
+                  "payloadHash":"smUiDW9jfD_0vrdt4-fXKT_lqC90RsgEGObdp3FznFY",
+                  "coinbase":"eyJnYXMiOjAsInJlc3VsdCI6eyJzdGF0dXMiOiJzdWNjZXNzIiwiZGF0YSI6IldyaXRlIHN1Y2NlZWRlZCJ9LCJyZXFLZXkiOiJJbXN3WVc0d2NVVlBVblZ6Y1ZGbk9WcHFTM0o0WVMwd1FtOHdMV2hSVmxsTVdIRlhhVFZNU0hobk0yc2kiLCJsb2dzIjoicDkzUW00LVdGYnpFb0R6Y0FoSEFWZTd6N21kaFQ0UG9yMVJ0S2QydWR1YyIsIm1ldGFEYXRhIjpudWxsLCJjb250aW51YXRpb24iOm51bGwsInR4SWQiOjEyNzIzNTF9"
+              }
             }
           ],
           "limit": 2
@@ -1983,6 +2035,175 @@ paths:
                     $ref: '#/components/schemas/blockHash'
 
   # ########################################################################## #
+  # Blocks
+
+  /chain/{chain}/block:
+    get:
+      summary: Get Block
+      description: |
+        A page of a collection of blocks in **ascending** order that satisfies
+        query parameters. Any block from the chain database is returned. **This
+        includes orphaned blocks.**
+      tags: [ block ]
+      parameters:
+      - $ref: '#/components/parameters/chain'
+      - $ref: '#/components/parameters/limit'
+      - $ref: '#/components/parameters/next'
+      - $ref: '#/components/parameters/minheight'
+      - $ref: '#/components/parameters/maxheight'
+      responses:
+        "200":
+          description: "The requested blocks"
+          headers:
+            x-peer-addr:
+              $ref: '#/components/headers/x-peer-addr'
+            x-server-timestamp:
+              $ref: '#/components/headers/x-server-timestamp'
+            x-chainweb-node-version:
+              $ref: '#/components/headers/x-chainweb-node-version'
+          content:
+            application/json:
+              schema:
+                allOf:
+                - properties:
+                    items:
+                      description: Array of JSON encoded blocks
+                      items:
+                        $ref: '#/components/schemas/block'
+                - $ref: '#/components/schemas/page'
+              example:
+                $ref: '#/components/examples/blockPage'
+        "404":
+          description: |
+            The `next` or `maxheight` parameter indicated a nonexistent block height.
+          headers:
+            x-peer-addr:
+              $ref: '#/components/headers/x-peer-addr'
+            x-server-timestamp:
+              $ref: '#/components/headers/x-server-timestamp'
+            x-chainweb-node-version:
+              $ref: '#/components/headers/x-chainweb-node-version'
+          content:
+            application/json:
+              schema:
+                properties:
+                  reason:
+                    type: string
+                  key:
+                    $ref: '#/components/schemas/blockHash'
+
+  /chain/{chain}/block/branch:
+    post:
+      summary: Get Block Branches
+      description: |
+        A page of blocks from branches of the block chain in **descending**
+        order.
+
+        Blocks are returned that are ancestors of the block in the set of upper
+        bounds and are not ancestors of any block in the set of lower bounds.
+      tags: [ block ]
+      parameters:
+      - $ref: '#/components/parameters/chain'
+      - $ref: '#/components/parameters/limit'
+      - $ref: '#/components/parameters/next'
+      - $ref: '#/components/parameters/minheight'
+      - $ref: '#/components/parameters/maxheight'
+      requestBody:
+        description: Upper and lower bounds of the queried branches
+        content:
+          application/json:
+            schema:
+              properties:
+                lower:
+                  description: |
+                    No blocks are returned that are predecessors of any block with
+                    an hash from this array.
+                  type: array
+                  items:
+                    $ref: '#/components/schemas/blockHash'
+                upper:
+                  description: |
+                    Returned block headers are predecessors of a block with an
+                    hash from this array. This includes blocks with hashes from
+                    this array.
+                  type: array
+                  items:
+                    $ref: '#/components/schemas/blockHash'
+            examples:
+              singletonLimited:
+                value: { "lower":["RClyuyZAacwvPpmLXKbTwrIRXWeUSjiNhJVP2esH8KM"], "upper": ["QxGCAz5AY1Y41nh1yWtgqhKhZ9pPiPRagFdIKNqBH74"]}
+                summary: Ancestors of block that are not ancestors of another block
+              singleton:
+                value: { "lower":[], "upper": ["QxGCAz5AY1Y41nh1yWtgqhKhZ9pPiPRagFdIKNqBH74"]}
+                summary: Ancestors of one block
+              empty:
+                value: { lower: [], upper: [] }
+                summary: Empty branch
+              empty2:
+                value: { "lower":["QxGCAz5AY1Y41nh1yWtgqhKhZ9pPiPRagFdIKNqBH74"], "upper": ["QxGCAz5AY1Y41nh1yWtgqhKhZ9pPiPRagFdIKNqBH74"]}
+                summary: Another example that returns an empty page
+      responses:
+        "200":
+          description: "The blocks that were found"
+          headers:
+            x-peer-addr:
+              $ref: '#/components/headers/x-peer-addr'
+            x-server-timestamp:
+              $ref: '#/components/headers/x-server-timestamp'
+            x-chainweb-node-version:
+              $ref: '#/components/headers/x-chainweb-node-version'
+          content:
+            application/json;blockheader-encoding=object:
+              schema:
+                allOf:
+                - properties:
+                    items:
+                      description: Array of JSON encoded blocks
+                      items:
+                        $ref: '#/components/schemas/block'
+                - $ref: '#/components/schemas/page'
+              example:
+                $ref: '#/components/examples/blockPage'
+
+        "400":
+          headers:
+            x-peer-addr:
+              $ref: '#/components/headers/x-peer-addr'
+            x-server-timestamp:
+              $ref: '#/components/headers/x-server-timestamp'
+            x-chainweb-node-version:
+              $ref: '#/components/headers/x-chainweb-node-version'
+          description: The branch bounds were exceeded.
+
+        "406":
+          headers:
+            x-peer-addr:
+              $ref: '#/components/headers/x-peer-addr'
+            x-server-timestamp:
+              $ref: '#/components/headers/x-server-timestamp'
+            x-chainweb-node-version:
+              $ref: '#/components/headers/x-chainweb-node-version'
+          description: The value of the `Accept` header is not supported.
+
+        "404":
+          headers:
+            x-peer-addr:
+              $ref: '#/components/headers/x-peer-addr'
+            x-server-timestamp:
+              $ref: '#/components/headers/x-server-timestamp'
+            x-chainweb-node-version:
+              $ref: '#/components/headers/x-chainweb-node-version'
+          description: A block indicated by a required parameter was not found.
+          content:
+            application/json:
+              schema:
+                properties:
+                  reason:
+                    type: string
+                  key:
+                    $ref: '#/components/schemas/blockHash'
+
+  # ########################################################################## #
   # Block Headers
 
   /chain/{chain}/header:
@@ -2201,7 +2422,7 @@ paths:
                         $ref: '#/components/schemas/blockHeader'
                 - $ref: '#/components/schemas/page'
               example:
-                $ref: '#/components/examples/blockHeaderBranchPage'
+                $ref: '#/components/examples/blockHeaderPage'
 
         "400":
           headers:
@@ -3142,3 +3363,75 @@ paths:
 
                 event:BlockHeader
                 data:{"txCount":0,"powHash":"00000000000001c40ddfd6574f9962a443714f3817bbea773a55fec63c7d95c8","header":{"creationTime":1619037446256086,"parent":"usmNftUR_mHpXOm8gCvtbZ50_9VaefaIVvcMdrKwc5A","height":1554652,"hash":"SOfbK_kI_9BtgLemWmb3FWOgDCTxf1tPulKCq1ndmWA","chainId":18,"weight":"i7XsQnkhY9yLAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA","featureFlags":0,"epochStart":1619035885828397,"adjacents":{"19":"fQJ5JKQLdGEwZIoC5HrhJstk3Iibj_a2dfmJl9osG-o","17":"L-GeIWZE4fMCICSpPptsfYpsLj3oO5eCiyJimclYJiY","3":"V7m9ROQmJs2i1UI05t8J6rjkfg7m795esdsIjhqyqfc"},"payloadHash":"Ji7WisfH5IulPMcFglexGcVDnA59aS5k1YSE2_6L4t8","chainwebVersion":"mainnet01","target":"tvH4nBuGx3opw-50T8-i6ECi68IgpFLOjAcAAAAAAAA","nonce":"9499180874660840183"},"target":"000000000000078cce52a420c2eba240e8a2cf4f74eec3297ac7861b9cf8f1b6"}
+
+  /block/updates:
+    get:
+      tags: [ misc ]
+      summary: Blocks Event Stream
+      description: |
+        An source of server events that emits a `Block` event for each new
+        block that is added to the chain database of the remote node.
+
+        The stream contains blocks that may later become orphaned. It is
+        therefor recommended to buffer events on the client side for the most
+        recent block heights until the desired confirmation depth is reached.
+
+        The server may terminate this stream from time to time and it is up to
+        the client to reinitiate the stream.
+      responses:
+        "200":
+          description: |
+            A stream of `Block` events. **This is not a JSON array**.
+
+            Events are separated by empty lines. Each event consists of an
+            `event` property and a `data` property which are separated by
+            newlines.
+          headers:
+            x-peer-addr:
+              $ref: '#/components/headers/x-peer-addr'
+            x-server-timestamp:
+              $ref: '#/components/headers/x-server-timestamp'
+            x-chainweb-node-version:
+              $ref: '#/components/headers/x-chainweb-node-version'
+          content:
+            text/event-stream:
+              schema:
+                description: |
+                  A stream of `Block` events. **This is not an JSON array**.
+
+                  Events are separated by empty lines (`\n\n`). Each event
+                  consists of two newline (`\n`) separated properties.
+                type: array
+                items:
+                  description: |
+                    A `Block` event. **This is not an JSON object**.
+
+                    Each event consists of an `event` property and a `data`
+                    property which are separated by newlines.
+                  properties:
+                    event:
+                      type: string
+                      enum: [ Block ]
+                    data:
+                      properties:
+                        txCount:
+                          type: integer
+                          minimum: 0
+                          description: Number of transactions in the block
+                        powHash:
+                          type: string
+                          description: A custom representation of the POW hash for use in the block explorer UI
+                        header:
+                          $ref: '#/components/schemas/blockHeader'
+                        payloadWithOutputs:
+                          $ref: '#/components/schemas/payloadWithOutputs'
+                        target:
+                          type: string
+                          description: A custom representation of the POW target for use in the block explorer UI
+
+              example: |
+                event:Block
+                data:{"txCount":0,"powHash":"00000000000006e0b164858ee0fcbfd112f4242d5010ff33d3a43d2cc3c15177","header":{"creationTime":1619037443761924,"parent":"qaUtvtXk75nXsWM9l6vkeGkQilZfE_YgzWkZm-7tLyE","height":1554652,"hash":"okI4V9Pez5-UPw4nys2Nk9iIPz3-n30HCag5_NQptlo","chainId":6,"weight":"d8mOCoZeFpajAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA","featureFlags":0,"epochStart":1619035890499046,"adjacents":{"1":"OTcNZsNMA-TZ9RTlfWqegFiE0ZkBYcy3JCzh23gmm9Y","8":"nznrNdU8RWatTVlS8yTaVaxk8CT1ZjR4ZWta7GAaMDk","9":"CanRK_wW8RjyA1X9xSEQCXymsnk3VERAJtAB2abrY_M"},"payloadHash":"cT86RaKJUyCZXKB3gYqX9A9SNway-lUBrHSvNr7_SaM","chainwebVersion":"mainnet01","target":"zklwTetkWv91YxYIRmXCt6kUHpEBpiN8gwcAAAAAAAA","nonce":"3399765038640884059"},"payloadWithOutputs":{"transactions":[],"minerData":"eyJhY2NvdW50IjoiOTljYjcwMDhkN2Q3MGM5NGYxMzhjYzM2NmE4MjVmMGQ5YzgzYThhMmY0YmE4MmM4NmM2NjZlMGFiNmZlY2YzYSIsInByZWRpY2F0ZSI6ImtleXMtYWxsIiwicHVibGljLWtleXMiOlsiOTljYjcwMDhkN2Q3MGM5NGYxMzhjYzM2NmE4MjVmMGQ5YzgzYThhMmY0YmE4MmM4NmM2NjZlMGFiNmZlY2YzYSJdfQ","transactionsHash":"g5dDASOa4cK0nAVmwkvXg-neTRAKG1hwfwRfbQyqpxU","outputsHash":"ZZV9pS034mPB5M0CT7IcoPhscy3lqI4Tyvx0BlPbR9k","payloadHash":"cT86RaKJUyCZXKB3gYqX9A9SNway-lUBrHSvNr7_SaM","coinbase":"eyJnYXMiOjAsInJlc3VsdCI6eyJzdGF0dXMiOiJzdWNjZXNzIiwiZGF0YSI6IldyaXRlIHN1Y2NlZWRlZCJ9LCJyZXFLZXkiOiJJbkZoVlhSMmRGaHJOelZ1V0hOWFRUbHNOblpyWlVkclVXbHNXbVpGWDFsbmVsZHJXbTB0TjNSTWVVVWkiLCJsb2dzIjoiMFZoS2xvckJNc3h6YlJxZWV0M2t1d2hYSk1HZDdFSXl1NEthNllJOG5pRSIsIm1ldGFEYXRhIjpudWxsLCJjb250aW51YXRpb24iOm51bGwsInR4SWQiOjE2MDc0MDN9"},"target":"00000000000007837c23a601911e14a9b7c2654608166375ff5a64eb4d7049ce"}
+
+                event:Block
+                data:{"txCount":0,"powHash":"00000000000001c40ddfd6574f9962a443714f3817bbea773a55fec63c7d95c8","header":{"creationTime":1619037446256086,"parent":"usmNftUR_mHpXOm8gCvtbZ50_9VaefaIVvcMdrKwc5A","height":1554652,"hash":"SOfbK_kI_9BtgLemWmb3FWOgDCTxf1tPulKCq1ndmWA","chainId":18,"weight":"i7XsQnkhY9yLAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA","featureFlags":0,"epochStart":1619035885828397,"adjacents":{"19":"fQJ5JKQLdGEwZIoC5HrhJstk3Iibj_a2dfmJl9osG-o","17":"L-GeIWZE4fMCICSpPptsfYpsLj3oO5eCiyJimclYJiY","3":"V7m9ROQmJs2i1UI05t8J6rjkfg7m795esdsIjhqyqfc"},"payloadHash":"Ji7WisfH5IulPMcFglexGcVDnA59aS5k1YSE2_6L4t8","chainwebVersion":"mainnet01","target":"tvH4nBuGx3opw-50T8-i6ECi68IgpFLOjAcAAAAAAAA","nonce":"9499180874660840183"},"payloadWithOutputs":{"transactions":[],"minerData":"eyJhY2NvdW50IjoiNmQ4N2ZkNmU1ZTQ3MTg1Y2I0MjE0NTlkMjg4OGJkZGJhN2E2YzBmMmM0YWU1MjQ2ZDVmMzhmOTkzODE4YmI4OSIsInByZWRpY2F0ZSI6ImtleXMtYWxsIiwicHVibGljLWtleXMiOlsiNmQ4N2ZkNmU1ZTQ3MTg1Y2I0MjE0NTlkMjg4OGJkZGJhN2E2YzBmMmM0YWU1MjQ2ZDVmMzhmOTkzODE4YmI4OSJdfQ","transactionsHash":"PZA7NIdgDatkTRZ8AOSI7dOOJzhGAhe7JkovnMp1xks","outputsHash":"YqWnNd_gQLasM2N-dFuT3FndTJCBRAznQyCwb0ttj2M","payloadHash":"Ji7WisfH5IulPMcFglexGcVDnA59aS5k1YSE2_6L4t8","coinbase":"eyJnYXMiOjAsInJlc3VsdCI6eyJzdGF0dXMiOiJzdWNjZXNzIiwiZGF0YSI6IldyaXRlIHN1Y2NlZWRlZCJ9LCJyZXFLZXkiOiJJblZ6YlU1bWRGVlNYMjFJY0ZoUGJUaG5RM1owWWxvMU1GODVWbUZsWm1GSlZuWmpUV1J5UzNkak5VRWkiLCJsb2dzIjoieFVreFdxMFloYW5waUxLR2dZaFhaYjB2QU9WRTJ1d1ZZQnBjRzZpdDVjZyIsIm1ldGFEYXRhIjpudWxsLCJjb250aW51YXRpb24iOm51bGwsInR4SWQiOjcxODI1N30"},"target":"000000000000078cce52a420c2eba240e8a2cf4f74eec3297ac7861b9cf8f1b6"}
