@@ -362,14 +362,22 @@ components:
       contentMediaType: application/json
       description: |
         Stringified JSON WebAuthn signature object.
-        The fields should be taken from the `response` field of a WebAuthn. credential response.
-        For example, to construct a WebAuthn signature string in the browser:
+
+        For a WebAuthn signature string to be valid, it must correspond to
+        a `Signer` with `scheme: WebAuthn`.
+
+        The fields should be taken from the `response` field of a WebAuthn
+        `CredentialResponse`. For example, to construct a WebAuthn signature
+        string in the browser:
+
         ```
-        const r = await navigator.credentials.get();
+        const resp = await navigator.credentials.get();
+        const auth = r.response.authenticator_data;
+        const sig = r.response.signature;
         JSON.stringify({
-          "authenticatorData": base64url_to_base64(r.response.authenticator_data),
+          "authenticatorData": base64url_to_base64(auth),
           "clientDataJSON": r.response.clientDataJSON,
-          "signature": base64url_to_base64(r.response.signature)
+          "signature": base64url_to_base64(sig)
         })
         ```
 
@@ -471,8 +479,10 @@ components:
                 description: "Address, if any. Pact default expects this to match pubKey."
               scheme:
                 type: string
-                description: "Signer scheme. Default is ED25519."
-                enum: [ED25519,ETH]
+                description: |
+                  Signer scheme. Default is ED25519. When the Signer is `WebAuthn`, the
+                  corresponding `sig` must be a webauthn signature string.
+                enum: [ED25519,WebAuthn]
               clist:
                 description: List of capabilities associated with/installed by this signer.
                 properties:
