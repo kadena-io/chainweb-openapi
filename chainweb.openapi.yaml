@@ -7,6 +7,8 @@ openapi: '3.0.0'
 info:
   title: Kadena Chainweb Node API
   description: |
+    Help improve this documentation: [GitHub](https://github.com/kadena-io/chainweb-openapi/issues)
+
     API of [chainweb-node](https://github.com/kadena-io/chainweb-node)
 
     Chainweb is a scalable Proof-Of-Work (PoW) consensus algorithm. It is an
@@ -14,8 +16,14 @@ info:
     Bitcoin's single chain algorithm to multiple chains. This allows for
     unlimited transaction throughput by horizontally scaling the number of chains.
 
-    Feedback and bug reports for the content of this site are welcome. Please
-    open an issue at [this github repository](https://github.com/kadena-io/chainweb-openapi/issues).
+    The node exposes two distinct APIs: the P2P API and the Service API. They
+    are served on separate ports. The P2P API contains the RPC endpoints that
+    are mandatory for nodes to expose. These endpoints should typically be
+    more efficient than Service API endpoints for most use cases. The Service
+    API contains RPC endpoints that can be used to create more load on the
+    node and may have reason to be proxied differently for rate limiting or
+    other purposes.
+
   version: '0.0'
   x-logo:
     url: 'https://i.imgur.com/bAZFAGF.png'
