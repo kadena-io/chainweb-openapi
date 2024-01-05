@@ -355,10 +355,11 @@ components:
                       for corresponding signer in payload.
                     example:
                       "8d452109cc0439234c093b5e204a7428bc0a54f22704402492e027aaa9375a34c910d8a468a12746d0d29e9353f4a3fbebe920d63bcc7963853995db015d060f"
-                  - $ref: '#/components/schemas/webauthn-sig-string-2'
+                  - $ref: '#/components/schemas/webauthn-sig-string'
 
     webauthn-sig-string:
       type: string
+      contentMediaType: application/json
       description: |
         Stringified JSON WebAuthn signature object.
         The fields should be taken from the `response` field of a WebAuthn. credential response.
@@ -366,81 +367,11 @@ components:
         ```
         const r = await navigator.credentials.get();
         JSON.stringify({
-          authenticatorData: base64url_to_base64(r.response.authenticator_data),
-          cliendDataJSON: r.response.clientDataJSON,
-          signature: base64url_to_base64(r.response.signature)
+          "authenticatorData": base64url_to_base64(r.response.authenticator_data),
+          "clientDataJSON": r.response.clientDataJSON,
+          "signature": base64url_to_base64(r.response.signature)
         })
         ```
-      contentMediaType: application/json
-      jsonSchema:
-        $ref: '#/components/schemas/webauthn-sig'
-    webauthn-sig:
-      type: object
-      required:
-        - authenticatorData
-        - clientDataJSON
-        - signature
-      properties:
-        authenticatorData:
-          type: string
-          contentEncoding: base64
-          description: |
-            The `.response.authenticatorData` field, transcribed from base64Url to base64,
-            resulting from of calling `navigator.credentials.get()`.
-          example:
-            "+cNxurbmvuKrkAKBTgIRX89NPS7FT5KydvqIN951zwoBAAAADQ=="
-        clientDataJSON:
-          type: string
-          contentEncoding: base64Url
-          description: |
-            The `.response.signature` field resulting from of calling
-            `navigator.credentials.get()`.
-          example:
-            "eyJ0eXBlIjoid2ViYXV0aG4uZ2V0IiwiY2hhbGxlbmdlIjoiTkFDbG5makJiT2o3R2ZuRTg2YzJOZVZHaTBZUkRKcllidUF0cmhFUzJiYyIsIm9yaWdpbiI6Imh0dHBzOi8vZ3JlZy10ZXN0aW5nLTIwMjMtMDItMDcuZ2l0aHViLmlvIiwiY3Jvc3NPcmlnaW4iOmZhbHNlfQ"
-        signature:
-          type: string
-          contentEncoding: base64
-          description: |
-            The `.response.clientDataJSON` field, transcribed from base64Url to base64,
-            resulting from of calling `navigator.credentials.get()`.
-          example:
-            "MEYCIQDwQF19+Wjxs0boANssWEKoUFKhwHgiaycIeU5kRlY+RwIhAIAfCOUDVHr5aCrVQ1pbvCEw1xkeF0s4yjD48sDe9uO7"
-
-
-    webauthn-sig-string2:
-      type: string
-      contentMediaType: application/json
-      contentSchema:
-        type: object
-        required:
-          - authenticatorData
-          - clientDataJSON
-          - signature
-        properties:
-          authenticatorData:
-            type: string
-            contentEncoding: base64
-            description: |
-              The `.response.authenticatorData` field, transcribed from base64Url to base64,
-              resulting from of calling `navigator.credentials.get()`.
-            example:
-              "+cNxurbmvuKrkAKBTgIRX89NPS7FT5KydvqIN951zwoBAAAADQ=="
-          clientDataJSON:
-            type: string
-            contentEncoding: base64Url
-            description: |
-              The `.response.signature` field resulting from of calling
-              `navigator.credentials.get()`.
-            example:
-              "eyJ0eXBlIjoid2ViYXV0aG4uZ2V0IiwiY2hhbGxlbmdlIjoiTkFDbG5makJiT2o3R2ZuRTg2YzJOZVZHaTBZUkRKcllidUF0cmhFUzJiYyIsIm9yaWdpbiI6Imh0dHBzOi8vZ3JlZy10ZXN0aW5nLTIwMjMtMDItMDcuZ2l0aHViLmlvIiwiY3Jvc3NPcmlnaW4iOmZhbHNlfQ"
-          signature:
-            type: string
-            contentEncoding: base64
-            description: |
-              The `.response.clientDataJSON` field, transcribed from base64Url to base64,
-              resulting from of calling `navigator.credentials.get()`.
-            example:
-              "MEYCIQDwQF19+Wjxs0boANssWEKoUFKhwHgiaycIeU5kRlY+RwIhAIAfCOUDVHr5aCrVQ1pbvCEw1xkeF0s4yjD48sDe9uO7"
 
 
     payload:
