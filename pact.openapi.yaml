@@ -372,12 +372,12 @@ components:
 
         ```
         const resp = await navigator.credentials.get();
-        const auth = r.response.authenticator_data;
+        const auth = r.response.authenticatorData();
         const sig = r.response.signature;
         JSON.stringify({
-          "authenticatorData": base64url_to_base64(auth),
-          "clientDataJSON": r.response.clientDataJSON,
-          "signature": base64url_to_base64(sig)
+          authenticatorData: base64url_to_base64(auth),
+          clientDataJSON: r.response.clientDataJSON,
+          signature: base64url_to_base64(sig)
         })
         ```
 
