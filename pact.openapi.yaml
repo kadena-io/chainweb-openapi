@@ -363,20 +363,22 @@ components:
       description: |
         Stringified JSON WebAuthn signature object.
 
-        For a WebAuthn signature string to be valid, it must correspond to
-        a `Signer` with `scheme: WebAuthn`.
+        For a WebAuthn signature string to be valid, its corresponding `Signer`
+        must have `scheme: "WebAuthn"`.
 
-        The fields should be taken from the `response` field of a WebAuthn
+        The schema of a Pact WebAuthn signature object resembles that of
+        the WebAuthn standard `CredentialResponse`.
+        Its fields can be computed from the `response` field of a WebAuthn
         `CredentialResponse`. For example, to construct a WebAuthn signature
         string in the browser:
 
         ```
         const resp = await navigator.credentials.get();
-        const auth = r.response.authenticatorData();
-        const sig = r.response.signature;
+        const auth = resp.response.authenticatorData();
+        const sig = resp.response.signature;
         JSON.stringify({
           authenticatorData: base64url_to_base64(auth),
-          clientDataJSON: r.response.clientDataJSON,
+          clientDataJSON: resp.response.clientDataJSON,
           signature: base64url_to_base64(sig)
         })
         ```
