@@ -480,8 +480,9 @@ components:
               scheme:
                 type: string
                 description: |
-                  Signer scheme. Default is ED25519. When the Signer is `WebAuthn`, the
-                  corresponding `sig` must be a webauthn signature string.
+                  Signer scheme. Default is ED25519. When the Signer is
+                  `WebAuthn`, the corresponding `sig` must be a WebAuthn
+                  signature string.
                 enum: [ED25519,WebAuthn]
               clist:
                 description: List of capabilities associated with/installed by this signer.
