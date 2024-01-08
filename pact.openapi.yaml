@@ -351,7 +351,7 @@ components:
                   - type: string
                     contentEncoding: base16
                     description: |
-                      Base16-encoded cryptograhic signature of `cmd` field data
+                      Base16-encoded Ed25519 signature of `hash` field
                       for corresponding signer in payload.
                     example:
                       "8d452109cc0439234c093b5e204a7428bc0a54f22704402492e027aaa9375a34c910d8a468a12746d0d29e9353f4a3fbebe920d63bcc7963853995db015d060f"
