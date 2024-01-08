@@ -359,7 +359,7 @@ components:
 
     webauthn-sig-string:
       type: string
-      contentMediaType: application/json
+      # contentMediaType: application/json
       description: |
         Stringified JSON WebAuthn signature object.
 
