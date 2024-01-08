@@ -347,13 +347,41 @@ components:
           items:
             properties:
               sig:
-                type: string
-                contentEncoding: base16
-                description: |
-                  Base16-encoded cryptograhic signature of `cmd` field data
-                  for corresponding signer in payload.
-                example:
-                  "8d452109cc0439234c093b5e204a7428bc0a54f22704402492e027aaa9375a34c910d8a468a12746d0d29e9353f4a3fbebe920d63bcc7963853995db015d060f"
+                anyOf:
+                  - type: string
+                    contentEncoding: base16
+                    description: |
+                      Base16-encoded Ed25519 signature of `hash` field
+                      for corresponding signer in payload.
+                    example:
+                      "8d452109cc0439234c093b5e204a7428bc0a54f22704402492e027aaa9375a34c910d8a468a12746d0d29e9353f4a3fbebe920d63bcc7963853995db015d060f"
+                  - $ref: '#/components/schemas/webauthn-sig-string'
+
+    webauthn-sig-string:
+      type: string
+      # contentMediaType: application/json
+      description: |
+        Stringified JSON WebAuthn signature object.
+
+        For a WebAuthn signature string to be valid, its corresponding `Signer`
+        must have `scheme: "WebAuthn"`.
+
+        The schema of a Pact WebAuthn signature object resembles that of
+        the WebAuthn standard `CredentialResponse`.
+        Its fields can be computed from the `response` field of a WebAuthn
+        `CredentialResponse`. For example, to construct a WebAuthn signature
+        string in the browser:
+
+        ```
+        const resp = await navigator.credentials.get();
+        const auth = resp.response.authenticatorData();
+        const sig = resp.response.signature;
+        JSON.stringify({
+          authenticatorData: base64url_to_base64(auth),
+          clientDataJSON: resp.response.clientDataJSON,
+          signature: base64url_to_base64(sig)
+        })
+        ```
 
 
     payload:
@@ -453,8 +481,11 @@ components:
                 description: "Address, if any. Pact default expects this to match pubKey."
               scheme:
                 type: string
-                description: "Signer scheme. Default is ED25519."
-                enum: [ED25519,ETH]
+                description: |
+                  Signer scheme. Default is ED25519. When the Signer is
+                  `WebAuthn`, the corresponding `sig` must be a WebAuthn
+                  signature string.
+                enum: [ED25519,WebAuthn]
               clist:
                 description: List of capabilities associated with/installed by this signer.
                 properties:
