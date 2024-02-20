@@ -1168,6 +1168,16 @@ components:
       example:
         $ref: '#/components/examples/blockHashes'
 
+    blockHeight:
+      name: height
+      in: query
+      description: Height of a block
+      required: false
+      schema:
+        type: integer
+        minimum: 0
+      example: 3000000
+
   # ########################################################################## #
   requestBodies:
     requestKeyArray:
@@ -2472,6 +2482,7 @@ paths:
       parameters:
       - $ref: '#/components/parameters/chain'
       - $ref: '#/components/parameters/payloadHash'
+      - $ref: '#/components/parameters/blockHeight'
       responses:
         "200":
           description: The payload data of for the given block payload hash
@@ -2560,6 +2571,7 @@ paths:
       parameters:
       - $ref: '#/components/parameters/chain'
       - $ref: '#/components/parameters/payloadHash'
+      - $ref: '#/components/parameters/blockHeight'
       responses:
         "200":
           description: The payload with outputs for the given block payload hash
