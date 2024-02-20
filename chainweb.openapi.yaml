@@ -1076,6 +1076,36 @@ components:
       example:
         $ref: '#/components/examples/nodeConfig'
 
+    payloadHashArray:
+      title: Payload hash array
+      type: array
+      items:
+        $ref: '#/components/schemas/payloadHash'
+      examples:
+        two:
+          value:
+            $ref: '#/components/examples/payloadHashes'
+            summary: Query two payloads
+        empty:
+          value: []
+          summary: Query nothing
+
+    payloadBatchBody:
+      title: Payload batch query
+      properties:
+        heights:
+          title: Heights
+          description: List of block heights
+          type: array
+          items:
+            type: integer
+        hashes:
+          title: Hashes
+          description: List of payload hashes
+          type: array
+          items:
+            $ref: '#/components/schemas/payloadHash'
+
   # ########################################################################## #
   responses: {}
 
@@ -1194,22 +1224,14 @@ components:
             "singleton request body":
               value: [ "qx346ILpakzgbNZbE8oHqF5TZQghp-HPcV-0Ptc_n2s" ]
 
-    payloadHashArray:
-      description: An array of block payload hashes
+    batchPayloadBody:
+      description: An object used to do batch payload queries, with or without heights
       content:
         application/json:
           schema:
-            type: array
-            items:
-              $ref: '#/components/schemas/payloadHash'
-          examples:
-            two:
-              value:
-                $ref: '#/components/examples/payloadHashes'
-              summary: Query two payloads
-            empty:
-              value: []
-              summary: Query nothing
+            oneOf:
+              - $ref: '#/components/schemas/payloadHashArray'
+              - $ref: '#/components/schemas/payloadBatchBody'
 
   # ########################################################################## #
   headers:
@@ -2533,7 +2555,7 @@ paths:
       parameters:
       - $ref: '#/components/parameters/chain'
       requestBody:
-        $ref: '#/components/requestBodies/payloadHashArray'
+        $ref: '#/components/requestBodies/batchPayloadBody'
       responses:
         "200":
           description: |
@@ -2622,7 +2644,7 @@ paths:
       parameters:
       - $ref: '#/components/parameters/chain'
       requestBody:
-        $ref: '#/components/requestBodies/payloadHashArray'
+        $ref: '#/components/requestBodies/batchPayloadBody'
       responses:
         "200":
           description: |
