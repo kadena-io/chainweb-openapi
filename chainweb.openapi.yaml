@@ -217,27 +217,6 @@ tags:
     Futher details can also be found in [this section of the Pact Language
     Reference](https://pact-language.readthedocs.io/en/stable/pact-reference.html#endpoints).
 
-- name: rosetta
-  x-displayName: Rosetta Endpoints
-  description: |
-    Chainweb node includes an implementation of the
-    [Rosetta API](https://www.rosetta-api.org). The API is disabled by default
-    and can be enabled in the configuration file of a node.
-
-    The following endpoints are supported, which are documented
-    in the [Rosetta Specification](https://www.rosetta-api.org/docs/welcome.html):
-
-    *   `POST rosetta/account/balance`
-    *   `POST rosetta/block/transaction`
-    *   `POST rosetta/block`
-    *   `POST rosetta/construction/metadata`
-    *   `POST rosetta/construction/submit`
-    *   `POST rosetta/mempool/transaction`
-    *   `POST rosetta/mempool`
-    *   `POST rosetta/network/list`
-    *   `POST rosetta/network/options`
-    *   `POST rosetta/network/status`
-
 - name: mining
   x-displayName: Mining Endpoints
   description: |
@@ -490,7 +469,6 @@ x-tagGroups:
   - misc
   - mining
   - pact
-  - rosetta
 
 - name: Common HTTP Headers
   tags:
@@ -1673,7 +1651,6 @@ components:
       value:
         {
           "allowReadsInLocal": false,
-          "rosetta": true,
           "throttling": {
             "local": 1,
             "mining": 2,
