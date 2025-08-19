@@ -18,7 +18,7 @@ info:
     open an issue at [this github repository](https://github.com/kadena-io/chainweb-openapi/issues).
   version: '0.0'
   x-logo:
-    url: 'https://i.imgur.com/bAZFAGF.png'
+    url: 'https://cdn.sanity.io/images/agrhq0bu/production/73f06e78e066f86e21cb84f82292494fe04b9be8-1438x472.png'
     # backgroundColor: '#0033A0'
     alttext: Kadena Chainweb Logo
 
