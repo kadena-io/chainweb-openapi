@@ -1070,6 +1070,7 @@ components:
 
     payloadBatchBody:
       title: Payload batch query
+      type: object
       properties:
         heights:
           title: Heights
